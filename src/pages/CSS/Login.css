@@ -1,0 +1,370 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap");
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "DM Sans", sans-serif;
+  margin: 0;
+  padding: 0;
+  line-height: 1.5;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.authPage {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  padding: 20px;
+  background: #1e293b;
+  overflow: hidden;
+}
+
+
+.loginContainer {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 440px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loginCard {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+
+
+.loginHeader {
+  padding: 32px 32px 24px;
+  text-align: center;
+  background: #f8fafc;
+
+  border-bottom: 1px solid #e2e8f0;
+
+}
+
+.brandTitle {
+  font-size: 24px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 8px 0;
+  letter-spacing: -0.5px;
+}
+
+.brandSubtitle {
+  font-size: 15px;
+  color: #64748b;
+  margin: 0;
+  font-weight: 500;
+}
+
+.formContainer {
+  padding: 32px;
+}
+
+.formField {
+  margin-bottom: 20px;
+}
+
+.formField label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 8px;
+  letter-spacing: 0.2px;
+}
+
+.inputWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.inputIcon {
+  position: absolute;
+  left: 16px;
+  color: #64748b;
+  width: 20px;
+  height: 20px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.formInput {
+  width: 100%;
+  padding: 14px 16px 14px 48px;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 500;
+  color: #0f172a;
+  background: #ffffff;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.formInput::placeholder {
+  color: #94a3b8;
+  font-weight: 400;
+}
+
+.formInput:focus {
+  outline: none;
+  border-color: #4F46E5;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+.formInput:disabled {
+  background: #f8fafc;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.passwordInput {
+  padding-right: 48px;
+}
+
+.togglePassword {
+  position: absolute;
+  right: 16px;
+  background: none;
+  border: none;
+  color: #64748b;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+
+.togglePassword:hover {
+  color: #4F46E5;
+  background: #EEF2FF;
+}
+
+.errorText {
+  color: #ef4444;
+  font-size: 13px;
+  font-weight: 500;
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.errorText::before {
+  content: "!";
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  background: #DC2626;
+  color: #ffffff;
+  border-radius: 50%;
+  font-size: 12px;
+  font-weight: 700;
+  margin-right: 6px;
+}
+
+.formOptions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 28px;
+  gap: 16px;
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #475569;
+  font-weight: 500;
+  user-select: none;
+}
+
+.checkbox {
+  width: 18px;
+  height: 18px;
+  accent-color: #4F46E5;
+  cursor: pointer;
+  margin: 0;
+}
+
+.forgotLink {
+  color: #4F46E5;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.forgotLink:hover {
+  color: #4338ca;
+  text-decoration: underline;
+}
+
+.formContainer .submitBtn {
+  width: 100%;
+  padding: 14px 24px;
+  background: #4F46E5;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 700;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 52px;
+}
+
+
+
+.formContainer .submitBtn:hover:not(:disabled) {
+  background: #4338ca;
+}
+
+.formContainer .submitBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.formContainer .submitBtn>* {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.spinner {
+  width: 18px !important;
+  height: 18px !important;
+  min-width: 18px !important;
+  min-height: 18px !important;
+  max-width: 18px !important;
+  max-height: 18px !important;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  flex-shrink: 0;
+  display: inline-block !important;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.footerText {
+  font-size: 14px;
+  color: #64748b;
+  margin: 0;
+  font-weight: 500;
+}
+
+.signupLink {
+  color: #4F46E5;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.signupLink:hover {
+  color: #4338ca;
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .authPage {
+    padding: 16px;
+  }
+
+  .loginCard {
+    border-radius: 20px;
+  }
+
+  .loginHeader {
+    padding: 36px 32px 24px;
+  }
+
+  .brandTitle {
+    font-size: 28px;
+  }
+
+  .brandSubtitle {
+    font-size: 14px;
+  }
+
+  .formContainer {
+    padding: 32px 28px;
+  }
+
+  .formOptions {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .loginHeader {
+    padding: 32px 24px 20px;
+  }
+
+  .brandTitle {
+    font-size: 24px;
+  }
+
+  .brandSubtitle {
+    font-size: 13px;
+  }
+
+  .formContainer {
+    padding: 28px 24px;
+  }
+
+  .formInput {
+    padding: 12px 14px 12px 44px;
+    font-size: 14px;
+  }
+
+  .submitBtn {
+    padding: 14px 20px;
+    font-size: 15px;
+    min-height: 52px;
+  }
+
+  .footerText {
+    font-size: 13px;
+  }
+}

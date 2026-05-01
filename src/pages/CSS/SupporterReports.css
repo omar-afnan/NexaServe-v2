@@ -1,0 +1,1053 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap");
+
+:root {
+  --primary: #4F46E5;
+  --primary-dark: #0891b2;
+  --primary-light: #22d3ee;
+
+  --secondary: #4F46E5;
+  --secondary-dark: #4338CA;
+  --secondary-light: #818cf8;
+
+  --success: #10b981;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --info: #3b82f6;
+
+  --gray-50: #fafafa;
+  --gray-100: #f5f5f5;
+  --gray-200: #e5e5e5;
+  --gray-300: #d4d4d4;
+  --gray-500: #737373;
+  --gray-600: #525252;
+  --gray-700: #404040;
+  --gray-800: #262626;
+  --gray-900: #171717;
+
+  --surface: #ffffff;
+  --background: #fafafa;
+
+  --font-display: 'DM Sans', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--background);
+  color: var(--gray-800);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+.reportsLayout {
+  display: flex;
+  min-height: 100vh;
+  background: var(--background);
+}
+
+.reportsMain {
+  flex: 1;
+  margin-left: 260px;
+  padding: 1.25rem 1rem;
+  background: #F3F4F6;
+  overflow-y: auto;
+}
+
+.reportsContainer {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.ticketLink {
+  color: var(--secondary);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.ticketLink:hover {
+  text-decoration: underline;
+}
+
+.reportsContainer .reportsHero {
+  background: #1e293b;
+  border-radius: 0.875rem;
+  padding: 1.25rem 1.75rem;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+}
+
+.reportsContainer .reportsHero::before {
+  content: none !important;
+  display: none !important;
+}
+
+.reportsContainer .heroContent {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+}
+
+.heroText {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  min-width: 0;
+}
+
+.heroIcon {
+  width: 48px;
+  height: 48px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  flex-shrink: 0;
+}
+
+.reportsContainer .reportsHero h1 {
+  font-family: var(--font-display);
+  font-size: 1.375rem;
+  font-weight: 700;
+  color: white;
+  margin: 0 0 0.25rem 0;
+  letter-spacing: -0.02em;
+}
+
+
+.heroActions {
+  display: flex;
+  gap: 0.75rem;
+  flex-shrink: 0;
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+.exportButton {
+  background: white;
+  color: #3b82f6;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 3px solid black;
+  padding: 9px 14px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+}
+
+.exportButton:hover {
+  background: #2563eb;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+}
+
+.exportButton svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.exportButton img,
+.exportButton svg {
+  display: block;
+  width: 16px;
+  height: 16px;
+  margin: 0;
+}
+
+.filterControls {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  background: var(--surface);
+  border-radius: 0.875rem;
+  border: 1px solid var(--gray-200);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  flex-wrap: wrap;
+}
+
+.filterGroup {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+}
+
+.filterGroup label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--gray-700);
+  white-space: nowrap;
+}
+
+.filterSelect {
+  padding: 0.5rem 0.875rem;
+  border: 2px solid var(--gray-200);
+  border-radius: 0.5rem;
+  background: var(--surface);
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--gray-700);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 140px;
+}
+
+.filterSelect:hover {
+  border-color: var(--gray-300);
+}
+
+.filterSelect:focus {
+  outline: none;
+  border-color: #4F46E5;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+.reportsContainer .metricsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+}
+
+.reportsContainer .metricCard {
+  background: var(--surface);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease;
+  border: 1px solid var(--gray-200);
+  position: relative;
+  overflow: hidden;
+}
+
+.reportsContainer .metricCard:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.metricHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.75rem;
+}
+
+.metricIconWrapper {
+  width: 40px;
+  height: 40px;
+  border-radius: 0.625rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  position: relative;
+}
+
+.metricTotal .metricIconWrapper {
+  color: var(--secondary);
+}
+
+.metricResolved .metricIconWrapper {
+  color: var(--success);
+}
+
+.metricResponse .metricIconWrapper {
+  color: var(--info);
+}
+
+.metricRate .metricIconWrapper {
+  color: var(--warning);
+}
+
+.metricTrend {
+  color: var(--success);
+  font-size: 20px;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
+
+.metricBody h3 {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--gray-500);
+  margin-bottom: 0.5rem;
+}
+
+.metricNumber {
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: var(--gray-900);
+  line-height: 1;
+  margin: 0.5rem 0;
+  letter-spacing: -0.02em;
+}
+
+.reportsContainer .metricLabel {
+  font-size: 0.75rem;
+  color: var(--gray-500);
+  font-weight: 500;
+}
+
+.reportsContainer .chartsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.reportsContainer .chartCard {
+  background: var(--surface);
+  border-radius: 0.875rem;
+  padding: 1.25rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  border: 1px solid var(--gray-200);
+  transition: all 0.3s ease;
+}
+
+.reportsContainer .chartCard:hover {
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+}
+
+.chartHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.25rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid var(--gray-100);
+}
+
+.chartHeaderLeft {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.chartIcon {
+  color: var(--secondary);
+}
+
+.chartIconAlt {
+  color: var(--gray-400);
+}
+
+.chartHeader h3 {
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--gray-900);
+  margin: 0;
+}
+
+.chartBody {
+  min-height: 250px;
+}
+
+.barChartWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.barChartRow {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.barLabel {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.barCategory {
+  font-weight: 600;
+  color: var(--gray-700);
+  font-size: 0.875rem;
+}
+
+.barCount {
+  font-size: 0.813rem;
+  color: var(--gray-500);
+  font-weight: 600;
+}
+
+.barTrack {
+  height: 28px;
+  background: var(--gray-100);
+  border-radius: 0.5rem;
+  overflow: hidden;
+  position: relative;
+}
+
+.barFill {
+  height: 100%;
+  background: #4F46E5;
+  border-radius: 0.5rem;
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.priorityGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.priorityItem {
+  background: var(--gray-50);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  border: 2px solid var(--gray-200);
+  transition: all 0.3s ease;
+}
+
+.priorityItem:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.priorityItem.priority-high {
+  border-color: rgba(239, 68, 68, 0.3);
+  background: rgba(254, 226, 226, 0.3);
+}
+
+.priorityItem.priority-medium {
+  border-color: rgba(245, 158, 11, 0.3);
+  background: rgba(254, 243, 199, 0.3);
+}
+
+.priorityItem.priority-low {
+  border-color: rgba(16, 185, 129, 0.3);
+  background: rgba(209, 250, 229, 0.3);
+}
+
+.priorityHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.priorityLabel {
+  font-weight: 700;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--gray-600);
+}
+
+.priorityPercentage {
+  font-weight: 700;
+  font-size: 0.875rem;
+  color: var(--gray-700);
+}
+
+.priorityCount {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--gray-900);
+  margin: 0.5rem 0;
+}
+
+.priorityBar {
+  height: 6px;
+  background: var(--gray-200);
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.priorityBarFill {
+  height: 100%;
+  border-radius: 9999px;
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.priority-high .priorityBarFill {
+  background: #EF4444;
+}
+
+.priority-medium .priorityBarFill {
+  background: #F59E0B;
+}
+
+.priority-low .priorityBarFill {
+  background: #10B981;
+}
+
+.emptyChart {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+  color: var(--gray-400);
+}
+
+.emptyChart svg {
+  opacity: 0.3;
+  margin-bottom: 1rem;
+}
+
+.emptyChart p {
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.statusOverview {
+  background: var(--surface);
+  border-radius: 0.875rem;
+  padding: 1.25rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  border: 1px solid var(--gray-200);
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.25rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid var(--gray-100);
+}
+
+.sectionHeaderLeft {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--secondary);
+}
+
+.sectionHeaderLeft h2 {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--gray-900);
+  margin: 0;
+}
+
+.statusGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.statusCard {
+  background: var(--gray-50);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  border: 2px solid var(--gray-200);
+  transition: all 0.3s ease;
+}
+
+.statusCard:hover {
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+}
+
+.statusCard.status-open {
+  border-color: rgba(245, 158, 11, 0.3);
+  background: rgba(254, 243, 199, 0.4);
+}
+
+.statusCard.status-in-progress {
+  border-color: rgba(59, 130, 246, 0.3);
+  background: rgba(219, 234, 254, 0.4);
+}
+
+.statusCard.status-closed {
+  border-color: rgba(16, 185, 129, 0.3);
+  background: rgba(209, 250, 229, 0.4);
+}
+
+.statusCard h4 {
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--gray-600);
+  margin-bottom: 0.75rem;
+}
+
+.statusNumber {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--gray-900);
+  margin: 0.75rem 0;
+  line-height: 1;
+}
+
+.statusProgress {
+  height: 8px;
+  background: var(--gray-200);
+  border-radius: 9999px;
+  overflow: hidden;
+  margin: 0.75rem 0;
+}
+
+.statusProgressFill {
+  height: 100%;
+  border-radius: 9999px;
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.status-open .statusProgressFill {
+  background: #F59E0B;
+}
+
+.status-in-progress .statusProgressFill {
+  background: #3B82F6;
+}
+
+.status-closed .statusProgressFill {
+  background: #10B981;
+}
+
+.statusPercentage {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--gray-600);
+}
+
+.activitySummary {
+  background: var(--surface);
+  border-radius: 0.875rem;
+  padding: 1.25rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  border: 1px solid var(--gray-200);
+}
+
+.activityList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.activityItem {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: var(--gray-50);
+  border-radius: 0.75rem;
+  border: 1px solid var(--gray-200);
+  transition: all 0.3s ease;
+}
+
+.activityItem:hover {
+  background: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.activityIcon {
+  width: 40px;
+  height: 40px;
+  background: #4F46E5;
+  border-radius: 0.625rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  flex-shrink: 0;
+}
+
+.activityContent {
+  flex: 1;
+}
+
+.activityTitle {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--gray-900);
+  margin: 0 0 0.25rem 0;
+}
+
+.activityTitle strong {
+  color: var(--secondary);
+}
+
+.activityMeta {
+  font-size: 0.75rem;
+  color: var(--gray-500);
+  margin: 0;
+}
+
+.activityStatus {
+  padding: 0.375rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+}
+
+.activityStatus.status-open {
+  background: rgba(245, 158, 11, 0.15);
+  color: #92400e;
+}
+
+.activityStatus.status-in-progress {
+  background: rgba(59, 130, 246, 0.15);
+  color: #1e40af;
+}
+
+.activityStatus.status-closed {
+  background: rgba(16, 185, 129, 0.15);
+  color: #065f46;
+}
+
+@media (max-width: 1024px) {
+  .reportsMain {
+    margin-left: 0;
+  }
+
+  .reportsContainer .metricsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .reportsContainer .chartsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .statusGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .reportsMain {
+    padding: 1rem;
+  }
+
+  .reportsContainer .heroContent {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .heroActions {
+    width: 100%;
+  }
+
+  .heroText {
+    flex: 1;
+  }
+
+  .exportButton {
+    flex: 1;
+  }
+
+  .reportsContainer .metricsGrid,
+  .statusGrid,
+  .priorityGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .filterControls {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .filterGroup {
+    width: 100%;
+  }
+
+  .filterSelect {
+    width: 100%;
+  }
+}
+
+.pieChartLayout {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  min-height: 220px;
+}
+
+.pieChartSvgWrapper {
+  position: relative;
+  width: 180px;
+  height: 180px;
+  flex-shrink: 0;
+}
+
+.reportsContainer .pieChartSvg {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.08));
+}
+
+.pieSlice {
+  transition: opacity 0.2s ease;
+  transform-origin: 50% 50%;
+  cursor: pointer;
+}
+
+.pieSlice:hover {
+  opacity: 0.85;
+}
+
+.pieChartCenter {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  pointer-events: none;
+}
+
+.pieChartCenterNumber {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--gray-900);
+  line-height: 1;
+}
+
+.pieChartCenterLabel {
+  display: block;
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--gray-500);
+  margin-top: 0.2rem;
+}
+
+.reportsContainer .pieLegend {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  flex: 1;
+}
+
+.pieLegendItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.813rem;
+}
+
+.pieLegendDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+.pieLegendLabel {
+  font-weight: 600;
+  color: var(--gray-700);
+  flex: 1;
+}
+
+.pieLegendValue {
+  font-weight: 500;
+  color: var(--gray-500);
+  font-size: 0.75rem;
+}
+
+.donutChartLayout {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  min-height: 220px;
+}
+
+.donutChartSvgWrapper {
+  position: relative;
+  width: 180px;
+  height: 180px;
+  flex-shrink: 0;
+}
+
+.donutChartSvg {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.08));
+}
+
+.donutSegment {
+  transition: opacity 0.2s ease;
+  cursor: pointer;
+}
+
+.donutSegment:hover {
+  opacity: 0.8;
+}
+
+.donutChartCenter {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  pointer-events: none;
+}
+
+.donutChartCenterNumber {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--gray-900);
+  line-height: 1;
+}
+
+.donutChartCenterLabel {
+  display: block;
+  font-size: 0.6rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--gray-500);
+  margin-top: 0.2rem;
+}
+
+.donutLegend {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  flex: 1;
+}
+
+.donutLegendItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.813rem;
+}
+
+.donutLegendDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+.donutLegendLabel {
+  font-weight: 600;
+  color: var(--gray-700);
+  flex: 1;
+}
+
+.donutLegendValue {
+  font-weight: 500;
+  color: var(--gray-500);
+  font-size: 0.75rem;
+}
+
+.chartTooltip {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--gray-800);
+  color: white;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  text-align: center;
+  pointer-events: none;
+  z-index: 10;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  white-space: nowrap;
+}
+
+.chartTooltipTitle {
+  display: block;
+  font-weight: 700;
+  font-size: 0.813rem;
+  margin-bottom: 0.15rem;
+}
+
+.chartTooltipValue {
+  display: block;
+  font-size: 0.75rem;
+  color: #a3a3a3;
+}
+
+.reportsContainer .lineChartWrapper {
+  width: 100%;
+}
+
+.reportsContainer .lineChartSvg {
+  width: 100%;
+  height: auto;
+  max-height: 240px;
+}
+
+.lineDataPoint {
+  transition: all 0.2s ease;
+}
+
+.lineDataPoint:hover {
+  r: 7;
+  stroke-width: 3;
+}
+
+.reportsContainer .trendSummary {
+  text-align: center;
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--gray-100);
+}
+
+.reportsContainer .trendSummary p {
+  font-size: 0.75rem;
+  color: var(--gray-500);
+  margin: 0;
+  font-weight: 500;
+}
+
+@media (max-width: 1024px) {
+
+  .pieChartLayout,
+  .donutChartLayout {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .reportsContainer .pieLegend,
+  .donutLegend {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+  }
+}
+
+@media (max-width: 768px) {
+
+  .pieChartSvgWrapper,
+  .donutChartSvgWrapper {
+    width: 150px;
+    height: 150px;
+  }
+}

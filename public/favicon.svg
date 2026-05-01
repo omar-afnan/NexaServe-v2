@@ -1,0 +1,30 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="64"
+  height="64"
+  viewBox="0 0 64 64"
+>
+  <!-- Background rounded square -->
+  <rect
+    x="4"
+    y="4"
+    width="56"
+    height="56"
+    rx="14"
+    fill="#050816"
+  />
+
+  <!-- Stylized N for NexaServe -->
+  <path
+    d="M20 44V20h4.5l15 17.5V20H44v24h-4.5l-15-17.5V44H20z"
+    fill="#FFFFFF"
+  />
+
+  <!-- Accent dot suggesting AI/notification -->
+  <circle
+    cx="44"
+    cy="18"
+    r="3"
+    fill="#38BDF8"
+  />
+</svg>

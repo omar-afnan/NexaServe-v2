@@ -1,0 +1,541 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap");
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "DM Sans", sans-serif;
+  background: #F3F4F6;
+  color: #334155;
+  line-height: 1.5;
+}
+
+.ticketPageLayout {
+  display: flex;
+  min-height: 100vh;
+  background: #F3F4F6;
+}
+
+.ticketPageMain {
+  flex: 1;
+  margin-left: 260px;
+  min-height: 100vh;
+  background: #F3F4F6;
+}
+
+
+.ticketPortalWrapper {
+  padding: 32px;
+  max-width: 1400px;
+  margin: 0 auto;
+  background: #F3F4F6;
+  min-height: 100vh;
+}
+
+
+.portalHeader {
+  background: #1e293b;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  margin-bottom: 24px;
+}
+
+.headerContent {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 24px 32px;
+}
+
+.headerInfo h1 {
+  color: white;
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0 0 4px 0;
+}
+
+.headerInfo p {
+  color: white;
+  margin: 0;
+  font-size: 14px;
+}
+
+.newTicketBtn {
+  display: inline-flex;
+  align-items: center;
+  background: #3b82f6;
+  color: white;
+  text-decoration: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.newTicketBtn:hover {
+  background: #2563eb;
+}
+
+.newTicketBtn img {
+  margin-right: 8px;
+}
+
+
+.filtersSection {
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  padding: 24px 32px;
+  margin-bottom: 24px;
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.searchContainer {
+  position: relative;
+  flex: 1;
+  min-width: 300px;
+}
+
+.searchContainer img {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: "DM Sans", sans-serif;
+  background: #f8fafc;
+  transition: all 0.2s ease;
+}
+
+.searchInput:focus {
+  outline: none;
+  border-color: #4F46E5;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+.filterControls {
+  display: flex;
+  gap: 16px;
+}
+
+.filterSelect {
+  padding: 12px 16px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: "DM Sans", sans-serif;
+  background: #ffffff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.filterSelect:focus {
+  outline: none;
+  border-color: #4F46E5;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+
+.resultsSummary {
+  margin-bottom: 24px;
+}
+
+.resultsSummary p {
+  color: #64748b;
+  font-size: 14px;
+  margin: 0;
+  font-weight: 500;
+}
+
+
+.loadingContainer,
+.errorContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px;
+  text-align: center;
+}
+
+.loadingContainer img,
+.errorContainer img {
+  margin-bottom: 16px;
+}
+
+.loadingContainer p,
+.errorContainer p {
+  color: #64748b;
+  font-size: 16px;
+  margin: 0;
+}
+
+
+
+
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px;
+  text-align: center;
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+}
+
+.emptyState img {
+  margin-bottom: 24px;
+  opacity: 0.6;
+}
+
+.emptyState h3 {
+  color: #1e293b;
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+}
+
+.emptyState p {
+  color: #64748b;
+  margin: 0;
+  font-size: 14px;
+}
+
+
+
+.ticketsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  gap: 24px;
+}
+
+
+.supportTicketCard {
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+  overflow: hidden;
+}
+
+.supportTicketCard:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 24px 24px 16px 24px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.ticketInfo h3 {
+  color: #64748b;
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0 0 4px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.ticketInfo h4 {
+  color: #1e293b;
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.cardActions {
+  display: flex;
+  gap: 8px;
+}
+
+.DeleteButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  min-height: 36px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 0;
+  flex-shrink: 0;
+  overflow: visible;
+}
+
+.DeleteButton {
+  background: #ef4444;
+}
+
+.DeleteButton:hover {
+  background: #dc2626;
+}
+
+.DeleteButton svg {
+  color: #ffffff;
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+
+
+.ticketDescription {
+  padding: 0 24px 16px 24px;
+  color: #64748b;
+  line-height: 1.6;
+  font-size: 14px;
+  margin: 0;
+}
+
+
+.ticketMetadata {
+  padding: 16px 24px;
+  background: #f8fafc;
+}
+
+.metaRow {
+  display: flex;
+  gap: 32px;
+  margin-bottom: 16px;
+}
+
+.metaGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.metaLabel {
+  font-size: 12px;
+  color: #64748b;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.metaValue {
+  font-size: 14px;
+  color: #1e293b;
+  font-weight: 500;
+}
+
+
+.badgeRow {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+
+.statusBadge {
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.status-open {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.status-in-progress {
+  background: #e0e7ff;
+  color: #3730a3;
+}
+
+.status-closed {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+
+.priorityBadge {
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.priority-critical {
+  background: #EDE9FE;
+  color: #5b21b6;
+}
+
+.priority-high {
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+.priority-medium {
+  background: #fef3c7;
+  color: #d97706;
+}
+
+.priority-low {
+  background: #f0fdf4;
+  color: #166534;
+}
+
+
+.cardFooter {
+  padding: 16px 24px;
+  border-top: 1px solid #f1f5f9;
+  background: #ffffff;
+}
+
+.createdBy {
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.createdBy img {
+  margin-right: 6px;
+}
+
+
+@media (max-width: 1024px) {
+  .ticketPortalWrapper {
+    padding: 24px;
+  }
+
+  .headerContent {
+    padding: 20px 24px;
+  }
+
+  .filtersSection {
+    padding: 20px 24px;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .searchContainer {
+    min-width: auto;
+  }
+
+  .filterControls {
+    justify-content: flex-start;
+  }
+
+  .ticketsGrid {
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .ticketPageMain {
+    margin-left: 0;
+  }
+
+  .ticketPortalWrapper {
+    padding: 16px;
+  }
+
+  .headerContent {
+    flex-direction: column;
+    gap: 16px;
+    align-items: stretch;
+    padding: 16px 20px;
+  }
+
+  .headerInfo {
+    text-align: center;
+  }
+
+  .headerInfo h1 {
+    font-size: 24px;
+  }
+
+  .newTicketBtn {
+    justify-content: center;
+  }
+
+  .filtersSection {
+    padding: 16px 20px;
+  }
+
+  .filterControls {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .filterSelect {
+    width: 100%;
+  }
+
+  .ticketsGrid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .cardHeader {
+    padding: 20px 20px 12px 20px;
+  }
+
+  .ticketInfo h4 {
+    font-size: 16px;
+  }
+
+  .ticketDescription {
+    padding: 0 20px 12px 20px;
+  }
+
+  .ticketMetadata {
+    padding: 12px 20px;
+  }
+
+  .metaRow {
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 12px;
+  }
+
+  .cardFooter {
+    padding: 12px 20px;
+  }
+
+  .emptyState {
+    padding: 60px 20px;
+  }
+
+  .emptyState h3 {
+    font-size: 18px;
+  }
+}

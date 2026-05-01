@@ -1,0 +1,358 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap");
+
+.sideBar {
+  width: 260px;
+  height: 100vh;
+  background: #1e293b;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: fixed;
+  left: 0;
+  top: 0;
+  box-shadow: 4px 0 30px rgba(0, 0, 0, 0.4);
+  z-index: 1000;
+  overflow-y: auto;
+  overflow-x: visible;
+  border-right: 1px solid rgba(59, 130, 246, 0.1);
+}
+
+
+.sideBar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sideBar::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.5);
+}
+
+.sideBar::-webkit-scrollbar-thumb {
+  background: rgba(59, 130, 246, 0.3);
+  border-radius: 10px;
+}
+
+.sideBar::-webkit-scrollbar-thumb:hover {
+  background: rgba(59, 130, 246, 0.5);
+}
+
+.sideTop {
+  padding: 32px 0 24px 0;
+  flex: 1;
+  position: relative;
+}
+
+.sideBar h3 {
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 800;
+  text-align: center;
+  padding: 18px 20px;
+  margin: 0 16px 28px;
+  background: #3b82f6;
+  border-radius: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  position: relative;
+  overflow: hidden;
+}
+
+
+
+.notificationHeaderActions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.deleteAllBtn {
+  background: none;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  padding: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.deleteAllBtn:hover {
+  background: rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+}
+
+.notificationItem {
+  padding: 12px 16px;
+  border-bottom: 1px solid rgba(59, 130, 246, 0.05);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.notificationItem:hover {
+  background: rgba(59, 130, 246, 0.1);
+}
+
+.notificationItem.unread {
+  background: rgba(59, 130, 246, 0.08);
+  border-left: 3px solid #3b82f6;
+}
+
+.notificationItem.read {
+  opacity: 0.7;
+}
+
+.notificationItem.deleting {
+  opacity: 0;
+  transform: translateX(-100%);
+  transition: all 0.3s ease;
+}
+
+.notificationContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.notificationDeleteBtn {
+  background: none;
+  border: none;
+  color: #64748b;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  opacity: 0;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.notificationItem:hover .notificationDeleteBtn {
+  opacity: 1;
+}
+
+.notificationDeleteBtn:hover {
+  background: rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+}
+
+.notificationDropdown {
+  position: fixed;
+  top: 80px;
+  right: 20px;
+  width: 350px;
+  max-height: 500px;
+  background: #1e293b;
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  z-index: 2000;
+  overflow: hidden;
+
+}
+
+
+.notificationHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 16px;
+  border-bottom: 1px solid rgba(59, 130, 246, 0.1);
+  background: rgba(59, 130, 246, 0.05);
+}
+
+.notificationHeader h4 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.closeNotifications {
+  background: none;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.closeNotifications:hover {
+  background: rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+}
+
+.markAllRead {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  padding: 10px 16px;
+  background: rgba(34, 197, 94, 0.1);
+  border: none;
+  color: #22c55e;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.markAllRead:hover {
+  background: rgba(34, 197, 94, 0.2);
+}
+
+.notificationList {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.notificationList::-webkit-scrollbar {
+  width: 4px;
+}
+
+.notificationList::-webkit-scrollbar-thumb {
+  background: rgba(59, 130, 246, 0.3);
+  border-radius: 4px;
+}
+
+.noNotifications {
+  padding: 30px 16px;
+  text-align: center;
+  color: #64748b;
+  font-size: 13px;
+}
+
+.notificationMessage {
+  margin: 0 0 6px 0;
+  font-size: 13px;
+  color: #e2e8f0;
+  line-height: 1.4;
+}
+
+.notificationTime {
+  font-size: 11px;
+  color: #64748b;
+}
+
+
+
+.sideBar ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.sideBar li {
+  margin: 6px 0;
+}
+
+.sideBar a,
+.sideBar .logoutButton {
+  display: flex;
+  align-items: center;
+  padding: 14px 20px;
+  color: #cbd5e1;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 15px;
+  border-radius: 12px;
+  margin: 0 12px;
+  position: relative;
+  overflow: hidden;
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: calc(100% - 24px);
+  text-align: left;
+  font-family: "DM Sans", sans-serif;
+}
+
+
+
+.sideBar a:hover,
+.sideBar a.active {
+  background: rgba(59, 130, 246, 0.15);
+  color: #ffffff;
+}
+
+.sideBar a svg {
+  margin-right: 14px;
+  font-size: 20px;
+  color: #94a3b8;
+  flex-shrink: 0;
+}
+
+
+.sideBottom {
+  padding: 20px 0;
+  border-top: 1px solid rgba(51, 65, 85, 0.5);
+  margin-top: auto;
+  background: transparent;
+  position: relative;
+}
+
+
+.logoutButton {
+  color: #fca5a5;
+  font-weight: 600;
+}
+
+
+
+.logoutButton:hover {
+  color: #ffffff;
+  background: rgba(239, 68, 68, 0.15);
+}
+
+.logoutButton svg {
+  margin-right: 14px;
+  flex-shrink: 0;
+}
+
+
+
+@media (max-width: 768px) {
+  .sideBar {
+    position: fixed;
+    left: -100%;
+    transition: left 0.3s ease;
+  }
+
+  .sideBar.open {
+    left: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .sideBar {
+    width: 220px;
+  }
+
+  .sideBar h3 {
+    font-size: 16px;
+    padding: 16px 18px;
+    margin: 0 12px 20px;
+  }
+
+  .sideBar a,
+  .logoutButton {
+    font-size: 14px;
+    padding: 12px 16px;
+  }
+
+  .sideBar a svg,
+  .logoutButton svg {
+    font-size: 18px;
+    margin-right: 12px;
+  }
+}

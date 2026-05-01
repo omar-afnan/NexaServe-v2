@@ -1,0 +1,509 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap");
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "DM Sans", sans-serif;
+  background: #f8fafc;
+  color: #334155;
+  line-height: 1.5;
+}
+
+.ticketPageLayout {
+  display: flex;
+  min-height: 100vh;
+  background: #f8fafc;
+}
+
+.ticketPageMain {
+  flex: 1;
+  margin-left: 280px;
+  padding: 32px;
+  background: #f8fafc;
+  min-height: 100vh;
+}
+
+.ticketPortalWrapper {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.portalHeader {
+  background: #1e293b;
+  border-radius: 16px;
+  margin-bottom: 32px;
+  overflow: hidden;
+  position: relative;
+}
+
+/* ensure header title and subtitle stack vertically */
+.headerContent {
+  background: #1e293b;
+  padding: 32px 40px;
+  position: relative;
+  z-index: 1;
+}
+
+.headerTop {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.headerIcon {
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  padding: 10px;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+
+.headerInfo {
+  display: block;
+}
+
+.headerInfo h1 {
+  color: #ffffff;
+  font-size: 32px;
+  font-weight: 700;
+  margin: 0 0 6px 0;
+}
+
+
+
+
+.filtersSection {
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  padding: 24px 32px;
+  margin-bottom: 24px;
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.searchContainer {
+  position: relative;
+  flex: 1;
+  min-width: 300px;
+}
+
+.searchContainer img {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  pointer-events: none;
+}
+
+.searchInput {
+  width: 100%;
+  color: #1e293b;
+  padding: 14px 16px 14px 48px;
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: 14px;
+  font-family: "DM Sans", sans-serif;
+  background: #f8fafc;
+  transition: all 0.3s ease;
+}
+
+.searchInput:focus {
+  outline: none;
+  border-color: #3b82f6;
+  background: #ffffff;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+}
+
+.searchInput::placeholder {
+  color: #94a3b8;
+}
+
+.filterControls {
+  display: flex;
+  gap: 16px;
+}
+
+.filterSelect {
+  padding: 14px 20px;
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: "DM Sans", sans-serif;
+  background: #ffffff;
+  color: #1e293b;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 140px;
+}
+
+.filterSelect:hover {
+  border-color: #cbd5e1;
+}
+
+.filterSelect:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+}
+
+.resultsSummary {
+  margin-bottom: 24px;
+  padding: 0 4px;
+}
+
+.resultsSummary p {
+  color: #64748b;
+  font-size: 14px;
+  margin: 0;
+  font-weight: 600;
+}
+
+.loadingContainer,
+.errorContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 100px 20px;
+  text-align: center;
+}
+
+.loadingContainer img,
+.errorContainer img {
+  margin-bottom: 20px;
+}
+
+.loadingContainer p,
+.errorContainer p {
+  color: #64748b;
+  font-size: 16px;
+  margin: 0;
+  font-weight: 500;
+}
+
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px;
+  text-align: center;
+  background: #ffffff;
+  border-radius: 16px;
+  border: 2px dashed #cbd5e1;
+}
+
+.emptyState img {
+  margin-bottom: 24px;
+  opacity: 0.5;
+}
+
+.emptyState h3 {
+  color: #1e293b;
+  font-size: 22px;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+}
+
+.emptyState p {
+  color: #64748b;
+  margin: 0;
+  font-size: 15px;
+}
+
+.ticketsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  gap: 24px;
+}
+
+.supportTicketCard {
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+  position: relative;
+}
+
+.supportTicketCard:hover {
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+  border-color: #cbd5e1;
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 24px 24px 16px 24px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.ticketInfo h3 {
+  color: #3b82f6;
+  font-size: 13px;
+  font-weight: 700;
+  margin: 0 0 6px 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.ticketInfo h4 {
+  color: #1e293b;
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.DeleteButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: #ef4444;
+}
+
+.DeleteButton:hover {
+  background: #dc2626;
+}
+
+.DeleteButton:active {
+  background: #b91c1c;
+}
+
+.DeleteButton svg {
+  color: #ffffff;
+  width: 22px;
+  height: 22px;
+  display: block;
+  position: relative;
+  z-index: 1;
+}
+
+.ticketDescription {
+  padding: 0 24px 20px 24px;
+  color: #64748b;
+  line-height: 1.7;
+  font-size: 14px;
+  margin: 0;
+}
+
+.ticketMetadata {
+  padding: 20px 24px;
+  background: #f8fafc;
+  border-top: 1px solid #f1f5f9;
+}
+
+.metaRow {
+  display: flex;
+  gap: 32px;
+  margin-bottom: 16px;
+}
+
+.metaGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.metaLabel {
+  font-size: 11px;
+  color: #64748b;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.metaValue {
+  font-size: 14px;
+  color: #1e293b;
+  font-weight: 600;
+}
+
+.badgeRow {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.statusBadge {
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.status-open {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.status-in-progress {
+  background: #e0e7ff;
+  color: #3730a3;
+}
+
+.status-closed {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.priorityBadge {
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.priority-high {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.priority-medium {
+  background: #fef3c7;
+  color: #d97706;
+}
+
+.priority-low {
+  background: #d1fae5;
+  color: #166534;
+}
+
+.cardFooter {
+  padding: 16px 24px;
+  border-top: 1px solid #f1f5f9;
+  background: #ffffff;
+}
+
+.createdBy {
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.createdBy img {
+  margin-right: 8px;
+}
+
+@media (max-width: 1200px) {
+  .ticketPageMain {
+    margin-left: 260px;
+  }
+
+  .ticketsGrid {
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
+  .ticketPageMain {
+    margin-left: 0;
+    padding: 24px 16px;
+  }
+
+  .headerContent {
+    padding: 24px 28px;
+  }
+
+  .headerInfo h1 {
+    font-size: 28px;
+  }
+
+  .filtersSection {
+    padding: 20px 24px;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .searchContainer {
+    min-width: auto;
+  }
+
+  .filterControls {
+    flex-direction: column;
+  }
+
+  .filterSelect {
+    width: 100%;
+  }
+
+  .ticketsGrid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .ticketPageMain {
+    padding: 16px;
+  }
+
+  .headerContent {
+    padding: 20px 24px;
+  }
+
+  .headerInfo h1 {
+    font-size: 24px;
+  }
+
+  .headerInfo p {
+    font-size: 14px;
+  }
+
+  .filtersSection {
+    padding: 16px 20px;
+  }
+
+  .cardHeader {
+    padding: 20px 20px 12px 20px;
+  }
+
+  .ticketInfo h4 {
+    font-size: 16px;
+  }
+
+  .DeleteButton {
+    width: 36px;
+    height: 36px;
+  }
+
+  .DeleteButton svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .metaRow {
+    flex-direction: column;
+    gap: 16px;
+  }
+}
