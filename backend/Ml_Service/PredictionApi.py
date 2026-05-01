@@ -9,6 +9,47 @@ import numpy as np
 from scipy.sparse import hstack, csr_matrix
 from datetime import datetime, timedelta
 
+try:
+    from langdetect import detect as langdetect_detect
+    LANGDETECT_AVAILABLE = True
+except ImportError:
+    LANGDETECT_AVAILABLE = False
+
+try:
+    from deep_translator import GoogleTranslator
+    DEEP_TRANSLATOR_AVAILABLE = True
+except ImportError:
+    DEEP_TRANSLATOR_AVAILABLE = False
+
+
+def detect_and_translate(text):
+    """
+    Returns (detected_language, translated_text).
+    Falls back to ('en', original text) on any failure.
+    """
+    detected_lang = 'en'
+    translated = text
+
+    if not LANGDETECT_AVAILABLE or not DEEP_TRANSLATOR_AVAILABLE:
+        return detected_lang, translated
+
+    try:
+        detected_lang = langdetect_detect(text)
+    except Exception:
+        return 'en', text
+
+    if detected_lang == 'en':
+        return detected_lang, text
+
+    try:
+        translated = GoogleTranslator(source=detected_lang, target='en').translate(text)
+        if not translated:
+            translated = text
+    except Exception:
+        translated = text
+
+    return detected_lang, translated
+
 app = Flask(__name__)
 CORS(app)  # allow frontend requests
 
@@ -118,9 +159,12 @@ def predict():
         
         if not text:
             return jsonify({'error': 'No text provided'}), 400
-        
+
+        detected_language, translated_text = detect_and_translate(text)
+        ml_text = translated_text
+
         # Category
-        cat_vec = category_vectorizer.transform([text])
+        cat_vec = category_vectorizer.transform([ml_text])
         cat_pred = category_model.predict(cat_vec)[0]
         if hasattr(category_model, "predict_proba"):
             cat_proba = category_model.predict_proba(cat_vec)[0]
@@ -134,8 +178,8 @@ def predict():
             cat_proba = np.ones(len(category_model.classes_)) / len(category_model.classes_)
 
         # Priority
-        X_tfidf = priority_vectorizer.transform([text])
-        X_extra = csr_matrix(priority_features([text]))
+        X_tfidf = priority_vectorizer.transform([ml_text])
+        X_extra = csr_matrix(priority_features([ml_text]))
         pri_vec = hstack([X_tfidf, X_extra])
         pri_pred = priority_model.predict(pri_vec)[0]
         if hasattr(priority_model, "predict_proba"):
@@ -159,7 +203,9 @@ def predict():
             'category_probabilities': category_probabilities,
             'priority': pri_pred,
             'priority_confidence': round(float(max(pri_proba)), 4),
-            'priority_probabilities': priority_probabilities
+            'priority_probabilities': priority_probabilities,
+            'detected_language': detected_language,
+            'translated_text': translated_text if detected_language != 'en' else None
         })
     except Exception as e:
         return jsonify({'error': str(e)}), 500
@@ -207,7 +253,7 @@ def get_stats():
                 date_str = ticket[6]
                 if date_str:
                     date_str = date_str.strip().replace('Z', '').replace('+00:00', '')
-                    # SQLite stores as "YYYY-MM-DD HH:MM:SS", normalise T-variant too
+                    # SQLite stores as "YYYY-MM-DD HH:MM:SS", normalize T-variant too
                     date_str = date_str.replace('T', ' ')
                     if '.' in date_str:
                         created = datetime.strptime(date_str, '%Y-%m-%d %H:%M:%S.%f')
