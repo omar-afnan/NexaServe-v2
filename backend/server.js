@@ -17,6 +17,8 @@ import {
 
 import db from "./database.js";
 
+import { autoAssignTicket } from "./autoAssign.js";
+
 import AuthController from "./AuthController.js";
 
 import {
@@ -39,8 +41,60 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
 
-// In-memory per-user conversation context storage 
+// In-memory per-user conversation context storage
 const userConversations = new Map();
+
+// Ollama fallback state per user: { active: bool, attempts: number }
+const ollamaState = new Map();
+
+const OLLAMA_DISSATISFIED_PHRASES = [
+  "that didn't help", "that did not help", "didn't work", "did not work",
+  "still not working", "still broken", "not helpful", "doesn't work",
+  "doesnt work", "not working still", "same problem", "same issue",
+  "still have the problem", "still having the issue", "no luck",
+  "that didn't fix", "that did not fix", "still stuck", "nothing changed"
+];
+
+async function callOllama(prompt) {
+  try {
+    const response = await fetch('http://localhost:11434/api/generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ model: 'llama3.2', prompt, stream: false }),
+    });
+    if (!response.ok) return null;
+    const data = await response.json();
+    return (data.response || '').trim() || null;
+  } catch (_) {
+    return null;
+  }
+}
+
+async function validateWithOllama(chatterBotReply, userMessage) {
+  const prompt = `You are evaluating an IT support chatbot response.
+
+User message: "${userMessage}"
+Chatbot response: "${chatterBotReply}"
+
+Is this response a genuinely helpful IT support answer that directly addresses the user's issue? Reply with only YES or NO.`;
+
+  const result = await callOllama(prompt);
+  if (!result) return true; // if Ollama is down, pass through
+  return result.toUpperCase().startsWith('YES');
+}
+
+async function generateOllamaResponse(userMessage, conversationHistory) {
+  const historyText = conversationHistory.length > 1
+    ? `Previous messages: ${conversationHistory.slice(0, -1).join(' | ')}\n`
+    : '';
+  const prompt = `You are an expert IT support specialist. Give a clear, step-by-step troubleshooting response for this IT issue. Be concise and practical. Do not use emojis.
+
+${historyText}User issue: "${userMessage}"
+
+Provide specific troubleshooting steps:`;
+
+  return await callOllama(prompt);
+}
 
 // Audit Log Helper Function
 function logAudit(db, { userId, userName, userRole, action, ticketId = null, details = null, ipAddress = null, userAgent = null }) {
@@ -207,7 +261,12 @@ app.post("/chatbot", authenticateJWT, async (req, res) => {
     const userId = req.user.user_id;
 
     console.log("User message:", message);
-   
+
+    if (!ollamaState.has(userId)) {
+      ollamaState.set(userId, { active: false, attempts: 0 });
+    }
+    const ollama = ollamaState.get(userId);
+
     // cap at 10 to avoid memory overflow
     if (!userConversations.has(userId)) {
       userConversations.set(userId, []);
@@ -222,6 +281,72 @@ app.post("/chatbot", authenticateJWT, async (req, res) => {
     // use full context not just latest message
     const conversationContext = conversation.join(' ');
     const detectionText = (conversationContext || message).trim();
+
+    // If Ollama is already the active responder for this session, handle directly
+    if (ollama.active && !message.toLowerCase().includes('create ticket')) {
+      const isDissatisfied = OLLAMA_DISSATISFIED_PHRASES.some(p => message.toLowerCase().includes(p));
+
+      if (isDissatisfied || ollama.attempts > 0) {
+        ollama.attempts += 1;
+        console.log(`[Ollama] Attempt ${ollama.attempts} for user ${userId}`);
+
+        if (ollama.attempts >= 2) {
+          // Auto-create ticket after 2 failed Ollama attempts
+          console.log("[Ollama] 2 attempts exhausted - auto-creating ticket");
+          const fallbackCategory = detectCategoryFallback(detectionText);
+          const fallbackPriority = detectPriorityFallback(detectionText);
+          const prevMessages = conversation.slice(0, -1);
+          let titleSource = prevMessages.find(m => !['create ticket','open ticket','make ticket'].some(p => m.toLowerCase().includes(p))) || message;
+          const title = titleSource.substring(0, 50) + (titleSource.length > 50 ? '...' : '');
+          const description = `User reported: "${titleSource}". Ollama fallback exhausted after 2 attempts.`;
+          const mlData = await fetchMlPrediction(title, description);
+          const finalCategory = (mlData && mlData.category) ? mlData.category : fallbackCategory;
+          const finalPriority = (mlData && mlData.priority) ? mlData.priority : fallbackPriority;
+          const category_confidence = mlData ? (mlData.category_confidence ?? null) : null;
+          const priority_confidence = mlData ? (mlData.priority_confidence ?? null) : null;
+          const solution = FALLBACK_RESPONSES[finalCategory] || FALLBACK_RESPONSES['Other'];
+          const ticket_id = generateTicketId();
+          ollamaState.set(userId, { active: false, attempts: 0 });
+          userConversations.set(userId, []);
+
+          return new Promise((resolve) => {
+            db.run(
+              `INSERT INTO tickets (ticket_id, title, description, category, priority, status, created_by, solution, category_confidence, priority_confidence) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+              [ticket_id, title, description, finalCategory, finalPriority, 'Open', userId, solution, category_confidence, priority_confidence],
+              function (err) {
+                if (err) return resolve(res.status(500).json({ error: err.message }));
+                autoAssignTicket(ticket_id);
+                if (finalPriority === 'High' || finalPriority === 'Critical') {
+                  setTimeout(() => {
+                    db.all("SELECT userId FROM users WHERE role = 'support' OR role = 'admin'", [], (notifErr, staffMembers) => {
+                      if (!notifErr && staffMembers) {
+                        staffMembers.forEach(staff => {
+                          db.run("INSERT INTO notifications (user_id, ticket_id, message, type, is_read, created_at) VALUES (?, ?, ?, ?, 0, CURRENT_TIMESTAMP)",
+                            [staff.userId, ticket_id, `New ${finalPriority} Priority Ticket: "${title}" has been created`, 'priority_alert']);
+                        });
+                      }
+                    });
+                  }, 100);
+                }
+                resolve(res.json({
+                  ticketCreated: true, ticketId: ticket_id, priority: finalPriority, category: finalCategory,
+                  category_confidence, priority_confidence, solution,
+                  reply: "I wasn't able to resolve your issue after multiple attempts. I've automatically created a support ticket and a technician will follow up with you shortly."
+                }));
+              }
+            );
+          });
+        }
+
+        // Still within attempts  let Ollama try again
+        const ollamaReply = await generateOllamaResponse(message, conversation);
+        if (ollamaReply) {
+          return res.json({ reply: ollamaReply, ticketCreated: false, source: 'ollama' });
+        }
+      }
+
+      // User seems satisfied or Ollama is unavailable fall through to ChatterBot
+    }
 
     // Check for "create ticket" FIRST before anything else runs
     if (message.toLowerCase().includes('create ticket')) {
@@ -271,6 +396,7 @@ app.post("/chatbot", authenticateJWT, async (req, res) => {
       const solution = FALLBACK_RESPONSES[resolvedCategory] || FALLBACK_RESPONSES["Other"];
 
       userConversations.set(userId, []);
+      ollamaState.set(userId, { active: false, attempts: 0 });
       console.log("Conversation context cleared for user", userId);
       console.log("Create ticket - Category:", resolvedCategory, "Priority:", normalizedPriority);
 
@@ -288,6 +414,7 @@ app.post("/chatbot", authenticateJWT, async (req, res) => {
           return res.status(500).json({ error: err.message });
         }
         console.log("Ticket created:", ticket_id, "Category:", finalCategory, "Priority:", finalPriority);
+        autoAssignTicket(ticket_id);
         if (finalPriority === "High" || finalPriority === "Critical") {
           setTimeout(() => {
             db.all("SELECT userId FROM users WHERE role = 'support' OR role = 'admin'", [], (notifErr, staffMembers) => {
@@ -497,6 +624,7 @@ app.post("/chatbot", authenticateJWT, async (req, res) => {
         }
 
         console.log("Ticket created:", ticket_id, "Category:", finalCategory2, "Priority:", finalPriority2);
+        autoAssignTicket(ticket_id);
 
         // timeout to avoid db lock
         if (finalPriority2 === "High" || finalPriority2 === "Critical") {
@@ -532,6 +660,44 @@ app.post("/chatbot", authenticateJWT, async (req, res) => {
 
       });
     } else {
+      // Check if user is expressing dissatisfaction with a prior ChatterBot response
+      const isDissatisfied = OLLAMA_DISSATISFIED_PHRASES.some(p => message.toLowerCase().includes(p));
+
+      if (isDissatisfied) {
+        console.log(`[Ollama] User dissatisfied — activating Ollama fallback for user ${userId}`);
+        ollama.active = true;
+        ollama.attempts = 1;
+        const ollamaReply = await generateOllamaResponse(message, conversation);
+        if (ollamaReply) {
+          return res.json({
+            reply: ollamaReply,
+            ticketCreated: false,
+            category: data.category,
+            priority: normalizedPriority,
+            source: 'ollama'
+          });
+        }
+        // Ollama unavailable — fall through to ChatterBot reply below
+        ollama.active = false;
+        ollama.attempts = 0;
+      } else {
+        // Validate ChatterBot's response with Ollama before sending
+        const isGoodResponse = await validateWithOllama(data.reply, message);
+        if (!isGoodResponse) {
+          console.log("[Ollama] ChatterBot response deemed unhelpful — replacing with Ollama response");
+          const ollamaReply = await generateOllamaResponse(message, conversation);
+          if (ollamaReply) {
+            return res.json({
+              reply: ollamaReply,
+              ticketCreated: false,
+              category: data.category,
+              priority: normalizedPriority,
+              source: 'ollama'
+            });
+          }
+        }
+      }
+
       res.json({
         reply: data.reply,
         ticketCreated: false,
@@ -546,7 +712,7 @@ app.post("/chatbot", authenticateJWT, async (req, res) => {
 
   } catch (error) {
     console.error('Chatbot error:', error);
-    res.status(500).json({ 
+    res.status(500).json({
       error: 'Chatbot service unavailable. Please ensure ChatterBot is running on port 5005.',
       reply: 'Sorry, I\'m having technical difficulties. Please try again later.'
     });
@@ -601,6 +767,8 @@ app.post("/tickets", authenticateJWT, (req, res) => {
           error: err.message
         });
     }
+
+    autoAssignTicket(ticket_id);
 
     // notify staff
     if (priorityValue === 'High' || priorityValue === 'Critical') {

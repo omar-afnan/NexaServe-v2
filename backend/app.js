@@ -15,6 +15,7 @@ import {
 import {
   customAlphabet
 } from "nanoid";
+import { autoAssignTicket } from "./autoAssign.js";
 
 const app = express();
 
@@ -79,6 +80,7 @@ app.post("/tickets", authenticateJWT, async (req, res) => {
     if (err) {
       return res.status(500).json({ error: err.message });
     }
+    autoAssignTicket(ticket_id);
     res.json({
       message: "Ticket created",
       ticket_id,
