@@ -124,8 +124,11 @@ function logLlamaCall(db, { userId, userMessage, chatterbotResponse, llamaRespon
 function markLlamaResolved(db, userId) {
   db.run(
     `UPDATE llama_logs SET was_resolved = 1
-     WHERE user_id = ? AND ticket_id IS NULL AND was_resolved = 0
-     ORDER BY created_at DESC LIMIT 1`,
+     WHERE id = (
+       SELECT id FROM llama_logs
+       WHERE user_id = ? AND ticket_id IS NULL AND was_resolved = 0
+       ORDER BY created_at DESC LIMIT 1
+     )`,
     [userId],
     function(err) {
       if (err) console.error("[llama_logs] Resolve update error:", err.message);
@@ -136,8 +139,11 @@ function markLlamaResolved(db, userId) {
 function markLlamaTicketCreated(db, userId, ticketId) {
   db.run(
     `UPDATE llama_logs SET ticket_id = ?, was_resolved = 0
-     WHERE user_id = ? AND ticket_id IS NULL AND was_resolved = 0
-     ORDER BY created_at DESC LIMIT 1`,
+     WHERE id = (
+       SELECT id FROM llama_logs
+       WHERE user_id = ? AND ticket_id IS NULL AND was_resolved = 0
+       ORDER BY created_at DESC LIMIT 1
+     )`,
     [ticketId, userId],
     function(err) {
       if (err) console.error("[llama_logs] Ticket link error:", err.message);
