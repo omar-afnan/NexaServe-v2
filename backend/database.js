@@ -212,6 +212,27 @@ database.run(`CREATE TABLE IF NOT EXISTS notifications(
   }
 });
 
+  // llama logs
+  database.run(`CREATE TABLE IF NOT EXISTS llama_logs(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    ticket_id TEXT DEFAULT NULL,
+    user_message TEXT NOT NULL,
+    chatterbot_response TEXT,
+    llama_response TEXT NOT NULL,
+    was_resolved INTEGER NOT NULL DEFAULT 0,
+    trigger_reason TEXT NOT NULL CHECK(trigger_reason IN ('validation_failed', 'user_dissatisfied')),
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(userId) ON DELETE CASCADE,
+    FOREIGN KEY (ticket_id) REFERENCES tickets(ticket_id) ON DELETE SET NULL
+  )`, function(error) {
+    if (error) {
+      console.log("Error creating llama_logs table:", error.message);
+    } else {
+      console.log("llama_logs table ready");
+    }
+  });
+
   // audit logs
   database.run(`CREATE TABLE IF NOT EXISTS auditLogs(
   logId INTEGER PRIMARY KEY AUTOINCREMENT,

@@ -110,6 +110,41 @@ function logAudit(db, { userId, userName, userRole, action, ticketId = null, det
 }
 
 
+function logLlamaCall(db, { userId, userMessage, chatterbotResponse, llamaResponse, triggerReason }) {
+  db.run(
+    `INSERT INTO llama_logs (user_id, ticket_id, user_message, chatterbot_response, llama_response, was_resolved, trigger_reason)
+     VALUES (?, NULL, ?, ?, ?, 0, ?)`,
+    [userId, userMessage, chatterbotResponse || null, llamaResponse, triggerReason],
+    function(err) {
+      if (err) console.error("[llama_logs] Insert error:", err.message);
+    }
+  );
+}
+
+function markLlamaResolved(db, userId) {
+  db.run(
+    `UPDATE llama_logs SET was_resolved = 1
+     WHERE user_id = ? AND ticket_id IS NULL AND was_resolved = 0
+     ORDER BY created_at DESC LIMIT 1`,
+    [userId],
+    function(err) {
+      if (err) console.error("[llama_logs] Resolve update error:", err.message);
+    }
+  );
+}
+
+function markLlamaTicketCreated(db, userId, ticketId) {
+  db.run(
+    `UPDATE llama_logs SET ticket_id = ?, was_resolved = 0
+     WHERE user_id = ? AND ticket_id IS NULL AND was_resolved = 0
+     ORDER BY created_at DESC LIMIT 1`,
+    [ticketId, userId],
+    function(err) {
+      if (err) console.error("[llama_logs] Ticket link error:", err.message);
+    }
+  );
+}
+
 // ticket id generator
 const generateTicketId = customAlphabet('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', 10);
 
@@ -315,6 +350,7 @@ app.post("/chatbot", authenticateJWT, async (req, res) => {
               [ticket_id, title, description, finalCategory, finalPriority, 'Open', userId, solution, category_confidence, priority_confidence],
               function (err) {
                 if (err) return resolve(res.status(500).json({ error: err.message }));
+                markLlamaTicketCreated(db, userId, ticket_id);
                 autoAssignTicket(ticket_id);
                 if (finalPriority === 'High' || finalPriority === 'Critical') {
                   setTimeout(() => {
@@ -341,6 +377,7 @@ app.post("/chatbot", authenticateJWT, async (req, res) => {
         // Still within attempts  let Ollama try again
         const ollamaReply = await generateOllamaResponse(message, conversation);
         if (ollamaReply) {
+          logLlamaCall(db, { userId, userMessage: message, chatterbotResponse: null, llamaResponse: ollamaReply, triggerReason: 'user_dissatisfied' });
           return res.json({ reply: ollamaReply, ticketCreated: false, source: 'ollama' });
         }
       }
@@ -414,6 +451,7 @@ app.post("/chatbot", authenticateJWT, async (req, res) => {
           return res.status(500).json({ error: err.message });
         }
         console.log("Ticket created:", ticket_id, "Category:", finalCategory, "Priority:", finalPriority);
+        markLlamaTicketCreated(db, userId, ticket_id);
         autoAssignTicket(ticket_id);
         if (finalPriority === "High" || finalPriority === "Critical") {
           setTimeout(() => {
@@ -624,6 +662,7 @@ app.post("/chatbot", authenticateJWT, async (req, res) => {
         }
 
         console.log("Ticket created:", ticket_id, "Category:", finalCategory2, "Priority:", finalPriority2);
+        markLlamaTicketCreated(db, userId, ticket_id);
         autoAssignTicket(ticket_id);
 
         // timeout to avoid db lock
@@ -669,6 +708,7 @@ app.post("/chatbot", authenticateJWT, async (req, res) => {
         ollama.attempts = 1;
         const ollamaReply = await generateOllamaResponse(message, conversation);
         if (ollamaReply) {
+          logLlamaCall(db, { userId, userMessage: message, chatterbotResponse: data.reply, llamaResponse: ollamaReply, triggerReason: 'user_dissatisfied' });
           return res.json({
             reply: ollamaReply,
             ticketCreated: false,
@@ -687,6 +727,7 @@ app.post("/chatbot", authenticateJWT, async (req, res) => {
           console.log("[Ollama] ChatterBot response deemed unhelpful — replacing with Ollama response");
           const ollamaReply = await generateOllamaResponse(message, conversation);
           if (ollamaReply) {
+            logLlamaCall(db, { userId, userMessage: message, chatterbotResponse: data.reply, llamaResponse: ollamaReply, triggerReason: 'validation_failed' });
             return res.json({
               reply: ollamaReply,
               ticketCreated: false,
@@ -698,6 +739,7 @@ app.post("/chatbot", authenticateJWT, async (req, res) => {
         }
       }
 
+      markLlamaResolved(db, userId);
       res.json({
         reply: data.reply,
         ticketCreated: false,
@@ -1418,6 +1460,13 @@ app.get("/users/all", authenticateJWT, authorizeRoles("admin"), (req, res) => {
         }
       );
     }
+    res.json(rows);
+  });
+});
+
+app.get("/llama-logs", authenticateJWT, authorizeRoles("admin"), (req, res) => {
+  db.all("SELECT * FROM llama_logs ORDER BY created_at DESC", [], (err, rows) => {
+    if (err) return res.status(500).json({ error: err.message });
     res.json(rows);
   });
 });
