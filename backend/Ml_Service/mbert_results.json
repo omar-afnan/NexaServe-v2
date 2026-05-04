@@ -1,0 +1,46 @@
+{
+  "model": "bert-base-multilingual-cased",
+  "task": "category_classification",
+  "dataset": "aa_dataset-tickets-multi-lang-5-2-50-version.csv",
+  "split": {
+    "test_size": 0.2,
+    "random_state": 42,
+    "stratified": true
+  },
+  "hyperparameters": {
+    "max_len": 128,
+    "batch_size": 16,
+    "epochs": 3,
+    "learning_rate": 2e-05,
+    "warmup_ratio": 0.1,
+    "optimizer": "AdamW",
+    "weight_decay": 0.01
+  },
+  "train_samples": 7780,
+  "test_samples": 1946,
+  "num_classes": 5,
+  "classes": [
+    "Email",
+    "Hardware",
+    "Network",
+    "Password",
+    "Software"
+  ],
+  "device": "cuda",
+  "accuracy": 0.9188,
+  "macro_f1": 0.9303,
+  "weighted_f1": 0.9189,
+  "per_class_f1": {
+    "Email": 0.963,
+    "Hardware": 0.8954,
+    "Network": 0.9186,
+    "Password": 0.9659,
+    "Software": 0.9085
+  },
+  "evaluated_at": "2026-05-04T12:16:03.237134",
+  "completed_at": "2026-05-04T12:20:59.830349",
+  "comparison_baseline": {
+    "tfidf_linearsvm_accuracy": 0.8885,
+    "tfidf_linearsvm_macro_f1": null
+  }
+}
