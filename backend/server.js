@@ -26,6 +26,8 @@ import {
   authorizeRoles
 } from "./auth.js";
 
+import Redis from "ioredis";
+
 const app = express();
 
 const corsOptions = {
@@ -34,18 +36,67 @@ const corsOptions = {
   credentials: true,
 
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  
+
   allowedHeaders: ['Content-Type', 'Authorization']
 };
 
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
 
-// In-memory per-user conversation context storage
-const userConversations = new Map();
+// Redis client with graceful in-memory fallback when Redis is unavailable
+let redisClient = null;
+const _convFallback = new Map();
+const _ollamaFallback = new Map();
 
-// Ollama fallback state per user: { active: bool, attempts: number }
-const ollamaState = new Map();
+try {
+  redisClient = new Redis(process.env.REDIS_URL || 'redis://localhost:6379', {
+    lazyConnect: true,
+    maxRetriesPerRequest: 1,
+    connectTimeout: 2000,
+    enableOfflineQueue: false,
+  });
+  await redisClient.connect().catch(() => { redisClient = null; });
+  if (redisClient) console.log('[Redis] Connected');
+} catch (_) {
+  redisClient = null;
+}
+if (!redisClient) console.warn('[Redis] Unavailable — falling back to in-memory Maps');
+
+// conv:{userId}   → JSON array,  TTL 1 hour
+// ollama:{userId} → JSON object, TTL 30 minutes
+const conv = {
+  async get(userId) {
+    if (redisClient) {
+      const raw = await redisClient.get(`conv:${userId}`).catch(() => null);
+      return raw ? JSON.parse(raw) : [];
+    }
+    return _convFallback.get(userId) ?? [];
+  },
+  async set(userId, arr) {
+    if (redisClient) {
+      await redisClient.set(`conv:${userId}`, JSON.stringify(arr), 'EX', 3600).catch(() => null);
+    } else {
+      _convFallback.set(userId, arr);
+    }
+  },
+};
+
+const ollama = {
+  async get(userId) {
+    if (redisClient) {
+      const raw = await redisClient.get(`ollama:${userId}`).catch(() => null);
+      return raw ? JSON.parse(raw) : { active: false, attempts: 0 };
+    }
+    return _ollamaFallback.get(userId) ?? { active: false, attempts: 0 };
+  },
+  async set(userId, obj) {
+    if (redisClient) {
+      await redisClient.set(`ollama:${userId}`, JSON.stringify(obj), 'EX', 1800).catch(() => null);
+    } else {
+      _ollamaFallback.set(userId, obj);
+    }
+  },
+};
 
 const OLLAMA_DISSATISFIED_PHRASES = [
   "that didn't help", "that did not help", "didn't work", "did not work",
@@ -303,35 +354,31 @@ app.post("/chatbot", authenticateJWT, async (req, res) => {
 
     console.log("User message:", message);
 
-    if (!ollamaState.has(userId)) {
-      ollamaState.set(userId, { active: false, attempts: 0 });
-    }
-    const ollama = ollamaState.get(userId);
+    const ollamaSession = await ollama.get(userId);
 
     // cap at 10 to avoid memory overflow
-    if (!userConversations.has(userId)) {
-      userConversations.set(userId, []);
-    }
-    const conversation = userConversations.get(userId);
+    const conversation = await conv.get(userId);
     // push the latest message
     conversation.push(message);
     if (conversation.length > 10) {
       conversation.shift();
     }
+    await conv.set(userId, conversation);
 
     // use full context not just latest message
     const conversationContext = conversation.join(' ');
     const detectionText = (conversationContext || message).trim();
 
     // If Ollama is already the active responder for this session, handle directly
-    if (ollama.active && !message.toLowerCase().includes('create ticket')) {
+    if (ollamaSession.active && !message.toLowerCase().includes('create ticket')) {
       const isDissatisfied = OLLAMA_DISSATISFIED_PHRASES.some(p => message.toLowerCase().includes(p));
 
-      if (isDissatisfied || ollama.attempts > 0) {
-        ollama.attempts += 1;
-        console.log(`[Ollama] Attempt ${ollama.attempts} for user ${userId}`);
+      if (isDissatisfied || ollamaSession.attempts > 0) {
+        ollamaSession.attempts += 1;
+        await ollama.set(userId, ollamaSession);
+        console.log(`[Ollama] Attempt ${ollamaSession.attempts} for user ${userId}`);
 
-        if (ollama.attempts >= 2) {
+        if (ollamaSession.attempts >= 2) {
           // Auto-create ticket after 2 failed Ollama attempts
           console.log("[Ollama] 2 attempts exhausted - auto-creating ticket");
           const fallbackCategory = detectCategoryFallback(detectionText);
@@ -347,8 +394,8 @@ app.post("/chatbot", authenticateJWT, async (req, res) => {
           const priority_confidence = mlData ? (mlData.priority_confidence ?? null) : null;
           const solution = FALLBACK_RESPONSES[finalCategory] || FALLBACK_RESPONSES['Other'];
           const ticket_id = generateTicketId();
-          ollamaState.set(userId, { active: false, attempts: 0 });
-          userConversations.set(userId, []);
+          await ollama.set(userId, { active: false, attempts: 0 });
+          await conv.set(userId, []);
 
           return new Promise((resolve) => {
             db.run(
@@ -438,8 +485,8 @@ app.post("/chatbot", authenticateJWT, async (req, res) => {
 
       const solution = FALLBACK_RESPONSES[resolvedCategory] || FALLBACK_RESPONSES["Other"];
 
-      userConversations.set(userId, []);
-      ollamaState.set(userId, { active: false, attempts: 0 });
+      await conv.set(userId, []);
+      await ollama.set(userId, { active: false, attempts: 0 });
       console.log("Conversation context cleared for user", userId);
       console.log("Create ticket - Category:", resolvedCategory, "Priority:", normalizedPriority);
 
@@ -604,7 +651,7 @@ app.post("/chatbot", authenticateJWT, async (req, res) => {
 
       // If the user sent a command like 'create ticket', prefer the previous
       // non-command user message from the conversation context as the title.
-      const userConv = userConversations.get(userId) || [];
+      const userConv = conversation;
       if (message.toLowerCase().trim() === 'create ticket' || message.toLowerCase().includes('create ticket')) {
         // Look backwards through conversation excluding the last message (which is the command)
         for (let i = userConv.length - 2; i >= 0; i--) {
@@ -710,8 +757,9 @@ app.post("/chatbot", authenticateJWT, async (req, res) => {
 
       if (isDissatisfied) {
         console.log(`[Ollama] User dissatisfied — activating Ollama fallback for user ${userId}`);
-        ollama.active = true;
-        ollama.attempts = 1;
+        ollamaSession.active = true;
+        ollamaSession.attempts = 1;
+        await ollama.set(userId, ollamaSession);
         const ollamaReply = await generateOllamaResponse(message, conversation);
         if (ollamaReply) {
           logLlamaCall(db, { userId, userMessage: message, chatterbotResponse: data.reply, llamaResponse: ollamaReply, triggerReason: 'user_dissatisfied' });
@@ -724,8 +772,9 @@ app.post("/chatbot", authenticateJWT, async (req, res) => {
           });
         }
         // Ollama unavailable — fall through to ChatterBot reply below
-        ollama.active = false;
-        ollama.attempts = 0;
+        ollamaSession.active = false;
+        ollamaSession.attempts = 0;
+        await ollama.set(userId, ollamaSession);
       } else {
         // Validate ChatterBot's response with Ollama before sending
         const isGoodResponse = await validateWithOllama(data.reply, message);
