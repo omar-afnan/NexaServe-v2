@@ -47,6 +47,7 @@ database.all("PRAGMA table_info(tickets)", [], (err, columns) => {
   const hasSolution = columns.some(col => col.name === 'solution');
   const hasCategoryConfidence = columns.some(col => col.name === 'category_confidence');
   const hasPriorityConfidence = columns.some(col => col.name === 'priority_confidence');
+  const hasPrioritySource = columns.some(col => col.name === 'priority_source');
 
   if (!hasAssignedTo) {
     database.run(`ALTER TABLE tickets ADD COLUMN assigned_to INTEGER DEFAULT NULL`, function(alterError) {
@@ -133,6 +134,16 @@ if (!hasUpdatedAt) {
         console.log("Error adding priority_confidence column:", alterError.message);
       } else {
         console.log("Added priority_confidence column to tickets");
+      }
+    });
+  }
+
+  if (!hasPrioritySource) {
+    database.run(`ALTER TABLE tickets ADD COLUMN priority_source TEXT DEFAULT 'ml'`, function(alterError) {
+      if (alterError) {
+        console.log("Error adding priority_source column:", alterError.message);
+      } else {
+        console.log("Added priority_source column to tickets");
       }
     });
   }

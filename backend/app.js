@@ -16,6 +16,7 @@ import {
   customAlphabet
 } from "nanoid";
 import { autoAssignTicket } from "./autoAssign.js";
+import { correctPriorityWithLlama } from "./priorityCorrection.js";
 
 const app = express();
 
@@ -57,6 +58,8 @@ app.post("/tickets", authenticateJWT, async (req, res) => {
   let priority = req.body.priority;
   let category_confidence = null;
   let priority_confidence = null;
+  let priority_source = "ml";
+  let mlAvailable = false;
 
   try {
     const mlResponse = await fetch("http://localhost:5006/predict", {
@@ -70,13 +73,24 @@ app.post("/tickets", authenticateJWT, async (req, res) => {
       priority = mlData.priority || priority;
       category_confidence = mlData.category_confidence ?? null;
       priority_confidence = mlData.priority_confidence ?? null;
+      mlAvailable = true;
     }
   } catch (_) {
     // ML service unavailable — fall back to client-supplied values
   }
 
-  const query = `INSERT INTO tickets (ticket_id, title, description, category, priority, status, created_by, category_confidence, priority_confidence) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-  db.run(query, [ticket_id, title, description, category, priority, "Open", created_by, category_confidence, priority_confidence], function (err) {
+  const corrected = await correctPriorityWithLlama({
+    title,
+    description,
+    mlPriority: priority,
+    priorityConfidence: priority_confidence,
+    mlAvailable,
+  });
+  priority = corrected.priority;
+  priority_source = corrected.source;
+
+  const query = `INSERT INTO tickets (ticket_id, title, description, category, priority, status, created_by, category_confidence, priority_confidence, priority_source) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+  db.run(query, [ticket_id, title, description, category, priority, "Open", created_by, category_confidence, priority_confidence, priority_source], function (err) {
     if (err) {
       return res.status(500).json({ error: err.message });
     }
@@ -88,6 +102,7 @@ app.post("/tickets", authenticateJWT, async (req, res) => {
       priority,
       category_confidence,
       priority_confidence,
+      priority_source,
     });
   });
 });

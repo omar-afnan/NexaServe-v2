@@ -19,6 +19,8 @@ import db from "./database.js";
 
 import { autoAssignTicket } from "./autoAssign.js";
 
+import { correctPriorityWithLlama } from "./priorityCorrection.js";
+
 import AuthController from "./AuthController.js";
 
 import {
@@ -205,6 +207,15 @@ function markLlamaTicketCreated(db, userId, ticketId) {
 // ticket id generator
 const generateTicketId = customAlphabet('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', 10);
 
+// Returns true when the message is asking to create a ticket, regardless of
+// word order or filler words ("create me a ticket", "can you make a ticket").
+function isTicketRequest(msg) {
+  const lower = msg.toLowerCase();
+  const hasAction = /\b(create|make|open)\b/.test(lower);
+  const hasTicket = /\bticket\b/.test(lower);
+  return hasAction && hasTicket;
+}
+
 async function fetchMlPrediction(title, description) {
   try {
     const response = await fetch('http://localhost:5006/predict', {
@@ -370,7 +381,7 @@ app.post("/chatbot", authenticateJWT, async (req, res) => {
     const detectionText = (conversationContext || message).trim();
 
     // If Ollama is already the active responder for this session, handle directly
-    if (ollamaSession.active && !message.toLowerCase().includes('create ticket')) {
+    if (ollamaSession.active && !isTicketRequest(message)) {
       const isDissatisfied = OLLAMA_DISSATISFIED_PHRASES.some(p => message.toLowerCase().includes(p));
 
       if (isDissatisfied || ollamaSession.attempts > 0) {
@@ -384,14 +395,23 @@ app.post("/chatbot", authenticateJWT, async (req, res) => {
           const fallbackCategory = detectCategoryFallback(detectionText);
           const fallbackPriority = detectPriorityFallback(detectionText);
           const prevMessages = conversation.slice(0, -1);
-          let titleSource = prevMessages.find(m => !['create ticket','open ticket','make ticket'].some(p => m.toLowerCase().includes(p))) || message;
+          let titleSource = prevMessages.find(m => !isTicketRequest(m)) || message;
           const title = titleSource.substring(0, 50) + (titleSource.length > 50 ? '...' : '');
           const description = `User reported: "${titleSource}". Ollama fallback exhausted after 2 attempts.`;
           const mlData = await fetchMlPrediction(title, description);
           const finalCategory = (mlData && mlData.category) ? mlData.category : fallbackCategory;
-          const finalPriority = (mlData && mlData.priority) ? mlData.priority : fallbackPriority;
+          const mlPriority = (mlData && mlData.priority) ? mlData.priority : fallbackPriority;
           const category_confidence = mlData ? (mlData.category_confidence ?? null) : null;
           const priority_confidence = mlData ? (mlData.priority_confidence ?? null) : null;
+          const corrected = await correctPriorityWithLlama({
+            title,
+            description,
+            mlPriority,
+            priorityConfidence: priority_confidence,
+            mlAvailable: mlData !== null,
+          });
+          const finalPriority = corrected.priority;
+          const priority_source = corrected.source;
           const solution = FALLBACK_RESPONSES[finalCategory] || FALLBACK_RESPONSES['Other'];
           const ticket_id = generateTicketId();
           await ollama.set(userId, { active: false, attempts: 0 });
@@ -399,8 +419,8 @@ app.post("/chatbot", authenticateJWT, async (req, res) => {
 
           return new Promise((resolve) => {
             db.run(
-              `INSERT INTO tickets (ticket_id, title, description, category, priority, status, created_by, solution, category_confidence, priority_confidence) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-              [ticket_id, title, description, finalCategory, finalPriority, 'Open', userId, solution, category_confidence, priority_confidence],
+              `INSERT INTO tickets (ticket_id, title, description, category, priority, status, created_by, solution, category_confidence, priority_confidence, priority_source) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+              [ticket_id, title, description, finalCategory, finalPriority, 'Open', userId, solution, category_confidence, priority_confidence, priority_source],
               function (err) {
                 if (err) return resolve(res.status(500).json({ error: err.message }));
                 markLlamaTicketCreated(db, userId, ticket_id);
@@ -419,7 +439,7 @@ app.post("/chatbot", authenticateJWT, async (req, res) => {
                 }
                 resolve(res.json({
                   ticketCreated: true, ticketId: ticket_id, priority: finalPriority, category: finalCategory,
-                  category_confidence, priority_confidence, solution,
+                  category_confidence, priority_confidence, priority_source, solution,
                   reply: "I wasn't able to resolve your issue after multiple attempts. I've automatically created a support ticket and a technician will follow up with you shortly."
                 }));
               }
@@ -438,8 +458,8 @@ app.post("/chatbot", authenticateJWT, async (req, res) => {
       // User seems satisfied or Ollama is unavailable fall through to ChatterBot
     }
 
-    // Check for "create ticket" FIRST before anything else runs
-    if (message.toLowerCase().includes('create ticket')) {
+    // Check for ticket creation intent FIRST before anything else runs
+    if (isTicketRequest(message)) {
       console.log("Create ticket detected - using conversation context for category/priority");
 
       const ctFallbackCategory = detectCategoryFallback(detectionText);
@@ -468,7 +488,7 @@ app.post("/chatbot", authenticateJWT, async (req, res) => {
         const candidate = (conversation[i] || '').trim();
         if (!candidate) continue;
         const low = candidate.toLowerCase();
-        if (['create ticket','open ticket','make ticket','open a ticket','escalate'].some(p => low === p || low.includes(p))) continue;
+        if (isTicketRequest(candidate) || low === 'escalate') continue;
         titleSource = candidate;
         break;
       }
@@ -492,18 +512,27 @@ app.post("/chatbot", authenticateJWT, async (req, res) => {
 
       const mlData = await fetchMlPrediction(title, description);
       const finalCategory = (mlData && mlData.category) ? mlData.category : resolvedCategory;
-      const finalPriority = (mlData && mlData.priority) ? mlData.priority : normalizedPriority;
+      const mlPriority = (mlData && mlData.priority) ? mlData.priority : normalizedPriority;
       const category_confidence = mlData ? (mlData.category_confidence ?? null) : null;
       const priority_confidence = mlData ? (mlData.priority_confidence ?? null) : null;
+      const corrected = await correctPriorityWithLlama({
+        title,
+        description,
+        mlPriority,
+        priorityConfidence: priority_confidence,
+        mlAvailable: mlData !== null,
+      });
+      const finalPriority = corrected.priority;
+      const priority_source = corrected.source;
 
       const ticket_id = generateTicketId();
-      const query = `INSERT INTO tickets (ticket_id, title, description, category, priority, status, created_by, solution, category_confidence, priority_confidence) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-      db.run(query, [ticket_id, title, description, finalCategory, finalPriority, 'Open', userId, solution, category_confidence, priority_confidence], function (err) {
+      const query = `INSERT INTO tickets (ticket_id, title, description, category, priority, status, created_by, solution, category_confidence, priority_confidence, priority_source) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+      db.run(query, [ticket_id, title, description, finalCategory, finalPriority, 'Open', userId, solution, category_confidence, priority_confidence, priority_source], function (err) {
         if (err) {
           console.error("Ticket creation error:", err);
           return res.status(500).json({ error: err.message });
         }
-        console.log("Ticket created:", ticket_id, "Category:", finalCategory, "Priority:", finalPriority);
+        console.log("Ticket created:", ticket_id, "Category:", finalCategory, "Priority:", finalPriority, "Source:", priority_source);
         markLlamaTicketCreated(db, userId, ticket_id);
         autoAssignTicket(ticket_id);
         if (finalPriority === "High" || finalPriority === "Critical") {
@@ -519,7 +548,7 @@ app.post("/chatbot", authenticateJWT, async (req, res) => {
             });
           }, 100);
         }
-        return res.json({ ticketCreated: true, ticketId: ticket_id, priority: finalPriority, category: finalCategory, category_confidence, priority_confidence, solution });
+        return res.json({ ticketCreated: true, ticketId: ticket_id, priority: finalPriority, category: finalCategory, category_confidence, priority_confidence, priority_source, solution });
       });
       return;
     }
@@ -652,14 +681,14 @@ app.post("/chatbot", authenticateJWT, async (req, res) => {
       // If the user sent a command like 'create ticket', prefer the previous
       // non-command user message from the conversation context as the title.
       const userConv = conversation;
-      if (message.toLowerCase().trim() === 'create ticket' || message.toLowerCase().includes('create ticket')) {
+      if (isTicketRequest(message)) {
         // Look backwards through conversation excluding the last message (which is the command)
         for (let i = userConv.length - 2; i >= 0; i--) {
           const candidate = (userConv[i] || '').trim();
           if (!candidate) continue;
           const low = candidate.toLowerCase();
           // skip common command-like phrases
-          if (['create ticket','open ticket','make ticket','open a ticket','escalate'].some(p => low === p || low.includes(p))) continue;
+          if (isTicketRequest(candidate) || low === 'escalate') continue;
           // pick the first suitable candidate
           titleSource = candidate;
           break;
@@ -696,15 +725,24 @@ app.post("/chatbot", authenticateJWT, async (req, res) => {
       
       const mlData2 = await fetchMlPrediction(title, description);
       const finalCategory2 = (mlData2 && mlData2.category) ? mlData2.category : data.category;
-      const finalPriority2 = (mlData2 && mlData2.priority) ? mlData2.priority : normalizedPriority;
+      const mlPriority2 = (mlData2 && mlData2.priority) ? mlData2.priority : normalizedPriority;
       const category_confidence2 = mlData2 ? (mlData2.category_confidence ?? null) : null;
       const priority_confidence2 = mlData2 ? (mlData2.priority_confidence ?? null) : null;
+      const corrected2 = await correctPriorityWithLlama({
+        title,
+        description,
+        mlPriority: mlPriority2,
+        priorityConfidence: priority_confidence2,
+        mlAvailable: mlData2 !== null,
+      });
+      const finalPriority2 = corrected2.priority;
+      const priority_source2 = corrected2.source;
 
       const ticket_id = generateTicketId();
-      const query = `INSERT INTO tickets (ticket_id, title, description, category, priority, status, created_by, solution, category_confidence, priority_confidence)
-                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+      const query = `INSERT INTO tickets (ticket_id, title, description, category, priority, status, created_by, solution, category_confidence, priority_confidence, priority_source)
+                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
-      db.run(query, [ticket_id, title, description, finalCategory2, finalPriority2, 'Open', userId, data.reply, category_confidence2, priority_confidence2], function (err) {
+      db.run(query, [ticket_id, title, description, finalCategory2, finalPriority2, 'Open', userId, data.reply, category_confidence2, priority_confidence2, priority_source2], function (err) {
         if (err) {
           console.error("Ticket creation error:", err);
           return res.status(500).json(
@@ -714,7 +752,7 @@ app.post("/chatbot", authenticateJWT, async (req, res) => {
           );
         }
 
-        console.log("Ticket created:", ticket_id, "Category:", finalCategory2, "Priority:", finalPriority2);
+        console.log("Ticket created:", ticket_id, "Category:", finalCategory2, "Priority:", finalPriority2, "Source:", priority_source2);
         markLlamaTicketCreated(db, userId, ticket_id);
         autoAssignTicket(ticket_id);
 
@@ -743,6 +781,7 @@ app.post("/chatbot", authenticateJWT, async (req, res) => {
           category: finalCategory2,
           category_confidence: category_confidence2,
           priority_confidence: priority_confidence2,
+          priority_source: priority_source2,
           solution: data.reply,
           hardware_subcategory: data.hardware_subcategory || null,
           software_subcategory: data.software_subcategory || null,
@@ -816,11 +855,15 @@ app.post("/chatbot", authenticateJWT, async (req, res) => {
   }
 });
 // Creating a ticket for authenticated user
-app.post("/tickets", authenticateJWT, (req, res) => {
-  const { title, description, category, priority } = req.body;
+app.post("/tickets", authenticateJWT, async (req, res) => {
+  const { title, description } = req.body;
   const created_by = req.user.user_id;
   const status = "Open";
-  
+
+  if (!title || !description) {
+    return res.status(400).json({ error: "Title and description required" });
+  }
+
   const ticket_id = generateTicketId();
 
   const allowedCategories = [
@@ -832,6 +875,41 @@ app.post("/tickets", authenticateJWT, (req, res) => {
     'Other'
   ];
   const validPriorities = ['Low', 'Medium', 'High','Critical'];
+
+  let category = req.body.category;
+  let priority = req.body.priority;
+  let category_confidence = null;
+  let priority_confidence = null;
+  let priority_source = "ml";
+  let mlAvailable = false;
+
+  try {
+    const mlResponse = await fetch("http://localhost:5006/predict", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ title, description }),
+    });
+    if (mlResponse.ok) {
+      const mlData = await mlResponse.json();
+      category = mlData.category || category;
+      priority = mlData.priority || priority;
+      category_confidence = mlData.category_confidence ?? null;
+      priority_confidence = mlData.priority_confidence ?? null;
+      mlAvailable = true;
+    }
+  } catch (_) {
+    // ML service unavailable — fall back to client-supplied values
+  }
+
+  const corrected = await correctPriorityWithLlama({
+    title,
+    description,
+    mlPriority: priority,
+    priorityConfidence: priority_confidence,
+    mlAvailable,
+  });
+  priority = corrected.priority;
+  priority_source = corrected.source;
 
   let categoryValue = category ? String(category).trim() : '';
   if (categoryValue) {
@@ -849,8 +927,8 @@ app.post("/tickets", authenticateJWT, (req, res) => {
     priorityValue = 'Medium';
   }
 
-  const query = `INSERT INTO tickets (ticket_id, title, description, category, priority, status, created_by) VALUES (?, ?, ?, ?, ?, ?, ?)`;
-  db.run(query, [ticket_id, title, description, categoryValue, priorityValue, status, created_by], function (err) {
+  const query = `INSERT INTO tickets (ticket_id, title, description, category, priority, status, created_by, category_confidence, priority_confidence, priority_source) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+  db.run(query, [ticket_id, title, description, categoryValue, priorityValue, status, created_by, category_confidence, priority_confidence, priority_source], function (err) {
     if (err) {
       // duplicate id
       if (err.message.includes('UNIQUE constraint failed')) {
@@ -890,7 +968,7 @@ app.post("/tickets", authenticateJWT, (req, res) => {
          userName: req.user.name || 'Unknown',
          userRole: req.user.role,
          action: 'ticketCreate',
-         ticketId: ticket_id,       // ticket id is the variable name 
+         ticketId: ticket_id,       // ticket id is the variable name
          details: `Created ticket: ${title}`,
          ipAddress: req.ip,
         userAgent: req.get('User-Agent')
@@ -899,6 +977,11 @@ app.post("/tickets", authenticateJWT, (req, res) => {
     res.json({
       message: "Ticket created",
       ticket_id: ticket_id,
+      category: categoryValue,
+      priority: priorityValue,
+      category_confidence,
+      priority_confidence,
+      priority_source
     });
   });
 });
