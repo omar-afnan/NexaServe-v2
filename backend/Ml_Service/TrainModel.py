@@ -109,57 +109,43 @@ def load_tickets():
     df = pd.read_csv(CSV_PATH)
     print(f"Total rows in CSV: {len(df)}")
 
-    # english tickets 
-    df = df[df['language'] == 'en'].copy()
-    print(f"English rows only: {len(df)}")
-
-   
     df['mapped_category'] = df.apply(map_to_category, axis=1)
 
     # remove unmapped rows
     df = df[df['mapped_category'].notna()].copy()
     print(f"Rows after category mapping: {len(df)}")
 
-   
     df['mapped_priority'] = df['priority'].apply(map_priority)
 
-    # Build tickets list
-    tickets = []
-    for _, row in df.iterrows():
+    # English-only rows for priority training
+    df_en = df[df['language'] == 'en'].copy()
+    print(f"English rows for priority training: {len(df_en)}")
+
+    tickets_en = []
+    for _, row in df_en.iterrows():
         title = str(row.get('subject', '') or '')
         description = str(row.get('body', '') or '')
-        category = row['mapped_category']
         priority = row['mapped_priority']
 
         if title or description:
-            tickets.append({
+            tickets_en.append({
                 'title': title,
                 'description': description,
-                'category': category,
                 'priority': priority
             })
 
-    print(f"prepare tickets for training: {len(tickets)}")
-    return tickets
+    print(f"Priority tickets prepared: {len(tickets_en)}")
+    return tickets_en
 
 
 def preprocess(tickets):
     print("\nPreprocessing Data...")
-    texts, categories, priorities = [], [], []
+    texts, priorities = [], []
 
     for t in tickets:
         text = f"{t['title']} {t['description']}".strip().lower()
         texts.append(text)
-        categories.append(t['category'])
         priorities.append(t['priority'])
-
-    print("\nCategory Distribution:")
-    cat_counts = {}
-    for c in categories:
-        cat_counts[c] = cat_counts.get(c, 0) + 1
-    for cat, count in sorted(cat_counts.items(), key=lambda x: -x[1]):
-        pct = round(count / len(categories) * 100, 1)
-        print(f"  {cat:<12} {count:>5} ({pct}%)")
 
     print("\nPriority Distribution:")
     pri_counts = {}
@@ -169,7 +155,7 @@ def preprocess(tickets):
         pct = round(count / len(priorities) * 100, 1)
         print(f"  {pri:<12} {count:>5} ({pct}%)")
 
-    return texts, categories, priorities
+    return texts, priorities
 
 
 
@@ -397,46 +383,26 @@ def model_eval(model, X_test, y_test, task_name, label_names=None, test_texts=No
 
     return acc, f1_macro, y_pred
 
-def save_models(cat_vectorizer, cat_model, cat_accuracy, cat_f1, cat_params,
-                pri_vectorizer, pri_model, pri_accuracy, pri_f1, pri_params):
+def save_models(pri_vectorizer, pri_model, pri_accuracy, pri_f1, pri_params):
     print(f"\nSaving Models...")
 
     if not os.path.exists(MODEL_DIR):
         os.makedirs(MODEL_DIR)
-
-    with open(f"{MODEL_DIR}/category_vectorizer.pkl", 'wb') as f:
-        pickle.dump(cat_vectorizer, f)
-    with open(f"{MODEL_DIR}/category_model.pkl", 'wb') as f:
-        pickle.dump(cat_model, f)
 
     with open(f"{MODEL_DIR}/priority_vectorizer.pkl", 'wb') as f:
         pickle.dump(pri_vectorizer, f)
     with open(f"{MODEL_DIR}/priority_model.pkl", 'wb') as f:
         pickle.dump(pri_model, f)
 
-    # Label mappings — which classes the model knows
-    cat_classes = list(cat_model.classes_) if hasattr(cat_model, 'classes_') else []
     pri_classes = list(pri_model.classes_) if hasattr(pri_model, 'classes_') else []
 
     metadata = {
         'trained_at': datetime.now().isoformat(),
-        'category_accuracy': cat_accuracy,
-        'category_f1_macro': cat_f1,
         'priority_accuracy': pri_accuracy,
         'priority_f1_macro': pri_f1,
-        'categories': cat_classes,
         'priorities': pri_classes,
-        'category_label_mapping': {i: label for i, label in enumerate(cat_classes)},
         'priority_label_mapping': {i: label for i, label in enumerate(pri_classes)},
-        'category_best_params': cat_params,
         'priority_best_params': pri_params,
-        'category_vectorizer_config': {
-            'max_features': cat_vectorizer.max_features,
-            'ngram_range': cat_vectorizer.ngram_range,
-            'min_df': cat_vectorizer.min_df,
-            'max_df': cat_vectorizer.max_df,
-            'sublinear_tf': cat_vectorizer.sublinear_tf
-        },
         'priority_vectorizer_config': {
             'max_features': pri_vectorizer.max_features,
             'ngram_range': pri_vectorizer.ngram_range,
@@ -448,7 +414,7 @@ def save_models(cat_vectorizer, cat_model, cat_accuracy, cat_f1, cat_params,
             'high_score', 'low_score', 'medium_score', 'exclamation_count',
             'question_count', 'caps_ratio', 'word_count', 'is_short', 'is_long', 'negation_score'
         ],
-        'data_source': 'Kaggle - Multilingual Customer Support Tickets English subset'
+        'data_source': 'Kaggle - Multilingual Customer Support Tickets (English-only for priority)'
     }
     with open(f"{MODEL_DIR}/metadata.pkl", 'wb') as f:
         pickle.dump(metadata, f)
@@ -459,28 +425,16 @@ def save_models(cat_vectorizer, cat_model, cat_accuracy, cat_f1, cat_params,
 
 def main():
 
-    print("training ml model")
-   
+    print("training priority model (English-only)")
     print(f"Started: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
 
-    tickets = load_tickets()
+    tickets_en = load_tickets()
 
-    if len(tickets) < 50:
+    if len(tickets_en) < 50:
         print("WARNING: Very few tickets loaded. Check CSV path and mapping.")
         return
 
-    texts, categories, priorities = preprocess(tickets)
-
-    cat_vectorizer = TfidfVectorizer(
-        max_features=3000,
-        ngram_range=(1, 2),
-        stop_words='english',
-        min_df=3,
-        max_df=0.9,
-        sublinear_tf=True
-    )
-    X_cat = cat_vectorizer.fit_transform(texts)
-
+    texts, priorities = preprocess(tickets_en)
 
     pri_vectorizer = TfidfVectorizer(
         max_features=2000,
@@ -492,32 +446,22 @@ def main():
     )
     X_pri_tfidf = pri_vectorizer.fit_transform(texts)
 
-    #Stack handcrafted priority features alongside TF-IDF 
     print("\nBuilding priority feature matrix (TF-IDF + engineered features)")
     pri_extra = priority_features(texts)
     X_pri = hstack([X_pri_tfidf, csr_matrix(pri_extra)])
     print(f"Priority feature matrix shape: {X_pri.shape}")
-
-    print(f"\nCategory features: {X_cat.shape[1]}")
     print(f"Priority features: {X_pri.shape[1]} (TF-IDF + {pri_extra.shape[1]} engineered)")
 
     test_size = 0.20  # 80/20 split
 
-    # Split texts alongside features for error analysis
-    X_cat_train, X_cat_test, y_cat_train, y_cat_test, texts_cat_train, texts_cat_test = train_test_split(
-        X_cat, categories, texts, test_size=test_size, random_state=42, stratify=categories
-    )
     X_pri_train, X_pri_test, y_pri_train, y_pri_test, texts_pri_train, texts_pri_test = train_test_split(
         X_pri, priorities, texts, test_size=test_size, random_state=42, stratify=priorities
     )
 
     print(f"\nTrain/test split: 80/20")
-    print(f"Training samples: {X_cat_train.shape[0]}")
-    print(f"Test samples:     {X_cat_test.shape[0]}")
+    print(f"Training samples: {X_pri_train.shape[0]}")
+    print(f"Test samples:     {X_pri_test.shape[0]}")
 
-    
-    #balance priority classes using SMOTE
-    
     print("\nApplying SMOTE to balance priority training classes")
     print("Priority class distribution BEFORE SMOTE:")
     unique, counts = np.unique(y_pri_train, return_counts=True)
@@ -532,27 +476,7 @@ def main():
     for cls, cnt in zip(unique, counts):
         print(f"  {cls}: {cnt}")
 
-    #category
-
-    print("category classification")
-    
-
-    cat_results = train_models(X_cat_train, X_cat_test, y_cat_train, y_cat_test, "Category")
-    best_cat_name = max(cat_results, key=lambda k: cat_results[k][1])
-    print(f"\nBest baseline: {best_cat_name} ({cat_results[best_cat_name][1] * 100:.2f}%)")
-
-    cat_tuned_model, cat_best_params = tune_model(X_cat_train, y_cat_train, best_cat_name, "Category")
-    final_cat_model = cat_tuned_model if cat_tuned_model else cat_results[best_cat_name][0]
-    if not cat_tuned_model:
-        cat_best_params = {}
-
-    cat_labels = sorted(set(categories))
-    cat_accuracy, cat_f1, _ = model_eval(final_cat_model, X_cat_test, y_cat_test, "Category", cat_labels, texts_cat_test)
-
-    #priority
-
     print("priority classification")
-
 
     pri_results = train_models(X_pri_train_balanced, X_pri_test, y_pri_train_balanced, y_pri_test, "Priority")
     best_pri_name = max(pri_results, key=lambda k: pri_results[k][1])
@@ -566,14 +490,10 @@ def main():
     pri_labels = sorted(set(priorities))
     pri_accuracy, pri_f1, _ = model_eval(final_pri_model, X_pri_test, y_pri_test, "Priority", pri_labels, texts_pri_test)
 
-    save_models(
-        cat_vectorizer, final_cat_model, cat_accuracy, cat_f1, cat_best_params,
-        pri_vectorizer, final_pri_model, pri_accuracy, pri_f1, pri_best_params
-    )
+    save_models(pri_vectorizer, final_pri_model, pri_accuracy, pri_f1, pri_best_params)
 
     print("\n training has completed successfully ")
-    print(f"Total tickets trained on: {len(tickets)}")
-    print(f"Category accuracy: {cat_accuracy * 100:.2f}%  |  Macro F1: {cat_f1 * 100:.2f}%")
+    print(f"Total priority tickets trained on: {len(tickets_en)}")
     print(f"Priority accuracy: {pri_accuracy * 100:.2f}%  |  Macro F1: {pri_f1 * 100:.2f}%")
 
 
