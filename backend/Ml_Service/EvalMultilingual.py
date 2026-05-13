@@ -62,7 +62,7 @@ ENGLISH_BASELINES = {
 }
 
 
-# ── Shared mapping functions (identical to TrainModel.py) 
+#  Shared mapping functions (identical to TrainModel.py) 
 
 def map_to_category(row):
     queue = str(row.get('queue', '')).lower()
@@ -214,7 +214,7 @@ def load_data_multilingual():
     return texts, categories, priorities
 
 
-# ── Evaluation 1 & 3: Classical ML ───────────────────────────────────────────
+#  Evaluation 1 & 3: Classical ML 
 
 def eval_classical_category(texts, categories):
     print("\n" + "=" * 60)
@@ -331,7 +331,7 @@ def eval_classical_priority(texts, priorities):
     }
 
 
-# ── PyTorch Dataset ───────────────────────────────────────────────────────────
+# ── PyTorch Dataset 
 
 class TicketDataset(Dataset):
     def __init__(self, texts, labels, tokenizer, max_len):

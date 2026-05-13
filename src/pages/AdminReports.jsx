@@ -888,8 +888,13 @@ function AdminReports() {
               
                   <div className="mlModelInfo">
                     <div className="mlModelCard">
-                      <span className="mlModelLabel">Category Accuracy</span>
-                      <span className="mlModelValue">{mlStats.model_info?.category_accuracy != null ? `${mlStats.model_info.category_accuracy}%` : 'N/A'}</span>
+                      <span className="mlModelLabel">Category Model</span>
+                      <span className="mlModelValue">mBERT</span>
+                      <span className="mlModelSubtitle">
+                        {mlStats.model_info?.category_accuracy != null
+                          ? `${mlStats.model_info.category_accuracy}% accuracy`
+                          : 'N/A'}
+                      </span>
                     </div>
                     <div className="mlModelCard">
                       <span className="mlModelLabel">Priority Accuracy</span>

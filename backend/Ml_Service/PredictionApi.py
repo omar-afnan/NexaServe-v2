@@ -8,6 +8,8 @@ from collections import Counter
 import numpy as np
 from scipy.sparse import hstack, csr_matrix
 from datetime import datetime, timedelta
+import torch
+from transformers import BertTokenizer, BertForSequenceClassification
 
 try:
     from langdetect import detect as langdetect_detect
@@ -61,6 +63,11 @@ category_model = None
 priority_vectorizer = None
 priority_model = None
 model_metadata = None
+mbert_tokenizer = None
+mbert_model = None
+mbert_label_encoder = None
+mbert_metadata = None
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 def priority_features(texts):
     high_keywords = [
@@ -106,31 +113,39 @@ def load_models():
     global category_vectorizer, category_model
     global priority_vectorizer, priority_model
     global model_metadata
-    
+    global mbert_tokenizer, mbert_model, mbert_label_encoder, mbert_metadata
+
     try:
         print("loading ml models")
-        
+
         with open(f"{MODEL_DIR}/category_vectorizer.pkl", 'rb') as f:
             category_vectorizer = pickle.load(f)
         with open(f"{MODEL_DIR}/category_model.pkl", 'rb') as f:
             category_model = pickle.load(f)
-        
+
         with open(f"{MODEL_DIR}/priority_vectorizer.pkl", 'rb') as f:
             priority_vectorizer = pickle.load(f)
         with open(f"{MODEL_DIR}/priority_model.pkl", 'rb') as f:
             priority_model = pickle.load(f)
-        
+
         with open(f"{MODEL_DIR}/metadata.pkl", 'rb') as f:
             model_metadata = pickle.load(f)
-        
+
+        mbert_tokenizer = BertTokenizer.from_pretrained(f"{MODEL_DIR}/mbert_category")
+        mbert_model = BertForSequenceClassification.from_pretrained(f"{MODEL_DIR}/mbert_category")
+        mbert_model.to(device)
+        mbert_model.eval()
+        mbert_label_encoder = pickle.load(open(f"{MODEL_DIR}/mbert_label_encoder.pkl", 'rb'))
+        with open(f"{MODEL_DIR}/mbert_metadata.pkl", 'rb') as f:
+            mbert_metadata = pickle.load(f)
+
         print("models loaded")
-        print(f"categories: {model_metadata['categories']}")
-        print(f"priorities: {model_metadata['priorities']}")
-        print(f"category accuracy: {round(model_metadata['category_accuracy'] * 100, 2)}%")
-        print(f"priority accuracy: {round(model_metadata['priority_accuracy'] * 100, 2)}%")
+        print(f"priorities: {model_metadata.get('priorities', [])}")
         
+        print(f"priority accuracy: {round(model_metadata.get('priority_accuracy', 0) * 100, 2)}%")
+
         return True
-        
+
     except FileNotFoundError as e:
         print(f"Model files not found: {e}")
         print("run TrainModel.py first")
@@ -163,19 +178,28 @@ def predict():
         detected_language, translated_text = detect_and_translate(text)
         ml_text = translated_text
 
-        # Category
-        cat_vec = category_vectorizer.transform([ml_text])
-        cat_pred = category_model.predict(cat_vec)[0]
-        if hasattr(category_model, "predict_proba"):
-            cat_proba = category_model.predict_proba(cat_vec)[0]
-        elif hasattr(category_model, "decision_function"):
-            scores = category_model.decision_function(cat_vec)[0]
-            scores = np.atleast_1d(scores)
-            scores -= scores.max()
-            exp_scores = np.exp(scores)
-            cat_proba = exp_scores / exp_scores.sum()
-        else:
-            cat_proba = np.ones(len(category_model.classes_)) / len(category_model.classes_)
+        # Category (mBERT)
+        inputs = mbert_tokenizer(
+            translated_text,
+            return_tensors='pt',
+            max_length=128,
+            padding='max_length',
+            truncation=True
+        ).to(device)
+
+        with torch.no_grad():
+            outputs = mbert_model(**inputs)
+            logits = outputs.logits
+            probs = torch.softmax(logits, dim=-1)
+            cat_idx = torch.argmax(probs, dim=-1).item()
+            category_confidence = float(probs[0][cat_idx].item())
+
+        cat_pred = mbert_label_encoder.inverse_transform([cat_idx])[0]
+        cat_proba_tensor = probs[0].cpu().numpy()
+        category_probabilities = {
+            cls: float(cat_proba_tensor[i])
+            for i, cls in enumerate(mbert_label_encoder.classes_)
+        }
 
         # Priority
         X_tfidf = priority_vectorizer.transform([ml_text])
@@ -194,13 +218,13 @@ def predict():
             pri_proba = np.ones(len(priority_model.classes_)) / len(priority_model.classes_)
         
         
-        category_probabilities = {cls: float(cat_proba[i]) for i, cls in enumerate(category_model.classes_)}
         priority_probabilities = {cls: float(pri_proba[i]) for i, cls in enumerate(priority_model.classes_)}
 
         return jsonify({
             'category': cat_pred,
-            'category_confidence': round(float(max(cat_proba)), 4),
+            'category_confidence': round(category_confidence, 4),
             'category_probabilities': category_probabilities,
+            'category_model': 'mbert',
             'priority': pri_pred,
             'priority_confidence': round(float(max(pri_proba)), 4),
             'priority_probabilities': priority_probabilities,
@@ -370,11 +394,12 @@ def get_stats():
             'success': True,
             'total_tickets': total_tickets,
             'model_info': {
-                'trained_at': model_metadata['trained_at'] if model_metadata else None,
-                'category_accuracy': round(model_metadata['category_accuracy'] * 100, 2) if model_metadata else None,
-                'priority_accuracy': round(model_metadata['priority_accuracy'] * 100, 2) if model_metadata else None,
-                'categories': model_metadata['categories'] if model_metadata else [],
-                'priorities': model_metadata['priorities'] if model_metadata else []
+                'trained_at': model_metadata.get('trained_at') if model_metadata else None,
+                'category_accuracy': round(mbert_metadata.get('accuracy', 0) * 100, 2) if mbert_metadata else None,
+                'category_model': 'mbert',
+                'priority_accuracy': round(model_metadata.get('priority_accuracy', 0) * 100, 2) if model_metadata else None,
+                'categories': list(mbert_label_encoder.classes_) if mbert_label_encoder else [],
+                'priorities': model_metadata.get('priorities', []) if model_metadata else []
             },
             'category_distribution': category_counts,
             'priority_distribution': priority_counts,
