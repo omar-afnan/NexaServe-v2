@@ -33,3 +33,11 @@ dist/
 build/
 venv/
 .env
+
+# ML Models (too large for GitHub)
+*.pkl
+*.safetensors
+*.bin
+*.pt
+*.pth
+backend/Ml_Service/models/
