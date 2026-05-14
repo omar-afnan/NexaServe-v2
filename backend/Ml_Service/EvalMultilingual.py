@@ -10,7 +10,7 @@ Evaluations:
   4. Priority Classification  — mBERT + SMOTE (all languages)
 
 Comparison table vs English-only baselines from TrainModel.py / EvalMBERT.py /
-EvalMBERTPriority.py is included in the JSON output.
+Eval M BERTPriority.py is included in the JSON output.
 """
 
 import os
