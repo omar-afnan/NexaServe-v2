@@ -15,7 +15,10 @@ import {
   MdLock,
   MdBadge,
   MdVisibility,
-  MdVisibilityOff
+  MdVisibilityOff,
+  MdCheckCircle,
+  MdAssignment,
+  MdAccessTime
 } from "react-icons/md";
 
 
@@ -144,6 +147,10 @@ function SupportProfile() {
     }
   };
 
+  const initials = userData.name
+    ? userData.name.split(" ").map(w => w[0]).join("").toUpperCase().slice(0, 2)
+    : "SA";
+
   return (
     <div className="profileLayout">
       <SideBar />
@@ -157,38 +164,36 @@ function SupportProfile() {
 
           <header className="pageHeader">
             <div>
-              <h1>Profile Settings</h1>
+              <h1>Profile</h1>
               <p>Manage your account information</p>
             </div>
           </header>
 
           <div className="contentGrid">
 
-          
+            {/* Left — Agent Profile */}
             <section className="profileCard">
               <div className="cardHeader">
-                <h2>Profile Information</h2>
+                <h2>Agent Profile</h2>
                 <button onClick={toggleEdit} className="editBtn">
                   {isEditing ? (
-                    <>
-                      <MdCancel size={18} />
-                      <span>Cancel</span>
-                    </>
+                    <><MdCancel size={16} /><span>Cancel</span></>
                   ) : (
-                    <>
-                      <MdEdit size={18} />
-                      <span>Edit</span>
-                    </>
+                    <><MdEdit size={16} /><span>Edit</span></>
                   )}
                 </button>
               </div>
 
               <div className="cardBody">
+                <div className="agentAvatarBlock">
+                  <div className="agentAvatar">{initials}</div>
+                  <p className="agentName">{userData.name || "Support Agent"}</p>
+                  <p className="agentEmail">{userData.email}</p>
+                  <span className="roleBadge">Support Agent</span>
+                </div>
+
                 <div className="inputGroup">
-                  <label>
-                    <MdPerson size={20} />
-                    Full Name
-                  </label>
+                  <label><MdPerson size={14} />Full Name</label>
                   {isEditing ? (
                     <input
                       type="text"
@@ -203,10 +208,7 @@ function SupportProfile() {
                 </div>
 
                 <div className="inputGroup">
-                  <label>
-                    <MdEmail size={20} />
-                    Email Address
-                  </label>
+                  <label><MdEmail size={14} />Email Address</label>
                   {isEditing ? (
                     <input
                       type="email"
@@ -220,112 +222,125 @@ function SupportProfile() {
                   )}
                 </div>
 
-                <div className="inputGroup">
-                  <label>
-                    <MdBadge size={20} />
-                    Role
-                  </label>
-                  <div className="roleBadge">Support Agent</div>
-                </div>
-
                 {isEditing && (
                   <button onClick={handleSaveProfile} className="saveButton">
-                    <MdSave size={18} />
+                    <MdSave size={16} />
                     Save Changes
                   </button>
                 )}
               </div>
             </section>
 
-            {/* security */}
-            <section className="profileCard">
-              <div className="cardHeader">
-                <h2>Security</h2>
-              </div>
+            {/* Right column */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
 
-              <div className="cardBody">
-                <button
-                  onClick={() => setShowPasswordChange(!showPasswordChange)}
-                  className="passwordToggleBtn"
-                >
-                  <MdLock size={20} />
-                  {showPasswordChange ? "Hide Password Change" : "Change Password"}
-                </button>
-                {showPasswordChange && (
-                  <form onSubmit={handlePasswordChange} className="passwordForm">
-                    <div className="inputGroup">
-                      <label>Current Password</label>
-                      <div className="passwordInputWrapper">
-                        <input
-                          type={showCurrentPassword ? "text" : "password"}
-                          value={passwordData.currentPassword}
-                          onChange={(e) => setPasswordData({ ...passwordData, currentPassword: e.target.value })}
-                          className="input"
-                          placeholder="Enter current password"
-                          required
-                        />
-                        <button
-                          type="button"
-                          className="eyeToggle"
-                          onClick={() => setShowCurrentPassword(!showCurrentPassword)}
-                        >
-                          {showCurrentPassword ? <MdVisibilityOff size={20} /> : <MdVisibility size={20} />}
-                        </button>
+              {/* Performance card */}
+              <section className="profileCard">
+                <div className="cardHeader">
+                  <h2>Performance</h2>
+                </div>
+                <div className="cardBody">
+                  <div className="perfStatsList">
+                    <div className="perfStatItem">
+                      <div className="perfIconSquare teal"><MdCheckCircle size={20} /></div>
+                      <div className="perfStatText">
+                        <div className="perfStatValue">—</div>
+                        <div className="perfStatLabel">Tickets Resolved</div>
                       </div>
                     </div>
-
-                    <div className="inputGroup">
-                      <label>New Password</label>
-                      <div className="passwordInputWrapper">
-                        <input
-                          type={showNewPassword ? "text" : "password"}
-                          value={passwordData.newPassword}
-                          onChange={(e) => setPasswordData({ ...passwordData, newPassword: e.target.value })}
-                          className="input"
-                          placeholder="Enter new password"
-                          required
-                        />
-                        <button
-                          type="button"
-                          className="eyeToggle"
-                          onClick={() => setShowNewPassword(!showNewPassword)}
-                        >
-                          {showNewPassword ? <MdVisibilityOff size={20} /> : <MdVisibility size={20} />}
-                        </button>
+                    <div className="perfStatItem">
+                      <div className="perfIconSquare amber"><MdAssignment size={20} /></div>
+                      <div className="perfStatText">
+                        <div className="perfStatValue">—</div>
+                        <div className="perfStatLabel">Currently Assigned</div>
                       </div>
                     </div>
-
-                    <div className="inputGroup">
-                      <label>Confirm New Password</label>
-                      <div className="passwordInputWrapper">
-                        <input
-                          type={showConfirmPassword ? "text" : "password"}
-                          value={passwordData.confirmPassword}
-                          onChange={(e) => setPasswordData({ ...passwordData, confirmPassword: e.target.value })}
-                          className="input"
-                          placeholder="Confirm new password"
-                          required
-                        />
-                        <button
-                          type="button"
-                          className="eyeToggle"
-                          onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                        >
-                          {showConfirmPassword ? <MdVisibilityOff size={20} /> : <MdVisibility size={20} />}
-                        </button>
+                    <div className="perfStatItem">
+                      <div className="perfIconSquare blue"><MdAccessTime size={20} /></div>
+                      <div className="perfStatText">
+                        <div className="perfStatValue">—</div>
+                        <div className="perfStatLabel">Avg Resolution Time</div>
                       </div>
                     </div>
+                  </div>
+                </div>
+              </section>
 
-                    <button type="submit" className="submitButton">
-                      Update Password
-                    </button>
-                  </form>
-                )}
+              {/* Security card */}
+              <section className="profileCard">
+                <div className="cardHeader">
+                  <h2>Security</h2>
+                </div>
+                <div className="cardBody">
+                  <button
+                    onClick={() => setShowPasswordChange(!showPasswordChange)}
+                    className="passwordToggleBtn"
+                  >
+                    <MdLock size={18} />
+                    {showPasswordChange ? "Hide Password Change" : "Change Password"}
+                  </button>
+                  {showPasswordChange && (
+                    <form onSubmit={handlePasswordChange} className="passwordForm">
+                      <div className="inputGroup">
+                        <label>Current Password</label>
+                        <div className="passwordInputWrapper">
+                          <input
+                            type={showCurrentPassword ? "text" : "password"}
+                            value={passwordData.currentPassword}
+                            onChange={(e) => setPasswordData({ ...passwordData, currentPassword: e.target.value })}
+                            className="input"
+                            placeholder="Enter current password"
+                            required
+                          />
+                          <button type="button" className="eyeToggle" onClick={() => setShowCurrentPassword(!showCurrentPassword)}>
+                            {showCurrentPassword ? <MdVisibilityOff size={18} /> : <MdVisibility size={18} />}
+                          </button>
+                        </div>
+                      </div>
 
-              </div>
-            </section>
+                      <div className="inputGroup">
+                        <label>New Password</label>
+                        <div className="passwordInputWrapper">
+                          <input
+                            type={showNewPassword ? "text" : "password"}
+                            value={passwordData.newPassword}
+                            onChange={(e) => setPasswordData({ ...passwordData, newPassword: e.target.value })}
+                            className="input"
+                            placeholder="Enter new password"
+                            required
+                          />
+                          <button type="button" className="eyeToggle" onClick={() => setShowNewPassword(!showNewPassword)}>
+                            {showNewPassword ? <MdVisibilityOff size={18} /> : <MdVisibility size={18} />}
+                          </button>
+                        </div>
+                      </div>
 
+                      <div className="inputGroup">
+                        <label>Confirm New Password</label>
+                        <div className="passwordInputWrapper">
+                          <input
+                            type={showConfirmPassword ? "text" : "password"}
+                            value={passwordData.confirmPassword}
+                            onChange={(e) => setPasswordData({ ...passwordData, confirmPassword: e.target.value })}
+                            className="input"
+                            placeholder="Confirm new password"
+                            required
+                          />
+                          <button type="button" className="eyeToggle" onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
+                            {showConfirmPassword ? <MdVisibilityOff size={18} /> : <MdVisibility size={18} />}
+                          </button>
+                        </div>
+                      </div>
 
+                      <button type="submit" className="submitButton">
+                        Update Password
+                      </button>
+                    </form>
+                  )}
+                </div>
+              </section>
+
+            </div>
           </div>
         </div>
       </main>

@@ -1,0 +1,317 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+
+* {
+  box-sizing: border-box;
+}
+
+.apLayout {
+  display: flex;
+  min-height: 100vh;
+  background: #F4F5F7;
+  font-family: 'Inter', sans-serif;
+}
+
+.apMain {
+  flex: 1;
+  margin-left: 260px;
+  padding: 1.5rem 1.25rem;
+  background: #F4F5F7;
+  overflow-y: auto;
+}
+
+.apContainer {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* Top bar */
+.apTopBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.apTopBar h1 {
+  font-size: 20px;
+  font-weight: 500;
+  color: #111827;
+  margin: 0 0 2px 0;
+}
+
+.apTopBar p {
+  font-size: 13px;
+  color: #6B7280;
+  margin: 0;
+}
+
+.apTopBarRight {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+}
+
+.apBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+  font-family: inherit;
+}
+
+.apBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.apBtnPrimary {
+  background: #0D9488;
+  color: #fff;
+}
+
+.apBtnPrimary:hover:not(:disabled) {
+  background: #0B7F75;
+}
+
+.apBtnSecondary {
+  background: #fff;
+  color: #374151;
+  border-color: #E5E7EB;
+}
+
+.apBtnSecondary:hover:not(:disabled) {
+  background: #F9FAFB;
+}
+
+/* Alerts */
+.apAlert {
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+}
+
+.apAlertError {
+  background: #FCEBEB;
+  color: #A32D2D;
+  border: 1px solid #F5C6C6;
+}
+
+.apAlertSuccess {
+  background: #E1F5EE;
+  color: #0F6E56;
+  border: 1px solid #BCE5D6;
+}
+
+/* Stats row */
+.apStatsRow {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+
+.apStatCard {
+  background: #fff;
+  border: 1px solid #E5E7EB;
+  border-radius: 10px;
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.apStatLabel {
+  font-size: 12px;
+  color: #6B7280;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.apStatValue {
+  font-size: 26px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.apStatValue-overloaded {
+  color: #A32D2D;
+}
+
+.apStatValue-underperforming {
+  color: #854F0B;
+}
+
+.apStatValue-normal {
+  color: #0F6E56;
+}
+
+/* Cards */
+.apCard {
+  background: #fff;
+  border: 1px solid #E5E7EB;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.apCardHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 18px;
+  border-bottom: 1px solid #E5E7EB;
+}
+
+.apCardHeader h2 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: #111827;
+}
+
+/* Table */
+.apTableWrap {
+  overflow-x: auto;
+}
+
+.apTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.apTable th {
+  text-align: left;
+  padding: 11px 16px;
+  background: #F9FAFB;
+  color: #6B7280;
+  font-weight: 500;
+  font-size: 12px;
+  border-bottom: 1px solid #E5E7EB;
+  white-space: nowrap;
+}
+
+.apTable td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #F1F2F4;
+  color: #374151;
+  vertical-align: middle;
+}
+
+.apTable tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.apTable tbody tr:hover {
+  background: #FAFBFC;
+}
+
+.apActionCell {
+  max-width: 280px;
+  word-break: break-word;
+}
+
+.apEmpty {
+  text-align: center;
+  padding: 24px;
+  color: #6B7280;
+  font-size: 13px;
+}
+
+/* Badges */
+.apBadge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: capitalize;
+  line-height: 1.4;
+}
+
+.apBadge-normal {
+  background: #E1F5EE;
+  color: #0F6E56;
+}
+
+.apBadge-overloaded {
+  background: #FCEBEB;
+  color: #A32D2D;
+}
+
+.apBadge-underperforming {
+  background: #FAEEDA;
+  color: #854F0B;
+}
+
+/* Decisions list */
+.apDecisionsList {
+  display: flex;
+  flex-direction: column;
+}
+
+.apDecisionItem {
+  padding: 14px 18px;
+  border-bottom: 1px solid #E5E7EB;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.apDecisionItem:last-child {
+  border-bottom: none;
+}
+
+.apDecisionTop {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.apDecisionAgent {
+  font-weight: 600;
+  color: #111827;
+  font-size: 13px;
+}
+
+.apDecisionTime {
+  font-size: 12px;
+  color: #6B7280;
+  margin-left: auto;
+}
+
+.apDecisionReason {
+  font-size: 13px;
+  color: #374151;
+  line-height: 1.5;
+}
+
+.apDecisionAction {
+  font-size: 12px;
+  color: #6B7280;
+}
+
+.apDecisionAction strong {
+  color: #374151;
+  font-weight: 600;
+}
+
+@media (max-width: 900px) {
+  .apMain {
+    margin-left: 0;
+  }
+  .apStatsRow {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

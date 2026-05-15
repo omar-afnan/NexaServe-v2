@@ -8,7 +8,6 @@ import {
   MdDelete,
   MdSend,
   MdComment,
-  MdPerson
 } from "react-icons/md";
 
 import {
@@ -18,10 +17,14 @@ import {
 
 import fetchWithAuth from "../api/fetchWithAuth";
 
+const DEFAULT_SOLUTION_PROMPT = 'Please describe your issue in more detail, or type "create ticket" for immediate support.';
+
 export default function TicketDetail() {
   const { ticketId } = useParams();
   const navigate = useNavigate();
   const [ticket, setTicket] = useState(null);
+  const [status, setStatus] = useState("Open");
+  const [solution, setSolution] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -59,15 +62,21 @@ export default function TicketDetail() {
       }
 
       setTicket(ticketsFound);
+      setStatus(ticketsFound.status || "Open");
+      setSolution(
+        ticketsFound.solution?.trim() === DEFAULT_SOLUTION_PROMPT
+          ? ""
+          : (ticketsFound.solution || "")
+      );
       setLoading(false);
-      
+
     } catch (err) {
       setError(err.message);
       setLoading(false);
     }
   };
 
-  // load comments for the ticket 
+  // load comments for the ticket
   const loadComments = async () => {
     try {
       const data = await apiFetchComments(ticketId);
@@ -77,7 +86,7 @@ export default function TicketDetail() {
     }
   };
 
-  
+
   const handleAddComment = async (e) => {
     e.preventDefault();
 
@@ -91,7 +100,7 @@ export default function TicketDetail() {
     try {
       await apiAddComment(ticketId, newComment);
       setNewComment("");
-  
+
       loadComments();
     } catch (err) {
       alert("Error adding comment: " + (err.message || "Could not reach backend"));
@@ -115,7 +124,7 @@ export default function TicketDetail() {
       });
 
       if (response.ok) {
-      
+
         const role = sessionStorage.getItem('role');
         if (role === 'admin') {
           navigate('/admin/tickets');
@@ -132,7 +141,7 @@ export default function TicketDetail() {
     }
   };
 
-  
+
   const handleGoBack = () => {
     const role = sessionStorage.getItem('role');
     if (role === 'admin') {
@@ -144,11 +153,39 @@ export default function TicketDetail() {
     }
   };
 
+  const handleSaveChanges = async () => {
+    try {
+      const token = sessionStorage.getItem('token');
+      const response = await fetchWithAuth(`http://localhost:5000/tickets/${ticketId}`, {
+        method: 'PATCH',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          status,
+          solution,
+        }),
+      });
+
+      if (!response.ok) {
+        const data = await response.json().catch(() => null);
+        throw new Error(data?.error || 'Failed to save ticket changes');
+      }
+
+      setTicket((prev) => prev ? { ...prev, status, solution } : prev);
+    } catch (err) {
+      alert("Error saving ticket: " + err.message);
+    }
+  };
+
   if (loading) {
     return (
       <div className="ticketDetailWrapper">
-        <div className="loadingContainer">
-          <p>Loading ticket</p>
+        <div className="detailInner">
+          <div className="loadingContainer">
+            <p>Loading ticket</p>
+          </div>
         </div>
       </div>
     );
@@ -157,205 +194,204 @@ export default function TicketDetail() {
   if (error || !ticket) {
     return (
       <div className="ticketDetailWrapper">
-        <div className="errorContainer">
-          
-          <p>Error: {error || "Ticket not found"}</p>
-
-          <button onClick={handleGoBack}>
-            Back to Tickets
-          </button>
+        <div className="detailInner">
+          <div className="errorContainer">
+            <p>Error: {error || "Ticket not found"}</p>
+            <button onClick={handleGoBack}>
+              Back to Tickets
+            </button>
+          </div>
         </div>
       </div>
     );
   }
 
+  const canEdit = sessionStorage.getItem('role') === 'admin' || sessionStorage.getItem('role') === 'support';
+
   return (
     <div className="ticketDetailWrapper">
-      <div className="detailHeader">
-
-        <button className="backButton" onClick={handleGoBack}>
-          <MdArrowBack size={20} /> Back to Tickets
-        </button>
-
-        <button className="deleteTicketButton" onClick={handleDelete}>
-          <MdDelete size={20} /> Delete
-        </button>
-      </div>
-
-      <div className="detailCard">
-        <div className="detailTitle">
-          <div>
-            <h1>{ticket.ticket_id} - {ticket.title}</h1>
-            <div className="titleMeta">
-
-              <span className={`chip statusChip status-${ticket.status.toLowerCase().replace(' ', '-')}`}>
-                {ticket.status}
-              </span>
-              <span className={`chip priorityChip priority-${ticket.priority.toLowerCase()}`}>
-                {ticket.priority}
-              </span>
-
-              <span className="chip subtle">
-                Created {new Date(ticket.created_at).toLocaleDateString()}
-              </span>
-
-              <span className="chip subtle">
-                User ID: {ticket.created_by}
-              </span>
-            </div>
-          </div>
+      <div className="detailInner">
+        {/* Back button row */}
+        <div className="detailHeader">
+          <button className="backButton" onClick={handleGoBack}>
+            <MdArrowBack size={18} /> Back to Tickets
+          </button>
+          <button className="deleteTicketButton" onClick={handleDelete}>
+            <MdDelete size={18} /> Delete
+          </button>
         </div>
 
-        <div className="detailContent">
-          <div className="detailSection">
-            <h3>Description</h3>
-            <p>{ticket.description}</p>
-          </div>
+        {/* Two-column layout */}
+        <div className="detailTwoCol">
 
-          <div className="detailGrid">
-            <div className="detailItem">
-              <label>Category</label>
-              <p>{ticket.category}</p>
-            </div>
-            <div className="detailItem">
-              <label>Priority</label>
-              <p className={`priority-${ticket.priority.toLowerCase()}`}>{ticket.priority}</p>
-            </div>
-            <div className="detailItem">
-              <label>Status</label>
-              <p className={`status-${ticket.status.toLowerCase().replace(' ', '-')}`}>{ticket.status}</p>
-            </div>
-            <div className="detailItem">
-              <label>Created</label>
-              <p>{new Date(ticket.created_at).toLocaleDateString()}</p>
-            </div>
-            <div className="detailItem">
-              <label>Created By</label>
-              <p>User ID: {ticket.created_by}</p>
-            </div>
-            {ticket.assigned_to && (
-              <div className="detailItem">
-                <label>Assigned To</label>
-                <p>User ID: {ticket.assigned_to}</p>
+          {/* Left 60% — ticket info */}
+          <div className="detailCard">
+            <div className="detailCardBody">
+
+              {/* ID + title */}
+              <div className="detailTopSection">
+                <div className="detailTicketId">#{ticket.ticket_id}</div>
+                <h1 className="detailTicketTitle">{ticket.title}</h1>
+
+                {/* Priority + Status badges */}
+                <div className="badgeRow">
+                  <span className={`chip priorityChip priority-${ticket.priority.toLowerCase()}`}>
+                    {ticket.priority}
+                  </span>
+                  <span className={`chip statusChip status-${status.toLowerCase().replace(' ', '-')}`}>
+                    {status}
+                  </span>
+                </div>
               </div>
-            )}
-          </div>
-        </div>
-      </div>
 
-      {/* comments */}
-      <div className="commentsSection">
-
-        <div className="commentsHeader">
-
-          <MdComment size={24} />
-          <h2>Comments and History</h2>
-
-          <span className="commentCount">
-            {comments.length}
-          </span>
-
-        </div>
-
-        {/*  comment for admin and supporter role */}
-        {(sessionStorage.getItem('role') === 'admin' || sessionStorage.getItem('role') === 'support') && (
-          <form className="addCommentForm" onSubmit={handleAddComment}>
-            <textarea
-              placeholder="Add a comment or update"
-              value={newComment}
-              onChange={(e) => setNewComment(e.target.value)}
-              rows={1}
-            />
-            <button type="submit" disabled={commentLoading || !newComment.trim()}>
-              {commentLoading ? (
-                "Sending"
-              ) : (
+              {canEdit && (
                 <>
-                  <MdSend size={18} />
-                  Send
+                  <div className="detailDivider" />
+                  <div className="tdField">
+                    <span className="tdLabel">STATUS</span>
+                    <select
+                      className="tdStatusSelect"
+                      value={status}
+                      onChange={(e) => setStatus(e.target.value)}
+                    >
+                      <option value="Open">Open</option>
+                      <option value="In Progress">In Progress</option>
+                      <option value="Closed">Closed</option>
+                    </select>
+                  </div>
                 </>
               )}
-            </button>
-          </form>
-        )}
 
-        {/* show admin and support comment only  */}
-        {commentsError && (
-          <div className="commentsError" style={
-            {
-              color: 'crimson',
-              padding: '8px 12px'
-            }}>
-            {commentsError}
-          </div>
-        )}
+              <div className="detailDivider" />
 
-        <div className="commentsList">
-          {comments.length === 0 ? (
-            <div className="noComments">
-              <MdComment size={48} />
-              {(sessionStorage.getItem('role') === 'admin' || sessionStorage.getItem('role') === 'support') ? (
-                <p>No comments yet. Be the first to add one!</p>
-              ) : (
-                <p>No replies yet. Support will respond soon!</p>
-              )}
-            </div>
-          ) : (
-            comments.map((comment) => {
-              // it will display the name fallback 
-              
-              let userLabel;
-              let labelClass;
+              {/* Description */}
+              <div className="detailSection">
+                <div className="detailFieldLabel">Description</div>
+                <p className="detailDescText">{ticket.description}</p>
+              </div>
 
-              if (comment.name && comment.name.trim() !== '') {
-                userLabel = comment.name;
-              } else if (comment.role === 'admin') {
-                userLabel = 'Admin';
-              } else if (comment.role === 'support') {
-                userLabel = 'Support';
-              } else if (comment.user_id) {
-                userLabel = `User #${comment.user_id}`;
-              } else {
-                userLabel = 'User';
-              }
+              <div className="detailDivider" />
 
-              if (comment.role === 'admin') {
-                labelClass = 'roleAdmin';
-              } else if (comment.role === 'support') {
-                labelClass = 'roleSupport';
-              } else {
-                labelClass = 'roleUser';
-              }
+              {/* Category */}
+              <div className="detailSection">
+                <div className="detailFieldLabel">Category</div>
+                <p className="detailFieldValue">{ticket.category}</p>
+              </div>
 
-              return (
-                <div key={comment.comment_id} className="commentItem">
-                  <div className="commentAvatar">
-                    <MdPerson size={24} />
+              <div className="detailDivider" />
+
+              {/* Created By */}
+              <div className="detailSection">
+                <div className="detailFieldLabel">Created By</div>
+                <p className="detailFieldValue">User #{ticket.created_by}</p>
+              </div>
+
+              {ticket.assigned_to && (
+                <>
+                  <div className="detailDivider" />
+                  <div className="detailSection">
+                    <div className="detailFieldLabel">Assigned To</div>
+                    <p className="detailFieldValue">User #{ticket.assigned_to}</p>
                   </div>
-                  <div className="commentContent">
-                    <div className="commentMeta">
-                      
-                      <span className={`commentUser ${labelClass}`}>
-                        {userLabel}
-                      </span>
+                </>
+              )}
 
-                      <span className="commentDate">
+              {canEdit && (
+                <>
+                  <div className="detailDivider" />
+
+                  {/* Solution textarea */}
+                  <div className="detailSection">
+                    <div className="detailFieldLabel">Solution / Notes</div>
+                    <textarea
+                      className="detailTextarea"
+                      value={solution}
+                      onChange={(e) => setSolution(e.target.value)}
+                      rows={4}
+                    />
+                  </div>
+
+                  {/* Save button aligned right */}
+                  <div className="detailSaveRow">
+                    <button className="detailSaveBtn" onClick={handleSaveChanges}>Save Changes</button>
+                  </div>
+                </>
+              )}
+
+            </div>
+          </div>
+
+          {/* Right 40% — Activity Log */}
+          <div className="activityCard">
+            <div className="activityCardHeader">
+              <h3>
+                Activity Log
+                <span className="commentCountBadge">{comments.length}</span>
+              </h3>
+            </div>
+
+            {commentsError && (
+              <div className="commentsError">{commentsError}</div>
+            )}
+
+            <div className="activityLog">
+              {comments.length === 0 ? (
+                <div className="noComments">
+                  <MdComment size={40} />
+                  {canEdit ? (
+                    <p>No activity yet. Add a comment below.</p>
+                  ) : (
+                    <p>No replies yet. Support will respond soon!</p>
+                  )}
+                </div>
+              ) : (
+                comments.map((comment) => {
+                  let userLabel;
+                  if (comment.name && comment.name.trim() !== '') {
+                    userLabel = comment.name;
+                  } else if (comment.role === 'admin') {
+                    userLabel = 'Admin';
+                  } else if (comment.role === 'support') {
+                    userLabel = 'Support';
+                  } else if (comment.user_id) {
+                    userLabel = `User #${comment.user_id}`;
+                  } else {
+                    userLabel = 'User';
+                  }
+
+                  return (
+                    <div key={comment.comment_id} className="activityEntry">
+                      <div className="activityEntryLine">
+                        <span className="activityEntryActor">{userLabel}</span>
+                        <span className="activityEntryAction"> {comment.comment}</span>
+                      </div>
+                      <span className="activityEntryTime">
                         {new Date(comment.created_at).toLocaleString()}
                       </span>
-
                     </div>
-                    <p className="commentText">
-                      {comment.comment}
-                    </p>
-                  </div>
-                </div>
+                  );
+                })
+              )}
+            </div>
 
-              );
-            })
-          )}
+            {/* Add comment form */}
+            {canEdit && (
+              <form className="addCommentForm" onSubmit={handleAddComment}>
+                <textarea
+                  placeholder="Add a comment..."
+                  value={newComment}
+                  onChange={(e) => setNewComment(e.target.value)}
+                  rows={1}
+                />
+                <button type="submit" disabled={commentLoading || !newComment.trim()}>
+                  {commentLoading ? "Sending" : <><MdSend size={16} /> Send</>}
+                </button>
+              </form>
+            )}
+          </div>
+
         </div>
       </div>
     </div>
   );
 }
-

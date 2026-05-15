@@ -656,37 +656,24 @@ function SupporterReports() {
       <main className="reportsMain">
         <div className="reportsContainer">
           {/* top bar */}
-          <header className="reportsHero">
-            <div className="heroContent">
-              <div className="heroText">
-
-                <div className="heroIcon">
-                  <MdBarChart size={28} />
-                </div>
-                
-                <div>
-                  <h1>Analytics and Reports</h1>
-                </div>
-              </div>
-              <div className="heroActions">
-
-                <button className="exportButton" onClick={handleExportReport}>
-                  <MdDownload size={18} />
-                  Export CSV
-                </button>
-              </div>
+          <div className="reportsTopBar">
+            <div>
+              <h1>Reports</h1>
+              <p>Your performance and ticket analytics</p>
             </div>
-          </header>
+            <div className="reportsTopBarRight">
+              <button className="exportButton" onClick={handleExportReport}>
+                <MdDownload size={16} />
+                Export CSV
+              </button>
+            </div>
+          </div>
 
-          {/* date adn type filters */}
+          {/* date and type filters */}
           <div className="filterControls">
             <div className="filterGroup">
-              <label>Date Range:</label>
-              <select
-                value={dateRange}
-                onChange={(e) => setDateRange(e.target.value)}
-                className="filterSelect"
-              >
+              <label className="filterLabel">Date Range:</label>
+              <select value={dateRange} onChange={(e) => setDateRange(e.target.value)} className="filterSelect">
                 <option value="today">Today</option>
                 <option value="week">This Week</option>
                 <option value="month">This Month</option>
@@ -695,20 +682,12 @@ function SupporterReports() {
                 <option value="all">All Time</option>
               </select>
             </div>
-
             <div className="filterGroup">
-              <label>Report Type:</label>
-              <select
-                value={reportType}
-                onChange={(e) => setReportType(e.target.value)}
-                className="filterSelect"
-              >
+              <label className="filterLabel">Report Type:</label>
+              <select value={reportType} onChange={(e) => setReportType(e.target.value)} className="filterSelect">
                 <option value="overview">Overview</option>
-
                 <option value="category">By Category</option>
-
                 <option value="priority">By Priority</option>
-
               </select>
             </div>
           </div>

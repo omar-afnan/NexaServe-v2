@@ -7,13 +7,13 @@
 }
 
 .supporterNotificationBell {
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 12px;
-  padding: 10px 16px;
+  background: #1F2937;
+  border: 1px solid #374151;
+  border-radius: 9px;
+  padding: 8px 12px;
   cursor: pointer;
   position: relative;
-  color: white;
+  color: #E5E7EB;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -21,7 +21,9 @@
 }
 
 .supporterNotificationBell:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: #111827;
+  border-color: #4B5563;
+  color: #ffffff;
 }
 
 .supporterNotificationBadge {
@@ -38,7 +40,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 2px solid #1e293b;
+  border: 2px solid #ffffff;
 }
 
 .supporterNotificationBadge.hasPriority {

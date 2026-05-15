@@ -9,6 +9,7 @@ import {
   MdPerson,
   MdLogout,
   MdHeadset,
+  MdInsights,
 } from "react-icons/md";
 
 function SideBar() {
@@ -60,6 +61,13 @@ function SideBar() {
             <Link to="/supporter-reports" className={isActive("/supporter-reports") ? "active" : ""}>
               <MdBarChart size={18} />
               Reports
+            </Link>
+          </li>
+
+          <li>
+            <Link to="/performance" className={isActive("/performance") ? "active" : ""}>
+              <MdInsights size={18} />
+              My Performance
             </Link>
           </li>
 

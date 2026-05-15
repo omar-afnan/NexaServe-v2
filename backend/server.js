@@ -21,6 +21,8 @@ import { autoAssignTicket } from "./autoAssign.js";
 
 import { correctPriorityWithLlama } from "./priorityCorrection.js";
 
+import { runSupervisorCycle, startSupervisorTimer } from "./agentSupervisor.js";
+
 import AuthController from "./AuthController.js";
 
 import {
@@ -37,7 +39,7 @@ const corsOptions = {
 
   credentials: true,
 
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
 
   allowedHeaders: ['Content-Type', 'Authorization']
 };
@@ -1054,6 +1056,38 @@ app.put("/tickets/:id", authenticateJWT, authorizeRoles("support", "admin"), (re
   });
 });
 
+app.patch("/tickets/:id", authenticateJWT, authorizeRoles("support", "admin"), (req, res) => {
+  const { id } = req.params;
+  const { status, solution } = req.body;
+  const validStatus = ["Open", "In Progress", "Closed"];
+
+  if (!validStatus.includes(status)) {
+    return res.status(400).json(
+      {
+        error: "Invalid status value"
+      });
+  }
+
+  const query = `UPDATE tickets SET status = ?, solution = ?, updated_at = CURRENT_TIMESTAMP WHERE ticket_id = ?`;
+  db.run(query, [status, solution ?? null, id], function (err) {
+    if (err) return res.status(500).json(
+      {
+        error: err.message
+      }
+    );
+    if (this.changes === 0) return res.status(404).json(
+      {
+        error: "Ticket not found"
+      }
+    );
+
+    res.json(
+      {
+        message: "Ticket updated successfully"
+      });
+  });
+});
+
 app.delete("/tickets/:id", authenticateJWT, (req, res) => {
   const { id } = req.params;
   const userId = req.user.user_id;
@@ -1609,9 +1643,32 @@ app.get("/llama-logs", authenticateJWT, authorizeRoles("admin"), (req, res) => {
   });
 });
 
+// Supervisor logs (latest 100)
+app.get("/supervisor-logs", authenticateJWT, authorizeRoles("admin", "support"), (req, res) => {
+  db.all(
+    `SELECT * FROM supervisor_logs ORDER BY created_at DESC LIMIT 100`,
+    [],
+    (err, rows) => {
+      if (err) return res.status(500).json({ error: err.message });
+      res.json(rows);
+    }
+  );
+});
+
+// Manually trigger a supervisor cycle
+app.post("/supervisor-run", authenticateJWT, authorizeRoles("admin", "support"), async (req, res) => {
+  try {
+    await runSupervisorCycle();
+    res.json({ message: "Supervisor cycle completed" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // Start server
 const PORT = 5000;
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
   console.log(`ChatterBot is running on http://localhost:5005`);
+  startSupervisorTimer();
 });

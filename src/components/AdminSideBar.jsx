@@ -8,6 +8,7 @@ import {
   MdHistory,
   MdPerson,
   MdHeadset,
+  MdAnalytics,
 } from "react-icons/md";
 
 function AdminSideBar() {
@@ -57,6 +58,12 @@ function AdminSideBar() {
             <a href="/admin-reports" className={isActive("/admin-reports") ? "active" : ""}>
               <MdBarChart size={18} />
               Reports
+            </a>
+          </li>
+          <li>
+            <a href="/admin/performance" className={isActive("/admin/performance") ? "active" : ""}>
+              <MdAnalytics size={18} />
+              Performance
             </a>
           </li>
           <li>

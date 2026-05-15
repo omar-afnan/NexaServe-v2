@@ -1,18 +1,15 @@
 import { useState, useEffect, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
 import "./CSS/SupportDashboard.css";
 import SideBar from "../components/sideBar";
-import SupporterNotification from "../components/SupporterNotification";
 import fetchWithAuth from "../api/fetchWithAuth";
 
 import {
-  MdDashboard,
-  MdConfirmationNumber,
-  MdCheckCircle,
   MdPendingActions,
-  MdRefresh,
+  MdCheckCircle,
   MdDelete,
-  MdAccessTime
+  MdAccessTime,
+  MdTrendingDown,
+  MdConfirmationNumber
 } from "react-icons/md";
 
 import {
@@ -26,7 +23,6 @@ import {
 } from "react-icons/hi2";
 
 function Dashboard() {
-  const navigate = useNavigate();
   const [tickets, setTickets] = useState([]);
   const [stats, setStats] = useState({
     open: 0,
@@ -189,146 +185,77 @@ function Dashboard() {
 
       <main className="dashboardMain">
         <div className="dashboardContainer">
-          {/* heros data content  */}
-          <header className="dashboardHero">
-            <div className="heroContent">
-              <div className="heroText">
-                <div className="heroIcon">
-                  <MdDashboard size={32} />
-                </div>
-
-                <div>
-                  <h1>Support Dashboard</h1>
-                  <p className="heroSubtitle">
-                    Welcome back, <strong>{userName}
-                    </strong>
-                  </p>
-                </div>
-              </div>
-
-
-              <div className="heroActions">
-                <SupporterNotification />
-                <button onClick={fetchTickets} className="refreshButton">
-                  <MdRefresh size={20} />
-                  <span>Refresh</span>
-                </button>
-              </div>
+          <div className="dashboardTopBar">
+            <div className="topBarLeft">
+              <h1>Triage Queue</h1>
+              <p>Manage and resolve assigned tickets</p>
             </div>
-          </header>
+          </div>
 
 
           <div className="statsWrapper">
             <section className="statsGrid">
               <div className="statCard statOpen">
-                <div className="statCardHeader">
-                  <div className="statIconWrapper">
-                    <HiClock />
-                  </div>
-
-                </div>
-                <div className="statCardBody">
-                  <h3>Open Tickets</h3>
-                  <p className="statNumber">{loading ? "..." : stats.open}</p>
-                  <span className="statLabel">Awaiting response</span>
+                <div className="statIconSquare"><HiClock /></div>
+                <div className="statCardText">
+                  <div className="statNumber">{loading ? "..." : stats.open}</div>
+                  <div className="statLabel">Open</div>
                 </div>
               </div>
 
               <div className="statCard statProgress">
-                <div className="statCardHeader">
-                  <div className="statIconWrapper">
-                    <MdPendingActions />
-                  </div>
-                </div>
-
-                <div className="statCardBody">
-                  <h3>In Progress</h3>
-                  <p className="statNumber">{loading ? "..." : stats.inProgress}</p>
-                  <span className="statLabel">Being worked on</span>
+                <div className="statIconSquare"><MdPendingActions /></div>
+                <div className="statCardText">
+                  <div className="statNumber">{loading ? "..." : stats.inProgress}</div>
+                  <div className="statLabel">In Progress</div>
                 </div>
               </div>
 
               <div className="statCard statClosed">
-                <div className="statCardHeader">
-                  <div className="statIconWrapper">
-                    <IoCheckmarkDone />
-                  </div>
-                </div>
-                <div className="statCardBody">
-                  <h3>Closed</h3>
-                  <p className="statNumber">{loading ? "..." : stats.closed}</p>
-                  <span className="statLabel">Resolved successfully</span>
+                <div className="statIconSquare"><IoCheckmarkDone /></div>
+                <div className="statCardText">
+                  <div className="statNumber">{loading ? "..." : stats.closed}</div>
+                  <div className="statLabel">Closed</div>
                 </div>
               </div>
 
               <div className="statCard statCritical">
-                <div className="statCardHeader">
-                  <div className="statIconWrapper">
-                    <IoWarning />
-                  </div>
+                <div className="statIconSquare"><IoWarning /></div>
+                <div className="statCardText">
+                  <div className="statNumber">{loading ? "..." : stats.critical}</div>
+                  <div className="statLabel">Critical</div>
                 </div>
-                <div className="statCardBody">
-                  <h3>Critical</h3>
-                  <p className="statNumber">{loading ? "..." : stats.critical}</p>
-                  <span className="statLabel">Urgent attention</span>
+              </div>
+
+              <div className="statCard statHigh">
+                <div className="statIconSquare"><IoWarning /></div>
+                <div className="statCardText">
+                  <div className="statNumber">{loading ? "..." : stats.highPriority}</div>
+                  <div className="statLabel">High Priority</div>
+                </div>
+              </div>
+
+              <div className="statCard statMedium">
+                <div className="statIconSquare"><MdPendingActions /></div>
+                <div className="statCardText">
+                  <div className="statNumber">{loading ? "..." : stats.mediumPriority}</div>
+                  <div className="statLabel">Medium Priority</div>
+                </div>
+              </div>
+
+              <div className="statCard statLow">
+                <div className="statIconSquare"><MdTrendingDown /></div>
+                <div className="statCardText">
+                  <div className="statNumber">{loading ? "..." : stats.lowPriority}</div>
+                  <div className="statLabel">Low Priority</div>
                 </div>
               </div>
 
               <div className="statCard statTotal">
-                <div className="statCardHeader">
-                  <div className="statIconWrapper">
-                    <IoTicketSharp />
-                  </div>
-                </div>
-
-
-                <div className="statCardBody">
-                  <h3>Total Tickets</h3>
-                  <p className="statNumber">{loading ? "..." : stats.total}</p>
-                  <span className="statLabel">All time</span>
-                </div>
-              </div>
-
-              <div className="statCard statHighPriority">
-                <div className="statCardHeader">
-                  <div className="statIconWrapper">
-                    <IoWarning />
-                  </div>
-                </div>
-                <div className="statCardBody">
-                  <h3>High Priority</h3>
-                  <p className="statNumber">{loading ? "..." : stats.highPriority}</p>
-                  <span className="statLabel">Urgent tickets</span>
-                </div>
-              </div>
-
-              <div className="statCard statMediumPriority">
-                <div className="statCardHeader">
-                  <div className="statIconWrapper">
-                    <MdPendingActions />
-                  </div>
-                </div>
-
-
-                <div className="statCardBody">
-                  <h3>Medium Priority</h3>
-                  <p className="statNumber">{loading ? "..." : stats.mediumPriority}</p>
-                  <span className="statLabel">Normal tickets</span>
-                </div>
-              </div>
-
-              <div className="statCard statLowPriority">
-                <div className="statCardHeader">
-                  <div className="statIconWrapper">
-                    <MdCheckCircle />
-                  </div>
-                </div>
-
-
-                <div className="statCardBody">
-                  <h3>Low Priority</h3>
-                  <p className="statNumber">{loading ? "..." : stats.lowPriority}</p>
-                  <span className="statLabel">Low urgency</span>
+                <div className="statIconSquare"><MdConfirmationNumber /></div>
+                <div className="statCardText">
+                  <div className="statNumber">{loading ? "..." : stats.total}</div>
+                  <div className="statLabel">Total</div>
                 </div>
               </div>
             </section>
@@ -338,8 +265,7 @@ function Dashboard() {
           <section className="ticketsSection">
             <div className="sectionHeader">
               <div className="sectionHeaderLeft">
-                <MdConfirmationNumber size={24} />
-                <h2>Recent Tickets</h2>
+                <h2>Recent Assigned Tickets</h2>
               </div>
             </div>
 
@@ -368,7 +294,7 @@ function Dashboard() {
 
                       <th>
                         <div className="thContent">
-                          <span>Subject</span>
+                          <span>Title</span>
                         </div>
                       </th>
 

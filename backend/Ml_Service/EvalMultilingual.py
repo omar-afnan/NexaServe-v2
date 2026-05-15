@@ -9,7 +9,7 @@ Evaluations:
   3. Priority Classification  — Random Forest + SMOTE (all languages)
   4. Priority Classification  — mBERT + SMOTE (all languages)
 
-Comparison table vs English-only baselines from TrainModel.py / EvalMBERT.py /
+Comparison table vs English-only baselines from TrainModel.py / EvalM BERT.py /
 Eval M BERTPriority.py is included in the JSON output.
 """
 

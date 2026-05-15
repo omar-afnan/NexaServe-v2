@@ -244,6 +244,24 @@ database.run(`CREATE TABLE IF NOT EXISTS notifications(
     }
   });
 
+  // supervisor logs (AI workload supervision)
+  database.run(`CREATE TABLE IF NOT EXISTS supervisor_logs(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    agent_id INTEGER NOT NULL,
+    agent_name TEXT NOT NULL,
+    tickets_resolved_last_hour INTEGER DEFAULT 0,
+    tickets_assigned INTEGER DEFAULT 0,
+    avg_resolution_hours REAL DEFAULT 0,
+    flag TEXT NOT NULL CHECK(flag IN ('normal', 'overloaded', 'underperforming')),
+    action_taken TEXT DEFAULT NULL,
+    ollama_reasoning TEXT DEFAULT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (agent_id) REFERENCES users(userId) ON DELETE CASCADE
+  )`, function(error) {
+    if (error) console.log("Error creating supervisor_logs table:", error.message);
+    else console.log("supervisor_logs table ready");
+  });
+
   // audit logs
   database.run(`CREATE TABLE IF NOT EXISTS auditLogs(
   logId INTEGER PRIMARY KEY AUTOINCREMENT,

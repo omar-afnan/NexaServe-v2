@@ -17,6 +17,8 @@ import SupportProfile from "./pages/SupportProfile";
 import AdminReports from "./pages/AdminReports";
 import AuditLogs from "./pages/Audit_Logs";
 import AdminProfilePage from "./pages/adminProfilePage";
+import AgentPerformance from "./pages/AgentPerformance";
+import MyPerformance from "./pages/MyPerformance";
 
 
 const RequireAuth = ({ allowed, children }) => {
@@ -82,6 +84,24 @@ export default function App() {
           element={
             <RequireAuth allowed={['support', 'admin']}>
               <SupportProfile />
+            </RequireAuth>
+          }
+        />
+
+        <Route
+          path="/admin/performance"
+          element={
+            <RequireAuth allowed={['admin']}>
+              <AgentPerformance />
+            </RequireAuth>
+          }
+        />
+
+        <Route
+          path="/performance"
+          element={
+            <RequireAuth allowed={['support']}>
+              <MyPerformance />
             </RequireAuth>
           }
         />

@@ -13,13 +13,13 @@ body {
   line-height: 1.5;
 }
 
-.ticketPageLayout {
+.adminTicketsView.ticketPageLayout {
   display: flex;
   min-height: 100vh;
   background: #f8fafc;
 }
 
-.ticketPageMain {
+.adminTicketsView .ticketPageMain {
   flex: 1;
   margin-left: 280px;
   padding: 32px;
@@ -27,12 +27,12 @@ body {
   min-height: 100vh;
 }
 
-.ticketPortalWrapper {
+.adminTicketsView .ticketPortalWrapper {
   max-width: 1400px;
   margin: 0 auto;
 }
 
-.portalHeader {
+.adminTicketsView .portalHeader {
   background: #1e293b;
   border-radius: 16px;
   margin-bottom: 32px;
@@ -41,20 +41,20 @@ body {
 }
 
 /* ensure header title and subtitle stack vertically */
-.headerContent {
+.adminTicketsView .headerContent {
   background: #1e293b;
   padding: 32px 40px;
   position: relative;
   z-index: 1;
 }
 
-.headerTop {
+.adminTicketsView .headerTop {
   display: flex;
   align-items: flex-start;
   gap: 16px;
 }
 
-.headerIcon {
+.adminTicketsView .headerIcon {
   background: rgba(255, 255, 255, 0.15);
   color: #ffffff;
   padding: 10px;
@@ -62,11 +62,11 @@ body {
   flex-shrink: 0;
 }
 
-.headerInfo {
+.adminTicketsView .headerInfo {
   display: block;
 }
 
-.headerInfo h1 {
+.adminTicketsView .headerInfo h1 {
   color: #ffffff;
   font-size: 32px;
   font-weight: 700;
@@ -76,7 +76,7 @@ body {
 
 
 
-.filtersSection {
+.adminTicketsView .filtersSection {
   background: #ffffff;
   border-radius: 12px;
   border: 1px solid #e2e8f0;
@@ -89,13 +89,13 @@ body {
   flex-wrap: wrap;
 }
 
-.searchContainer {
+.adminTicketsView .searchContainer {
   position: relative;
   flex: 1;
   min-width: 300px;
 }
 
-.searchContainer img {
+.adminTicketsView .searchContainer img {
   position: absolute;
   left: 16px;
   top: 50%;
@@ -105,7 +105,7 @@ body {
   pointer-events: none;
 }
 
-.searchInput {
+.adminTicketsView .searchInput {
   width: 100%;
   color: #1e293b;
   padding: 14px 16px 14px 48px;
@@ -117,23 +117,23 @@ body {
   transition: all 0.3s ease;
 }
 
-.searchInput:focus {
+.adminTicketsView .searchInput:focus {
   outline: none;
   border-color: #3b82f6;
   background: #ffffff;
   box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
 }
 
-.searchInput::placeholder {
+.adminTicketsView .searchInput::placeholder {
   color: #94a3b8;
 }
 
-.filterControls {
+.adminTicketsView .filterControls {
   display: flex;
   gap: 16px;
 }
 
-.filterSelect {
+.adminTicketsView .filterSelect {
   padding: 14px 20px;
   border: 2px solid #e2e8f0;
   border-radius: 10px;
@@ -147,30 +147,30 @@ body {
   min-width: 140px;
 }
 
-.filterSelect:hover {
+.adminTicketsView .filterSelect:hover {
   border-color: #cbd5e1;
 }
 
-.filterSelect:focus {
+.adminTicketsView .filterSelect:focus {
   outline: none;
   border-color: #3b82f6;
   box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
 }
 
-.resultsSummary {
+.adminTicketsView .resultsSummary {
   margin-bottom: 24px;
   padding: 0 4px;
 }
 
-.resultsSummary p {
+.adminTicketsView .resultsSummary p {
   color: #64748b;
   font-size: 14px;
   margin: 0;
   font-weight: 600;
 }
 
-.loadingContainer,
-.errorContainer {
+.adminTicketsView .loadingContainer,
+.adminTicketsView .errorContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -179,20 +179,20 @@ body {
   text-align: center;
 }
 
-.loadingContainer img,
-.errorContainer img {
+.adminTicketsView .loadingContainer img,
+.adminTicketsView .errorContainer img {
   margin-bottom: 20px;
 }
 
-.loadingContainer p,
-.errorContainer p {
+.adminTicketsView .loadingContainer p,
+.adminTicketsView .errorContainer p {
   color: #64748b;
   font-size: 16px;
   margin: 0;
   font-weight: 500;
 }
 
-.emptyState {
+.adminTicketsView .emptyState {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -204,31 +204,31 @@ body {
   border: 2px dashed #cbd5e1;
 }
 
-.emptyState img {
+.adminTicketsView .emptyState img {
   margin-bottom: 24px;
   opacity: 0.5;
 }
 
-.emptyState h3 {
+.adminTicketsView .emptyState h3 {
   color: #1e293b;
   font-size: 22px;
   font-weight: 600;
   margin: 0 0 8px 0;
 }
 
-.emptyState p {
+.adminTicketsView .emptyState p {
   color: #64748b;
   margin: 0;
   font-size: 15px;
 }
 
-.ticketsGrid {
+.adminTicketsView .ticketsGrid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
   gap: 24px;
 }
 
-.supportTicketCard {
+.adminTicketsView .supportTicketCard {
   background: #ffffff;
   border-radius: 16px;
   border: 1px solid #e2e8f0;
@@ -238,12 +238,12 @@ body {
   position: relative;
 }
 
-.supportTicketCard:hover {
+.adminTicketsView .supportTicketCard:hover {
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
   border-color: #cbd5e1;
 }
 
-.cardHeader {
+.adminTicketsView .cardHeader {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -251,7 +251,7 @@ body {
   border-bottom: 1px solid #f1f5f9;
 }
 
-.ticketInfo h3 {
+.adminTicketsView .ticketInfo h3 {
   color: #3b82f6;
   font-size: 13px;
   font-weight: 700;
@@ -260,7 +260,7 @@ body {
   letter-spacing: 1px;
 }
 
-.ticketInfo h4 {
+.adminTicketsView .ticketInfo h4 {
   color: #1e293b;
   font-size: 18px;
   font-weight: 600;
@@ -268,7 +268,7 @@ body {
   line-height: 1.4;
 }
 
-.DeleteButton {
+.adminTicketsView .DeleteButton {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -285,15 +285,15 @@ body {
   background: #ef4444;
 }
 
-.DeleteButton:hover {
+.adminTicketsView .DeleteButton:hover {
   background: #dc2626;
 }
 
-.DeleteButton:active {
+.adminTicketsView .DeleteButton:active {
   background: #b91c1c;
 }
 
-.DeleteButton svg {
+.adminTicketsView .DeleteButton svg {
   color: #ffffff;
   width: 22px;
   height: 22px;
@@ -302,7 +302,7 @@ body {
   z-index: 1;
 }
 
-.ticketDescription {
+.adminTicketsView .ticketDescription {
   padding: 0 24px 20px 24px;
   color: #64748b;
   line-height: 1.7;
@@ -310,25 +310,25 @@ body {
   margin: 0;
 }
 
-.ticketMetadata {
+.adminTicketsView .ticketMetadata {
   padding: 20px 24px;
   background: #f8fafc;
   border-top: 1px solid #f1f5f9;
 }
 
-.metaRow {
+.adminTicketsView .metaRow {
   display: flex;
   gap: 32px;
   margin-bottom: 16px;
 }
 
-.metaGroup {
+.adminTicketsView .metaGroup {
   display: flex;
   flex-direction: column;
   gap: 6px;
 }
 
-.metaLabel {
+.adminTicketsView .metaLabel {
   font-size: 11px;
   color: #64748b;
   font-weight: 700;
@@ -336,20 +336,20 @@ body {
   letter-spacing: 0.8px;
 }
 
-.metaValue {
+.adminTicketsView .metaValue {
   font-size: 14px;
   color: #1e293b;
   font-weight: 600;
 }
 
-.badgeRow {
+.adminTicketsView .badgeRow {
   display: flex;
   gap: 12px;
   align-items: center;
   flex-wrap: wrap;
 }
 
-.statusBadge {
+.adminTicketsView .statusBadge {
   padding: 6px 14px;
   border-radius: 8px;
   font-size: 11px;
@@ -358,22 +358,22 @@ body {
   letter-spacing: 0.8px;
 }
 
-.status-open {
+.adminTicketsView .status-open {
   background: #fef3c7;
   color: #92400e;
 }
 
-.status-in-progress {
+.adminTicketsView .status-in-progress {
   background: #e0e7ff;
   color: #3730a3;
 }
 
-.status-closed {
+.adminTicketsView .status-closed {
   background: #d1fae5;
   color: #065f46;
 }
 
-.priorityBadge {
+.adminTicketsView .priorityBadge {
   padding: 6px 14px;
   border-radius: 8px;
   font-size: 11px;
@@ -382,28 +382,28 @@ body {
   letter-spacing: 0.8px;
 }
 
-.priority-high {
+.adminTicketsView .priority-high {
   background: #fee2e2;
   color: #dc2626;
 }
 
-.priority-medium {
+.adminTicketsView .priority-medium {
   background: #fef3c7;
   color: #d97706;
 }
 
-.priority-low {
+.adminTicketsView .priority-low {
   background: #d1fae5;
   color: #166534;
 }
 
-.cardFooter {
+.adminTicketsView .cardFooter {
   padding: 16px 24px;
   border-top: 1px solid #f1f5f9;
   background: #ffffff;
 }
 
-.createdBy {
+.adminTicketsView .createdBy {
   display: flex;
   align-items: center;
   font-size: 13px;
@@ -411,98 +411,98 @@ body {
   font-weight: 500;
 }
 
-.createdBy img {
+.adminTicketsView .createdBy img {
   margin-right: 8px;
 }
 
 @media (max-width: 1200px) {
-  .ticketPageMain {
+  .adminTicketsView .ticketPageMain {
     margin-left: 260px;
   }
 
-  .ticketsGrid {
+  .adminTicketsView .ticketsGrid {
     grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
   }
 }
 
 @media (max-width: 900px) {
-  .ticketPageMain {
+  .adminTicketsView .ticketPageMain {
     margin-left: 0;
     padding: 24px 16px;
   }
 
-  .headerContent {
+  .adminTicketsView .headerContent {
     padding: 24px 28px;
   }
 
-  .headerInfo h1 {
+  .adminTicketsView .headerInfo h1 {
     font-size: 28px;
   }
 
-  .filtersSection {
+  .adminTicketsView .filtersSection {
     padding: 20px 24px;
     flex-direction: column;
     align-items: stretch;
   }
 
-  .searchContainer {
+  .adminTicketsView .searchContainer {
     min-width: auto;
   }
 
-  .filterControls {
+  .adminTicketsView .filterControls {
     flex-direction: column;
   }
 
-  .filterSelect {
+  .adminTicketsView .filterSelect {
     width: 100%;
   }
 
-  .ticketsGrid {
+  .adminTicketsView .ticketsGrid {
     grid-template-columns: 1fr;
     gap: 20px;
   }
 }
 
 @media (max-width: 480px) {
-  .ticketPageMain {
+  .adminTicketsView .ticketPageMain {
     padding: 16px;
   }
 
-  .headerContent {
+  .adminTicketsView .headerContent {
     padding: 20px 24px;
   }
 
-  .headerInfo h1 {
+  .adminTicketsView .headerInfo h1 {
     font-size: 24px;
   }
 
-  .headerInfo p {
+  .adminTicketsView .headerInfo p {
     font-size: 14px;
   }
 
-  .filtersSection {
+  .adminTicketsView .filtersSection {
     padding: 16px 20px;
   }
 
-  .cardHeader {
+  .adminTicketsView .cardHeader {
     padding: 20px 20px 12px 20px;
   }
 
-  .ticketInfo h4 {
+  .adminTicketsView .ticketInfo h4 {
     font-size: 16px;
   }
 
-  .DeleteButton {
+  .adminTicketsView .DeleteButton {
     width: 36px;
     height: 36px;
   }
 
-  .DeleteButton svg {
+  .adminTicketsView .DeleteButton svg {
     width: 20px;
     height: 20px;
   }
 
-  .metaRow {
+  .adminTicketsView .metaRow {
     flex-direction: column;
     gap: 16px;
   }

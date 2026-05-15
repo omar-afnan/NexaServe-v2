@@ -1,0 +1,263 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+
+* {
+  box-sizing: border-box;
+}
+
+.mpLayout {
+  display: flex;
+  min-height: 100vh;
+  background: #F4F5F7;
+  font-family: 'Inter', sans-serif;
+}
+
+.mpMain {
+  flex: 1;
+  margin-left: 260px;
+  padding: 1.5rem 1.25rem;
+  background: #F4F5F7;
+  overflow-y: auto;
+}
+
+.mpContainer {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* Top bar */
+.mpTopBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.mpTopBar h1 {
+  font-size: 20px;
+  font-weight: 500;
+  color: #111827;
+  margin: 0 0 2px 0;
+}
+
+.mpTopBar p {
+  font-size: 13px;
+  color: #6B7280;
+  margin: 0;
+}
+
+/* Alerts */
+.mpAlert {
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+}
+
+.mpAlertError {
+  background: #FCEBEB;
+  color: #A32D2D;
+  border: 1px solid #F5C6C6;
+}
+
+/* Stats row */
+.mpStatsRow {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+
+.mpStatCard {
+  background: #fff;
+  border: 1px solid #E5E7EB;
+  border-radius: 10px;
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 96px;
+}
+
+.mpStatLabel {
+  font-size: 12px;
+  color: #6B7280;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.mpStatValue {
+  font-size: 26px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.mpStatBadgeWrap {
+  display: flex;
+  align-items: center;
+  height: 32px;
+}
+
+.mpDash {
+  font-size: 18px;
+  color: #9CA3AF;
+}
+
+/* Cards */
+.mpCard {
+  background: #fff;
+  border: 1px solid #E5E7EB;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.mpCardHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 18px;
+  border-bottom: 1px solid #E5E7EB;
+}
+
+.mpCardHeader h2 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: #111827;
+}
+
+/* Feedback card */
+.mpFeedbackHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 18px;
+  border-bottom: 1px solid #E5E7EB;
+}
+
+.mpFeedbackTitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mpFeedbackTitle h2 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.mpFeedbackBody {
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mpReasoning {
+  margin: 0;
+  font-size: 14px;
+  color: #374151;
+  line-height: 1.55;
+}
+
+.mpAction {
+  margin: 0;
+  font-size: 13px;
+  color: #6B7280;
+}
+
+.mpAction strong {
+  color: #374151;
+  font-weight: 600;
+}
+
+.mpTimestamp {
+  margin: 4px 0 0 0;
+  font-size: 11px;
+  color: #9CA3AF;
+}
+
+/* Table */
+.mpTableWrap {
+  overflow-x: auto;
+}
+
+.mpTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.mpTable th {
+  text-align: left;
+  padding: 11px 16px;
+  background: #F9FAFB;
+  color: #6B7280;
+  font-weight: 500;
+  font-size: 12px;
+  border-bottom: 1px solid #E5E7EB;
+  white-space: nowrap;
+}
+
+.mpTable td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #F1F2F4;
+  color: #374151;
+  vertical-align: middle;
+}
+
+.mpTable tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.mpTable tbody tr:hover {
+  background: #F9FAFB;
+}
+
+.mpEmpty {
+  text-align: center;
+  padding: 24px;
+  color: #6B7280;
+  font-size: 13px;
+}
+
+/* Badges */
+.mpBadge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: capitalize;
+  line-height: 1.4;
+}
+
+.mpBadge-normal {
+  background: #E1F5EE;
+  color: #0F6E56;
+}
+
+.mpBadge-overloaded {
+  background: #FCEBEB;
+  color: #A32D2D;
+}
+
+.mpBadge-underperforming {
+  background: #FAEEDA;
+  color: #854F0B;
+}
+
+@media (max-width: 900px) {
+  .mpMain {
+    margin-left: 0;
+  }
+  .mpStatsRow {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

@@ -268,7 +268,7 @@ export default function AdminViewTicket() {
   };
 
   return (
-    <div className="ticketPageLayout">
+    <div className="adminTicketsView ticketPageLayout">
       <AdminSideBar />
       <main className="ticketPageMain">{view()}</main>
     </div>

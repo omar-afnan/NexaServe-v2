@@ -163,7 +163,7 @@ body {
   gap: 0.75rem;
 }
 
-.statCard {
+.adminLayout .statCard {
   background: var(--surface);
   border-radius: 0.75rem;
   padding: 1rem;
@@ -174,7 +174,7 @@ body {
   overflow: hidden;
 }
 
-.statCard:hover {
+.adminLayout .statCard:hover {
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
 }
 
@@ -195,94 +195,94 @@ body {
   font-size: 20px;
 }
 
-.statOpen .iconBox {
+.adminLayout .statOpen .iconBox {
   background: #FEF3C7;
   color: var(--warning);
 }
 
-.statProgress .iconBox {
+.adminLayout .statProgress .iconBox {
   background: #DBEAFE;
   color: var(--info);
 }
 
-.statClosed .iconBox {
+.adminLayout .statClosed .iconBox {
   background: #D1FAE5;
   color: var(--success);
 }
 
-.statTotal .iconBox {
+.adminLayout .statTotal .iconBox {
   background: #EEF2FF;
   color: var(--primary);
 }
 
 /* Users Card */
-.statUsers .iconBox {
+.adminLayout .statUsers .iconBox {
   background: #f3e8ff;
   color: #8b5cf6;
 }
 
 
-.statCard.statCritical {
+.adminLayout .statCard.statCritical {
   background: #f5f3ff;
   border-left: 3px solid #7C3AED;
 }
 
-.statCard.statCritical .iconBox {
+.adminLayout .statCard.statCritical .iconBox {
   background: #EDE9FE;
   color: #7C3AED;
 }
 
-.statCard.statCritical .statCardBody h3,
-.statCard.statCritical .statLabel {
+.adminLayout .statCard.statCritical .statCardBody h3,
+.adminLayout .statCard.statCritical .statLabel {
   color: #7C3AED;
 }
 
-.statCard.statCritical .statNumber {
+.adminLayout .statCard.statCritical .statNumber {
   color: #7C3AED !important;
 }
 
 
-.statHighPriority {
+.adminLayout .statHighPriority {
   background: #FEF2F2;
   border-left: 3px solid #EF4444;
 }
 
-.statHighPriority .iconBox {
+.adminLayout .statHighPriority .iconBox {
   background: #FEE2E2;
   color: #DC2626;
 }
 
-.statHighPriority .statNumber {
+.adminLayout .statHighPriority .statNumber {
   color: #dc2626 !important;
 }
 
 
-.statMediumPriority {
+.adminLayout .statMediumPriority {
   background: #FFFBEB;
   border-left: 3px solid #F59E0B;
 }
 
-.statMediumPriority .iconBox {
+.adminLayout .statMediumPriority .iconBox {
   background: #FEF3C7;
   color: #D97706;
 }
 
-.statMediumPriority .statNumber {
+.adminLayout .statMediumPriority .statNumber {
   color: #d97706 !important;
 }
 
 
-.statLowPriority {
+.adminLayout .statLowPriority {
   background: #F0FDF4;
   border-left: 3px solid #10B981;
 }
 
-.statLowPriority .iconBox {
+.adminLayout .statLowPriority .iconBox {
   background: #DCFCE7;
   color: #059669;
 }
 
-.statLowPriority .statNumber {
+.adminLayout .statLowPriority .statNumber {
   color: #16a34a !important;
 }
 
@@ -694,11 +694,11 @@ body {
     gap: 0.625rem;
   }
 
-  .statCard {
+  .adminLayout .statCard {
     padding: 0.875rem;
   }
 
-  .iconBox {
+  .adminLayout .iconBox {
     width: 36px;
     height: 36px;
     font-size: 18px;
@@ -786,15 +786,15 @@ body {
     gap: 0.5rem;
   }
 
-  .statCard {
+  .adminLayout .statCard {
     padding: 0.75rem;
   }
 
-  .statHead {
+  .adminLayout .statHead {
     margin-bottom: 0.5rem;
   }
 
-  .iconBox {
+  .adminLayout .iconBox {
     width: 32px;
     height: 32px;
     font-size: 16px;
