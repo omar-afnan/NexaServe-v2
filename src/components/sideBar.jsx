@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import "../pages/CSS/sideBar.css";
 
 import {
@@ -7,47 +7,65 @@ import {
   MdConfirmationNumber,
   MdBarChart,
   MdPerson,
-  MdLogout
+  MdLogout,
+  MdHeadset,
 } from "react-icons/md";
 
 function SideBar() {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleLogout = () => {
     sessionStorage.clear();
     navigate("/login");
   };
 
+  const isActive = (path) => {
+    try {
+      return location.pathname === path || location.pathname.startsWith(path);
+    } catch (e) {
+      return false;
+    }
+  };
+
   return (
     <div className="sideBar">
       <div className="sideTop">
-        <h3>Support Portal</h3>
+        <div className="sidebarLogo">
+          <div className="sidebarLogoIcon">
+            <MdHeadset size={18} color="#fff" />
+          </div>
+          <div className="sidebarLogoText">
+            <span className="sidebarBrand">NexaServe</span>
+            <span className="sidebarPortal">Support Portal</span>
+          </div>
+        </div>
 
         <ul>
           <li>
-            <Link to="/dashboard">
-              <MdDashboard size={20} />
+            <Link to="/dashboard" className={isActive("/dashboard") ? "active" : ""}>
+              <MdDashboard size={18} />
               Dashboard
             </Link>
           </li>
 
           <li>
-            <Link to="/tickets">
-              <MdConfirmationNumber size={20} />
+            <Link to="/tickets" className={isActive("/tickets") ? "active" : ""}>
+              <MdConfirmationNumber size={18} />
               Tickets
             </Link>
           </li>
 
           <li>
-            <Link to="/supporter-reports">
-              <MdBarChart size={20} />
+            <Link to="/supporter-reports" className={isActive("/supporter-reports") ? "active" : ""}>
+              <MdBarChart size={18} />
               Reports
             </Link>
           </li>
 
           <li>
-            <Link to="/support-profile">
-              <MdPerson size={20} />
+            <Link to="/support-profile" className={isActive("/support-profile") ? "active" : ""}>
+              <MdPerson size={18} />
               Profile
             </Link>
           </li>
@@ -58,7 +76,7 @@ function SideBar() {
         <ul>
           <li>
             <button onClick={handleLogout} className="logoutButton">
-              <MdLogout size={20} />
+              <MdLogout size={18} />
               Logout
             </button>
           </li>

@@ -1,98 +1,148 @@
 @import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap");
 
-
 .adminSideBar {
-  width: 280px;
+  width: 220px;
   height: 100vh;
-  background: #1e293b;
-  color: white;
+  background: #F8F9FC;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   position: fixed;
   left: 0;
   top: 0;
-  box-shadow: 4px 0 30px rgba(0, 0, 0, 0.4);
+  border-right: 1px solid #E5E7EB;
   z-index: 1000;
-  border-right: 1px solid rgba(59, 130, 246, 0.1);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.adminSideBar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.adminSideBar::-webkit-scrollbar-thumb {
+  background: #E5E7EB;
+  border-radius: 4px;
 }
 
 .adminSideTop {
-  padding: 32px 24px;
-  overflow: visible;
+  flex: 1;
 }
 
-.adminSideTop h3 {
-  color: #ffffff;
-  font-size: 18px;
-  font-weight: 800;
-  text-align: center;
+/* Logo section */
+.sidebarLogo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   padding: 18px 20px;
-  margin: 0 16px 28px;
-  background: #3b82f6;
-  border-radius: 14px;
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  position: relative;
-  overflow: hidden;
+  border-bottom: 1px solid #E5E7EB;
 }
 
+.sidebarLogoIcon {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  background: #0D9488;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.sidebarLogoText {
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebarBrand {
+  font-size: 14px;
+  font-weight: 500;
+  color: #111827;
+  line-height: 1.2;
+}
+
+.sidebarPortal {
+  font-size: 11px;
+  color: #6B7280;
+  line-height: 1.2;
+}
+
+/* Nav */
 .adminSideTop ul {
   list-style: none;
+  margin: 8px 0 0 0;
   padding: 0;
-  margin: 0;
 }
 
 .adminSideTop li {
-  margin-bottom: 8px;
+  margin: 0;
 }
 
 .adminSideTop a {
   display: flex;
   align-items: center;
-  padding: 14px 20px;
-  color: #cbd5e1;
+  gap: 10px;
+  padding: 9px 20px;
+  color: #6B7280;
   text-decoration: none;
-  font-weight: 600;
-  font-size: 15px;
-  border-radius: 12px;
-  margin: 0 12px;
-  position: relative;
-  overflow: hidden;
+  font-size: 13px;
+  font-weight: 400;
+  border-left: 2px solid transparent;
   background: none;
 }
 
-.adminSideTop a:hover,
+.adminSideTop a:hover {
+  background: #F3F4F6;
+  color: #111827;
+}
+
 .adminSideTop a.active {
-  background: rgba(59, 130, 246, 0.15);
-  color: #ffffff;
+  border-left: 2px solid #0D9488;
+  background: #E6F7F5;
+  color: #0D9488;
 }
 
 .adminSideTop a svg {
-  margin-right: 14px;
-  font-size: 20px;
-  color: #94a3b8;
   flex-shrink: 0;
+  color: inherit;
 }
 
+/* Bottom / logout */
 .adminSideBottom {
-  padding: 20px 0;
-  border-top: 1px solid rgba(51, 65, 85, 0.5);
   margin-top: auto;
-  background: transparent;
-  position: relative;
+  padding: 8px 0;
 }
 
 .adminSideBottom ul {
   list-style: none;
-  padding: 0;
   margin: 0;
+  padding: 0;
 }
 
-@media (max-width: 1024px) {
-  .adminSideBar {
-    width: 240px;
-  }
+.adminLogoutButton {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 9px 20px;
+  color: #6B7280;
+  font-size: 13px;
+  font-weight: 400;
+  background: none;
+  border: none;
+  border-left: 2px solid transparent;
+  cursor: pointer;
+  text-align: left;
+  font-family: "DM Sans", sans-serif;
+}
+
+.adminLogoutButton:hover {
+  background: #F3F4F6;
+  color: #EF4444;
+}
+
+.adminLogoutButton svg {
+  flex-shrink: 0;
+  color: inherit;
 }
 
 @media (max-width: 768px) {
@@ -104,33 +154,4 @@
   .adminSideBar.open {
     transform: translateX(0);
   }
-}
-
-.adminLogoutButton {
-  display: flex;
-  align-items: center;
-  padding: 14px 20px;
-  color: #fca5a5;
-  background: none;
-  border: none;
-  cursor: pointer;
-  width: calc(100% - 24px);
-  font-size: 15px;
-  font-weight: 600;
-  border-radius: 12px;
-  margin: 0 12px;
-  position: relative;
-  overflow: hidden;
-  text-align: left;
-  font-family: "DM Sans", sans-serif;
-}
-
-.adminLogoutButton:hover {
-  color: #ffffff;
-  background: rgba(239, 68, 68, 0.15);
-}
-
-.adminLogoutButton svg {
-  margin-right: 14px;
-  flex-shrink: 0;
 }

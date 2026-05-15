@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import {
   MdDelete,
   MdPerson,
-  MdConfirmationNumber,
   MdRefresh,
   MdError
 } from "react-icons/md";
@@ -139,14 +138,8 @@ function ViewTickets() {
           <div className="portalHeader">
             <div className="headerContent">
               <div className="headerInfo">
-                <MdConfirmationNumber size={28} style={
-                  {
-                    marginRight: 10,
-                    verticalAlign: 'middle',
-                    color: "white"
-                  }
-                } />
                 <h1>Support Tickets</h1>
+                <p>Manage and resolve incoming support requests</p>
               </div>
             </div>
           </div>

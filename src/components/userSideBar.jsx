@@ -9,6 +9,7 @@ import {
   MdLogout,
   MdChat,
   MdNotifications,
+  MdHeadset,
 } from "react-icons/md";
 
 function SideBar() {
@@ -17,14 +18,12 @@ function SideBar() {
   const [unreadCount, setUnreadCount] = useState(0);
 
   const handleLogout = () => {
-    // Clear persisted chat history for the user 
     try {
       const userName = sessionStorage.getItem('userName');
       if (userName) {
         const storageKey = `chat_history_${userName}`;
         localStorage.removeItem(storageKey);
         sessionStorage.removeItem(storageKey);
-        // clear any token based chat history 
         const token = sessionStorage.getItem('token');
         if (token) {
           const tokenKey = `chat_history_token_${token}`;
@@ -54,10 +53,10 @@ function SideBar() {
       try {
         const token = sessionStorage.getItem("token");
         if (!token) return;
-        
+
         const res = await fetch("http://localhost:5000/notifications", {
           headers: { Authorization: `Bearer ${token}` },
-        }); 
+        });
 
         if (!res.ok) return;
 
@@ -76,23 +75,30 @@ function SideBar() {
   return (
     <div className="userSideBar">
       <div className="userSideTop">
-        <h3>User Portal</h3>
+        <div className="sidebarLogo">
+          <div className="sidebarLogoIcon">
+            <MdHeadset size={18} color="#fff" />
+          </div>
+          <div className="sidebarLogoText">
+            <span className="sidebarBrand">NexaServe</span>
+            <span className="sidebarPortal">User Portal</span>
+          </div>
+        </div>
 
         <ul>
           <li>
-            <Link to="/UserDashboard">
-              <MdDashboard size={20} />
+            <Link to="/UserDashboard" className={isActive("/UserDashboard") ? "active" : ""}>
+              <MdDashboard size={18} />
               Dashboard
             </Link>
           </li>
-
 
           <li>
             <Link
               to="/user/notifications"
               className={`notificationLink ${isActive("/user/notifications") ? "active" : ""}`}
             >
-              <MdNotifications size={20} />
+              <MdNotifications size={18} />
               Notifications
               {unreadCount > 0 && (
                 <span className="notificationBadge">{unreadCount > 9 ? "9+" : unreadCount}</span>
@@ -101,22 +107,22 @@ function SideBar() {
           </li>
 
           <li>
-            <Link to="/chat">
-              <MdChat size={20} />
+            <Link to="/chat" className={isActive("/chat") ? "active" : ""}>
+              <MdChat size={18} />
               Chat with AI
             </Link>
           </li>
 
           <li>
-            <Link to="/user/view-ticket">
-              <MdConfirmationNumber size={20} />
+            <Link to="/user/view-ticket" className={isActive("/user/view-ticket") ? "active" : ""}>
+              <MdConfirmationNumber size={18} />
               My Tickets
             </Link>
           </li>
 
           <li>
-            <Link to="/user/profile">
-              <MdPerson size={20} />
+            <Link to="/user/profile" className={isActive("/user/profile") ? "active" : ""}>
+              <MdPerson size={18} />
               Profile
             </Link>
           </li>
@@ -127,7 +133,7 @@ function SideBar() {
         <ul>
           <li>
             <button onClick={handleLogout} className="userLogoutButton">
-              <MdLogout size={20} />
+              <MdLogout size={18} />
               Logout
             </button>
           </li>

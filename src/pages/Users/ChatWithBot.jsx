@@ -43,7 +43,7 @@ export default function ChatWithBot() {
       return `chat_history_${userId}_${userName}`;
     }
     if (token) {
-      return `chat_history_token_${token.slice(-12)}`; // fallback key when userId is unavailable
+      return `chat_history_token_${token.slice(-12)}`;
     }
     return null;
   }, []);
@@ -88,9 +88,7 @@ export default function ChatWithBot() {
 
     try {
       const token = sessionStorage.getItem("token");
-      if (!token) {
-        throw new Error("unauthorized");
-      }
+      if (!token) throw new Error("unauthorized");
 
       const startTime = Date.now();
 
@@ -100,11 +98,7 @@ export default function ChatWithBot() {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`
         },
-        body: JSON.stringify(
-          {
-            message: UserMessage
-          }
-        )
+        body: JSON.stringify({ message: UserMessage })
       });
 
       if (res.status === 401 || res.status === 403) {
@@ -112,9 +106,7 @@ export default function ChatWithBot() {
         navigate("/login", { state: { reason: "session_expired" } });
         return;
       }
-      if (!res.ok) {
-        throw new Error(`HTTP error! status: ${res.status}`);
-      }
+      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
 
       const data = await res.json();
 
@@ -140,19 +132,13 @@ export default function ChatWithBot() {
       } else {
         setMessages((prev) => [
           ...prev,
-          {
-            sender: "bot",
-            text: data.reply || "I've processed your request."
-          }
+          { sender: "bot", text: data.reply || "I've processed your request." }
         ]);
       }
     } catch (err) {
       setMessages((prev) => [
         ...prev,
-        {
-          sender: "bot",
-          text: "Connection error. Please try again."
-        }
+        { sender: "bot", text: "Connection error. Please try again." }
       ]);
     } finally {
       setLoading(false);
@@ -177,59 +163,44 @@ export default function ChatWithBot() {
       <UserSideBar />
 
       <main className="chatMainContent">
-        <div className="chatHeader">
-          <div className="chatHeaderContent">
-            <div className="chatHeaderIcon">
-              <MdOutlineSmartToy size={40} />
-            </div>
-            <div>
-              <h2>Chat with AI Assistant</h2>
-              <p>Describe your issue</p>
-            </div>
+        {/* Top bar */}
+        <div className="chatTopBar">
+          <div className="chatTopBarIcon">
+            <MdOutlineSmartToy size={20} color="#0D9488" />
+          </div>
+          <div>
+            <h2 className="chatTopBarTitle">Nexa AI</h2>
+            <p className="chatTopBarSub">Your IT support assistant</p>
           </div>
         </div>
 
+        {/* Quick action pills */}
         <div className="quickActions">
-          <h3>Common Issues:</h3>
           <div className="quickActionButtons">
-            <button
-              className="quickActionButton"
-              onClick={() => handleQuickAction("I am having hardware issues")}
-            >
-              <MdComputer size={20} />
+            <button className="quickActionButton" onClick={() => handleQuickAction("I am having hardware issues")}>
+              <MdComputer size={16} />
               <span>Hardware Problem</span>
             </button>
-            <button
-              className="quickActionButton"
-              onClick={() => handleQuickAction("I am having software issues")}
-            >
-              <MdBugReport size={20} />
+            <button className="quickActionButton" onClick={() => handleQuickAction("I am having software issues")}>
+              <MdBugReport size={16} />
               <span>Software Issue</span>
             </button>
-            <button
-              className="quickActionButton"
-              onClick={() => handleQuickAction("I forgot my password")}
-            >
-              <MdLock size={20} />
+            <button className="quickActionButton" onClick={() => handleQuickAction("I forgot my password")}>
+              <MdLock size={16} />
               <span>Password Reset</span>
             </button>
-            <button
-              className="quickActionButton"
-              onClick={() => handleQuickAction("I am having email issues")}
-            >
-              <MdEmail size={20} />
-              <span>Email Problem</span>
-            </button>
-            <button
-              className="quickActionButton"
-              onClick={() => handleQuickAction("wifi not working")}
-            >
-              <MdWifi size={20} />
+            <button className="quickActionButton" onClick={() => handleQuickAction("wifi not working")}>
+              <MdWifi size={16} />
               <span>Network Issue</span>
+            </button>
+            <button className="quickActionButton" onClick={() => handleQuickAction("I am having email issues")}>
+              <MdEmail size={16} />
+              <span>Email Problem</span>
             </button>
           </div>
         </div>
 
+        {/* Chat area */}
         <div className="chatSectionWrapper">
           <ChatBox
             messages={messages}
@@ -241,8 +212,6 @@ export default function ChatWithBot() {
             onSelectSubcategory={handleSelectSubcategory}
           />
         </div>
-
-
       </main>
     </div>
   );
