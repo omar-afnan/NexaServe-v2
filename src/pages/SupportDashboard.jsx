@@ -36,19 +36,30 @@ function Dashboard() {
   });
   const [loading, setLoading] = useState(true);
   const [userName, setUserName] = useState("");
+  const [activeFilter, setActiveFilter] = useState("All");
+  const [isAnimating, setIsAnimating] = useState(false);
+
+  const handleFilterChange = (newFilter) => {
+    if (newFilter === activeFilter) return;
+    setIsAnimating(true);
+    setTimeout(() => {
+      setActiveFilter(newFilter);
+      setIsAnimating(false);
+    }, 150);
+  };
 
   useEffect(() => {
     const name = sessionStorage.getItem("userName");
     setUserName(name || "Support Agent");
 
     fetchTickets();
-    const interval = setInterval(fetchTickets, 30000);
+    const interval = setInterval(() => fetchTickets(false), 30000);
     return () => clearInterval(interval);
   }, []);
 
-  const fetchTickets = async () => {
+  const fetchTickets = async (showLoader = true) => {
     try {
-      setLoading(true);
+      if (showLoader) setLoading(true);
       const token = sessionStorage.getItem("token");
       const response = await fetchWithAuth("http://localhost:5000/tickets", {
         headers: {
@@ -65,15 +76,15 @@ function Dashboard() {
       if (!Array.isArray(data)) {
 
         setTickets([]);
-        setLoading(false);
+        if (showLoader) setLoading(false);
         return;
       }
 
       setTickets(data);
       calculateStats(data);
-      setLoading(false);
+      if (showLoader) setLoading(false);
     } catch (error) {
-      setLoading(false);
+      if (showLoader) setLoading(false);
     }
   };
 
@@ -119,7 +130,12 @@ function Dashboard() {
       });
 
       if (response.ok) {
-        fetchTickets();
+        setTickets((prevTickets) => {
+          const next = prevTickets.filter((t) => t.ticket_id !== ticketId);
+          calculateStats(next);
+          return next;
+        });
+        fetchTickets(false);
       }
       else {
         alert("Failed to delete ticket");
@@ -152,7 +168,7 @@ function Dashboard() {
             ticket.ticket_id === ticketId ? { ...ticket, status: newStatus } : ticket
           )
         );
-        fetchTickets();
+        fetchTickets(false);
       } else {
         const errorData = await response.json();
         alert(`Failed to update ticket status: ${errorData.error || "Unknown error"}`);
@@ -163,7 +179,11 @@ function Dashboard() {
   };
 
   const topTenTickets = useMemo(() => {
-    return tickets
+    const filtered = activeFilter === "All"
+      ? tickets
+      : tickets.filter((t) => t.status === activeFilter);
+
+    return filtered
       .slice()
       .sort((a, b) => {
         const priorityOrder = {
@@ -177,7 +197,7 @@ function Dashboard() {
         return (priorityOrder[aPriority] ?? 4) - (priorityOrder[bPriority] ?? 4);
       })
       .slice(0, 10);
-  }, [tickets]);
+  }, [tickets, activeFilter]);
 
   return (
     <div className="dashboardLayout">
@@ -267,6 +287,18 @@ function Dashboard() {
               <div className="sectionHeaderLeft">
                 <h2>Recent Assigned Tickets</h2>
               </div>
+              <div className="filterPills">
+                {["All", "Open", "In Progress", "Closed"].map((f) => (
+                  <button
+                    key={f}
+                    type="button"
+                    className={`filterPill ${activeFilter === f ? "filterPillActive" : ""}`}
+                    onClick={() => handleFilterChange(f)}
+                  >
+                    {f}
+                  </button>
+                ))}
+              </div>
             </div>
 
             {loading ? (
@@ -280,7 +312,7 @@ function Dashboard() {
                 <p>No tickets found</p>
               </div>
             ) : (
-              <div className="tableWrapper">
+              <div className={`tableWrapper ticketTableWrapper ${isAnimating ? "tableAnimating" : ""}`}>
                 <table className="ticketsTable">
 
                   <thead>
@@ -337,6 +369,7 @@ function Dashboard() {
                     {topTenTickets.map((ticket) => (
                       <tr
                         key={ticket.ticket_id}
+                        className="ticketRow"
                       >
                         <td>
                           <span className="ticketId">{ticket.ticket_id}</span>

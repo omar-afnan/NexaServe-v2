@@ -10,6 +10,11 @@
   display: flex;
   min-height: 100vh;
   background: #F4F5F7;
+  scrollbar-gutter: stable;
+}
+
+html {
+  scrollbar-gutter: stable;
 }
 
 .dashboardMain {
@@ -18,6 +23,7 @@
   padding: 1.5rem 1.25rem;
   background: #F4F5F7;
   overflow-y: auto;
+  scrollbar-gutter: stable;
 }
 
 .dashboardContainer {
@@ -404,6 +410,68 @@
 @keyframes spin {
   to {
     transform: rotate(360deg);
+  }
+}
+
+/* filter pills */
+.filterPills {
+  display: flex;
+  gap: 6px;
+}
+
+.filterPill {
+  padding: 5px 12px;
+  border: 1px solid #E5E7EB;
+  background: #ffffff;
+  border-radius: 999px;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: #6B7280;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.filterPill:hover {
+  background: #F9FAFB;
+  color: #374151;
+}
+
+.filterPillActive {
+  background: #0D9488;
+  border-color: #0D9488;
+  color: #ffffff;
+}
+
+.filterPillActive:hover {
+  background: #0D9488;
+  color: #ffffff;
+}
+
+/* filter transition animations */
+.ticketTableWrapper {
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.tableAnimating {
+  opacity: 0;
+  transform: translateY(4px);
+}
+
+.ticketRow {
+  animation: rowFadeIn 0.2s ease forwards;
+}
+
+@keyframes rowFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 

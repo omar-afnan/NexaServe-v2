@@ -1,36 +1,48 @@
 import React, {
   useState,
   useEffect,
+  useMemo,
   useRef
 } from "react";
 import "./CSS/SupportProfile.css";
 import SideBar from "../components/sideBar";
+import fetchWithAuth from "../api/fetchWithAuth";
 
 import {
-  MdPerson,
-  MdEmail,
   MdEdit,
   MdSave,
   MdCancel,
   MdLock,
-  MdBadge,
   MdVisibility,
-  MdVisibilityOff,
-  MdCheckCircle,
-  MdAssignment,
-  MdAccessTime
+  MdVisibilityOff
 } from "react-icons/md";
-
 
 function SupportProfile() {
   const [userData, setUserData] = useState({
     name: "",
     email: "",
-    role: "support"
+    role: "support",
+    userId: ""
   });
 
   const [isEditing, setIsEditing] = useState(false);
   const [editData, setEditData] = useState({ name: "", email: "" });
+
+  const [agentStatus, setAgentStatus] = useState("Available");
+
+  const [perf, setPerf] = useState({
+    resolved: 0,
+    assigned: 0,
+    avgResolution: "—"
+  });
+
+  const [notifPrefs, setNotifPrefs] = useState({
+    newTicket: true,
+    slaBreach: true,
+    dailyDigest: false,
+    teamAnnouncements: false
+  });
+
   const [passwordData, setPasswordData] = useState({
     currentPassword: "",
     newPassword: "",
@@ -40,6 +52,7 @@ function SupportProfile() {
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
   const [toast, setToast] = useState(null);
   const toastTimer = useRef(null);
 
@@ -53,14 +66,72 @@ function SupportProfile() {
     loadUserData();
   }, []);
 
+  useEffect(() => {
+    if (userData.userId) fetchPerformance(userData.userId);
+  }, [userData.userId]);
+
   const loadUserData = () => {
-    // handle missing session
     const name = sessionStorage.getItem("userName") || "";
     const email = sessionStorage.getItem("userEmail") || "";
     const role = sessionStorage.getItem("role") || "support";
+    const userId =
+      sessionStorage.getItem("userId") ||
+      sessionStorage.getItem("user_id") ||
+      "";
 
-    setUserData({ name, email, role });
+    setUserData({ name, email, role, userId });
     setEditData({ name, email });
+  };
+
+  const fetchPerformance = async (userId) => {
+    try {
+      const token = sessionStorage.getItem("token");
+      const response = await fetchWithAuth("http://localhost:5000/tickets", {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (!response.ok) return;
+      const data = await response.json();
+      if (!Array.isArray(data)) return;
+
+      const mine = data.filter(
+        (t) =>
+          String(t.assigned_to) === String(userId) ||
+          String(t.assignedTo) === String(userId)
+      );
+
+      const closed = mine.filter((t) => t.status === "Closed");
+      const openOrInProgress = mine.filter(
+        (t) => t.status === "Open" || t.status === "In Progress"
+      );
+
+      let avgLabel = "—";
+      const durations = closed
+        .map((t) => {
+          const created = t.created_at ? new Date(t.created_at).getTime() : null;
+          const updated =
+            t.updated_at || t.closed_at || t.resolved_at;
+          const closedAt = updated ? new Date(updated).getTime() : null;
+          if (!created || !closedAt || closedAt < created) return null;
+          return closedAt - created;
+        })
+        .filter((d) => d !== null);
+
+      if (durations.length > 0) {
+        const avgMs = durations.reduce((a, b) => a + b, 0) / durations.length;
+        const hours = avgMs / (1000 * 60 * 60);
+        avgLabel = hours < 1
+          ? `${Math.round(hours * 60)}m`
+          : `${hours.toFixed(1)}h`;
+      }
+
+      setPerf({
+        resolved: closed.length,
+        assigned: openOrInProgress.length,
+        avgResolution: avgLabel
+      });
+    } catch (e) {
+      // silent — leave defaults
+    }
   };
 
   const toggleEdit = () => {
@@ -92,14 +163,12 @@ function SupportProfile() {
         return;
       }
 
-      // update sessionStorage and state
       sessionStorage.setItem("userName", editData.name);
       sessionStorage.setItem("userEmail", editData.email);
       setUserData({ ...userData, name: editData.name, email: editData.email });
       setIsEditing(false);
       showToast("Profile updated successfully!");
     } catch (error) {
-      console.error("Error updating profile:", error);
       showToast("Failed to update profile. Please try again.", "error");
     }
   };
@@ -142,14 +211,27 @@ function SupportProfile() {
       setPasswordData({ currentPassword: "", newPassword: "", confirmPassword: "" });
       setShowPasswordChange(false);
     } catch (error) {
-      console.error("Error changing password:", error);
       showToast("Failed to change password. Try again.", "error");
     }
   };
 
-  const initials = userData.name
-    ? userData.name.split(" ").map(w => w[0]).join("").toUpperCase().slice(0, 2)
-    : "SA";
+  const initials = useMemo(() => {
+    return userData.name
+      ? userData.name.split(" ").map(w => w[0]).join("").toUpperCase().slice(0, 2)
+      : "SA";
+  }, [userData.name]);
+
+  const lastLoginLabel = useMemo(() => {
+    const stored = sessionStorage.getItem("lastLogin");
+    const d = stored ? new Date(stored) : new Date();
+    return d.toLocaleString("en-GB", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit"
+    });
+  }, []);
 
   return (
     <div className="profileLayout">
@@ -171,118 +253,143 @@ function SupportProfile() {
 
           <div className="contentGrid">
 
-            {/* Left — Agent Profile */}
-            <section className="profileCard">
-              <div className="cardHeader">
-                <h2>Agent Profile</h2>
-                <button onClick={toggleEdit} className="editBtn">
-                  {isEditing ? (
-                    <><MdCancel size={16} /><span>Cancel</span></>
-                  ) : (
-                    <><MdEdit size={16} /><span>Edit</span></>
-                  )}
-                </button>
-              </div>
+            {/* Left column */}
+            <div className="leftColumn">
 
-              <div className="cardBody">
-                <div className="agentAvatarBlock">
-                  <div className="agentAvatar">{initials}</div>
-                  <p className="agentName">{userData.name || "Support Agent"}</p>
-                  <p className="agentEmail">{userData.email}</p>
-                  <span className="roleBadge">Support Agent</span>
-                </div>
-
-                <div className="inputGroup">
-                  <label><MdPerson size={14} />Full Name</label>
-                  {isEditing ? (
-                    <input
-                      type="text"
-                      value={editData.name}
-                      onChange={(e) => setEditData({ ...editData, name: e.target.value })}
-                      className="input"
-                      placeholder="Enter your name"
-                    />
-                  ) : (
-                    <div className="inputDisplay">{userData.name}</div>
-                  )}
-                </div>
-
-                <div className="inputGroup">
-                  <label><MdEmail size={14} />Email Address</label>
-                  {isEditing ? (
-                    <input
-                      type="email"
-                      value={editData.email}
-                      onChange={(e) => setEditData({ ...editData, email: e.target.value })}
-                      className="input"
-                      placeholder="Enter your email"
-                    />
-                  ) : (
-                    <div className="inputDisplay">{userData.email}</div>
-                  )}
-                </div>
-
-                {isEditing && (
-                  <button onClick={handleSaveProfile} className="saveButton">
-                    <MdSave size={16} />
-                    Save Changes
-                  </button>
-                )}
-              </div>
-            </section>
-
-            {/* Right column */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-
-              {/* Performance card */}
+              {/* Agent Profile */}
               <section className="profileCard">
                 <div className="cardHeader">
-                  <h2>Performance</h2>
+                  <h2>Agent Profile</h2>
+                  <button onClick={toggleEdit} className="editBtn">
+                    {isEditing ? (
+                      <><MdCancel size={14} /><span>Cancel</span></>
+                    ) : (
+                      <><MdEdit size={14} /><span>Edit</span></>
+                    )}
+                  </button>
+                </div>
+
+                <div className="cardBody">
+                  <div className="agentAvatarBlock">
+                    <div className="agentAvatar">{initials}</div>
+                    <p className="agentName">{userData.name || "Support Agent"}</p>
+                    <p className="agentEmail">{userData.email}</p>
+                    <span className="roleBadge">SUPPORT AGENT</span>
+                  </div>
+
+                  <div className="statusBlock">
+                    <div className="fieldLabel">STATUS</div>
+                    <div className="statusToggleRow">
+                      <button
+                        type="button"
+                        className={`statusPill statusAvailable ${agentStatus === "Available" ? "statusActive" : ""}`}
+                        onClick={() => setAgentStatus("Available")}
+                      >
+                        <span className="statusDot dotGreen" />
+                        Available
+                      </button>
+                      <button
+                        type="button"
+                        className={`statusPill statusBusy ${agentStatus === "Busy" ? "statusActive" : ""}`}
+                        onClick={() => setAgentStatus("Busy")}
+                      >
+                        <span className="statusDot dotAmber" />
+                        Busy
+                      </button>
+                      <button
+                        type="button"
+                        className={`statusPill statusOffline ${agentStatus === "Offline" ? "statusActive" : ""}`}
+                        onClick={() => setAgentStatus("Offline")}
+                      >
+                        <span className="statusDot dotDark" />
+                        Offline
+                      </button>
+                    </div>
+                    <p className="statusHelpText">Auto-assignment disabled when offline</p>
+                  </div>
+
+                  <div className="skillsBlock">
+                    <div className="fieldLabel">SKILLS & QUEUES</div>
+                    <div className="skillPills">
+                      <span className="skillPill">Network</span>
+                      <span className="skillPill">Hardware</span>
+                      <span className="skillPill">Software</span>
+                    </div>
+                  </div>
+
+                  <div className="inputGroup">
+                    <label>FULL NAME</label>
+                    {isEditing ? (
+                      <input
+                        type="text"
+                        value={editData.name}
+                        onChange={(e) => setEditData({ ...editData, name: e.target.value })}
+                        className="input"
+                        placeholder="Enter your name"
+                      />
+                    ) : (
+                      <input className="input" value={userData.name} readOnly />
+                    )}
+                  </div>
+
+                  <div className="inputGroup">
+                    <label>EMAIL ADDRESS</label>
+                    <input className="input" value={userData.email} readOnly />
+                  </div>
+
+                  {isEditing && (
+                    <button onClick={handleSaveProfile} className="saveButton">
+                      <MdSave size={16} />
+                      Save Changes
+                    </button>
+                  )}
+                </div>
+              </section>
+
+              {/* Working Hours */}
+              <section className="profileCard">
+                <div className="cardHeader">
+                  <h2>Working Hours</h2>
                 </div>
                 <div className="cardBody">
-                  <div className="perfStatsList">
-                    <div className="perfStatItem">
-                      <div className="perfIconSquare teal"><MdCheckCircle size={20} /></div>
-                      <div className="perfStatText">
-                        <div className="perfStatValue">—</div>
-                        <div className="perfStatLabel">Tickets Resolved</div>
-                      </div>
-                    </div>
-                    <div className="perfStatItem">
-                      <div className="perfIconSquare amber"><MdAssignment size={20} /></div>
-                      <div className="perfStatText">
-                        <div className="perfStatValue">—</div>
-                        <div className="perfStatLabel">Currently Assigned</div>
-                      </div>
-                    </div>
-                    <div className="perfStatItem">
-                      <div className="perfIconSquare blue"><MdAccessTime size={20} /></div>
-                      <div className="perfStatText">
-                        <div className="perfStatValue">—</div>
-                        <div className="perfStatLabel">Avg Resolution Time</div>
-                      </div>
-                    </div>
+                  <div className="metaRow">
+                    <span className="metaLabel">Working Hours</span>
+                    <span className="metaValue">09:00–17:00</span>
+                  </div>
+                  <div className="metaRow">
+                    <span className="metaLabel">Timezone</span>
+                    <span className="metaValue">GMT+4</span>
                   </div>
                 </div>
               </section>
 
-              {/* Security card */}
+              {/* Security */}
               <section className="profileCard">
                 <div className="cardHeader">
                   <h2>Security</h2>
                 </div>
                 <div className="cardBody">
+                  <div className="metaRow">
+                    <span className="metaLabel">Last Login</span>
+                    <span className="metaValue">{lastLoginLabel}</span>
+                  </div>
+                  <div className="metaRow">
+                    <span className="metaLabel">Last Password Change</span>
+                    <span className="metaValue">2 days ago</span>
+                  </div>
+
                   <button
                     onClick={() => setShowPasswordChange(!showPasswordChange)}
-                    className="passwordToggleBtn"
+                    className="darkButton"
                   >
-                    <MdLock size={18} />
+                    <MdLock size={16} />
                     {showPasswordChange ? "Hide Password Change" : "Change Password"}
                   </button>
+
                   {showPasswordChange && (
                     <form onSubmit={handlePasswordChange} className="passwordForm">
                       <div className="inputGroup">
-                        <label>Current Password</label>
+                        <label>CURRENT PASSWORD</label>
                         <div className="passwordInputWrapper">
                           <input
                             type={showCurrentPassword ? "text" : "password"}
@@ -299,7 +406,7 @@ function SupportProfile() {
                       </div>
 
                       <div className="inputGroup">
-                        <label>New Password</label>
+                        <label>NEW PASSWORD</label>
                         <div className="passwordInputWrapper">
                           <input
                             type={showNewPassword ? "text" : "password"}
@@ -316,7 +423,7 @@ function SupportProfile() {
                       </div>
 
                       <div className="inputGroup">
-                        <label>Confirm New Password</label>
+                        <label>CONFIRM NEW PASSWORD</label>
                         <div className="passwordInputWrapper">
                           <input
                             type={showConfirmPassword ? "text" : "password"}
@@ -332,15 +439,92 @@ function SupportProfile() {
                         </div>
                       </div>
 
-                      <button type="submit" className="submitButton">
+                      <button type="submit" className="darkButton">
                         Update Password
                       </button>
                     </form>
                   )}
                 </div>
               </section>
+            </div>
+
+            {/* Right column */}
+            <div className="rightColumn">
+
+              {/* Performance */}
+              <section className="profileCard">
+                <div className="cardHeader">
+                  <h2>Performance</h2>
+                </div>
+                <div className="cardBody">
+                  <div className="perfStatsRow">
+                    <div className="perfMiniCard">
+                      <div className="perfMiniLabel">TICKETS RESOLVED</div>
+                      <div className="perfMiniValue">{perf.resolved}</div>
+                    </div>
+                    <div className="perfMiniCard">
+                      <div className="perfMiniLabel">CURRENTLY ASSIGNED</div>
+                      <div className="perfMiniValue">{perf.assigned}</div>
+                    </div>
+                    <div className="perfMiniCard">
+                      <div className="perfMiniLabel">AVG RESOLUTION</div>
+                      <div className="perfMiniValue">{perf.avgResolution}</div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              {/* Notifications */}
+              <section className="profileCard">
+                <div className="cardHeader">
+                  <h2>Notifications</h2>
+                </div>
+                <div className="cardBody">
+                  <label className="notifRow">
+                    <input
+                      type="checkbox"
+                      checked={notifPrefs.newTicket}
+                      onChange={(e) => setNotifPrefs({ ...notifPrefs, newTicket: e.target.checked })}
+                    />
+                    <span>Email me when a new ticket is assigned</span>
+                  </label>
+                  <label className="notifRow">
+                    <input
+                      type="checkbox"
+                      checked={notifPrefs.slaBreach}
+                      onChange={(e) => setNotifPrefs({ ...notifPrefs, slaBreach: e.target.checked })}
+                    />
+                    <span>Notify me when a ticket is about to breach SLA</span>
+                  </label>
+                  <label className="notifRow">
+                    <input
+                      type="checkbox"
+                      checked={notifPrefs.dailyDigest}
+                      onChange={(e) => setNotifPrefs({ ...notifPrefs, dailyDigest: e.target.checked })}
+                    />
+                    <span>Daily digest of resolved tickets</span>
+                  </label>
+                  <label className="notifRow">
+                    <input
+                      type="checkbox"
+                      checked={notifPrefs.teamAnnouncements}
+                      onChange={(e) => setNotifPrefs({ ...notifPrefs, teamAnnouncements: e.target.checked })}
+                    />
+                    <span>Notify me of team announcements</span>
+                  </label>
+
+                  <button
+                    type="button"
+                    className="darkButton"
+                    onClick={() => showToast("Preferences saved!")}
+                  >
+                    Save Preferences
+                  </button>
+                </div>
+              </section>
 
             </div>
+
           </div>
         </div>
       </main>
