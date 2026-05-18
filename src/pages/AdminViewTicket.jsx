@@ -91,10 +91,10 @@ export default function AdminViewTicket() {
       return (
         <div className="ticketPortalWrapper">
           <div className="loadingContainer">
-            <MdRefresh size={48} style={
+            <MdRefresh size={40} style={
               {
-                color: "#3b82f6",
-                marginBottom: "16px"
+                color: "#0D9488",
+                marginBottom: "12px"
               }} />
             <p>Loading tickets</p>
           </div>
@@ -123,13 +123,6 @@ export default function AdminViewTicket() {
           <div className="headerContent">
             <div className="headerTop">
               <div className="headerInfo">
-                <MdConfirmationNumber size={28} style={
-                  {
-                    marginRight: 10,
-                    verticalAlign: 'middle',
-                    color: "white"
-                  }
-                } />
                 <h1>Admin Tickets</h1>
               </div>
             </div>

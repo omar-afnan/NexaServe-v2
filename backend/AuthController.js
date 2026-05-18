@@ -50,8 +50,8 @@ class AuthController {
           // hash password
           const hashedPassword = await bcrypt.hash(userPassword, 10);
 
-          
-          const userRole = "user";
+          const allowedRoles = ["user", "support", "admin"];
+          const userRole = allowedRoles.includes(role) ? role : "user";
 
         
           db.run(

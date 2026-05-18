@@ -182,28 +182,20 @@ function AdminDashboard() {
 
       <main className="mainContent">
         <div className="dashboardContainer">
-          {/* HERO HEADER */}
           <header className="headerPanel">
             <div className="headerInner">
               <div className="heroText">
-                <div className="heroIcon">
-                  <MdDashboard size={32} />
-                </div>
                 <div>
-                  <h1>Admin Dashboard</h1>
-                  <p className="heroSubtitle">
-                    Welcome back, <strong>{userName}</strong>
-                  </p>
+                  <h1>Dashboard</h1>
+                  <p className="heroSubtitle">System overview</p>
                 </div>
               </div>
               <div className="heroActions">
                 <AdminNotification />
-
                 <button onClick={fetchAdminData} className="refreshButton">
-                  <MdRefresh size={20} />
+                  <MdRefresh size={16} />
                   <span>Refresh</span>
                 </button>
-
               </div>
             </div>
           </header>
@@ -344,7 +336,6 @@ function AdminDashboard() {
           <section className="ticketsSection">
             <div className="sectionHeader">
               <div className="sectionHeaderLeft">
-                <MdConfirmationNumber size={24} />
                 <h2>Recent Tickets</h2>
               </div>
             </div>

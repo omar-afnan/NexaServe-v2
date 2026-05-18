@@ -22,8 +22,6 @@ import {
   MdSchedule
 } from "react-icons/md";
 
-import { HiClipboardDocumentList } from "react-icons/hi2";
-
 function AuditLogs() {
   const [auditLogs, setAuditLogs] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -251,21 +249,16 @@ function AuditLogs() {
 
         <div className="auditHero">
           <div className="heroContent">
-
-            <HiClipboardDocumentList size={28} style={
-              {
-                color: "white"
-              }} />
-
             <h1>Audit Logs</h1>
+            <p>Track every action across the system</p>
           </div>
           <div className="heroActions">
             <button className="exportBtn" onClick={exportToCSV}>
-              <MdDownload size={18} />
+              <MdDownload size={14} />
               Export CSV
             </button>
             <button className="refreshBtn" onClick={fetchAuditLogs}>
-              <MdRefresh size={18} />
+              <MdRefresh size={14} />
               Refresh
             </button>
           </div>

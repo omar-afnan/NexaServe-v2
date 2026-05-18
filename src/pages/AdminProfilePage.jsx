@@ -1,15 +1,12 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useMemo, useRef } from "react";
 import "./CSS/adminProfilePage.css";
 import AdminSideBar from "../components/AdminSideBar";
 
 import {
-  MdPerson,
-  MdEmail,
   MdEdit,
   MdSave,
   MdCancel,
   MdLock,
-  MdBadge,
   MdVisibility,
   MdVisibilityOff
 } from "react-icons/md";
@@ -135,12 +132,29 @@ function AdminProfile() {
     }
   };
 
+  const initials = useMemo(() => {
+    return userData.name
+      ? userData.name.split(" ").map(w => w[0]).join("").toUpperCase().slice(0, 2)
+      : "AD";
+  }, [userData.name]);
+
+  const lastLoginLabel = useMemo(() => {
+    const stored = sessionStorage.getItem("lastLogin");
+    const d = stored ? new Date(stored) : new Date();
+    return d.toLocaleString("en-GB", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit"
+    });
+  }, []);
+
   return (
     <div className="adminProfileLayout">
       <AdminSideBar />
 
       <main className="adminProfileMain">
-        
         <div className="adminProfileContainer">
 
           {toast && (
@@ -156,169 +170,168 @@ function AdminProfile() {
 
           <div className="adminProfileGrid">
 
-            <section className="adminProfileCard">
-              <div className="adminProfileCardHeader">
-                <h2>Profile Information</h2>
-                <button onClick={handleEditToggle} className="adminProfileEditBtn">
-                  {isEditing ? (
-                    <>
-                      <MdCancel size={18} />
-                      <span>Cancel</span>
-                    </>
-                  ) : (
-                    <>
-                      <MdEdit size={18} />
-                      <span>Edit</span>
-                    </>
-                  )}
-                </button>
-              </div>
+            <div className="adminProfileLeft">
 
-              <div className="adminProfileCardBody">
-                <div className="adminProfileInputGroup">
-                  <label>
-                    <MdPerson size={20} />
-                    Full Name
-                  </label>
-                  {isEditing ? (
-                    <input
-                      type="text"
-                      value={editData.name}
-                      onChange={(e) => setEditData({ ...editData, name: e.target.value })}
-                      className="adminProfileInput"
-                      placeholder="Enter your name"
-                    />
-                  ) : (
-                    <div className="adminProfileInputDisplay">{userData.name}</div>
-                  )}
+              {/* Profile Information */}
+              <section className="adminProfileCard">
+                <div className="adminProfileCardHeader">
+                  <h2>Profile Information</h2>
+                  <button onClick={handleEditToggle} className="adminProfileEditBtn">
+                    {isEditing ? (
+                      <><MdCancel size={14} /><span>Cancel</span></>
+                    ) : (
+                      <><MdEdit size={14} /><span>Edit</span></>
+                    )}
+                  </button>
                 </div>
 
-                <div className="adminProfileInputGroup">
-                  <label>
-                    <MdEmail size={20} />
-                    Email Address
-                  </label>
-                  {isEditing ? (
-                    <input
-                      type="email"
-                      value={editData.email}
-                      onChange={(e) => setEditData({ ...editData, email: e.target.value })}
-                      className="adminProfileInput"
-                      placeholder="Enter your email"
-                    />
-                  ) : (
-                    <div className="adminProfileInputDisplay">{userData.email}</div>
-                  )}
-                </div>
-
-                <div className="adminProfileInputGroup">
-                  <label>
-                    <MdBadge size={20} />
-                    Role
-                  </label>
-
-                  <div className="adminProfileRoleBadge">
-                    Administrator
+                <div className="adminProfileCardBody">
+                  <div className="adminAvatarBlock">
+                    <div className="adminAvatar">{initials}</div>
+                    <p className="adminName">{userData.name || "Admin"}</p>
+                    <p className="adminEmail">{userData.email}</p>
+                    <span className="adminRoleBadge">ADMINISTRATOR</span>
                   </div>
 
+                  <div className="adminProfileInputGroup">
+                    <label>FULL NAME</label>
+                    {isEditing ? (
+                      <input
+                        type="text"
+                        value={editData.name}
+                        onChange={(e) => setEditData({ ...editData, name: e.target.value })}
+                        className="adminProfileInput"
+                        placeholder="Enter your name"
+                      />
+                    ) : (
+                      <input className="adminProfileInput" value={userData.name} readOnly />
+                    )}
+                  </div>
+
+                  <div className="adminProfileInputGroup">
+                    <label>EMAIL ADDRESS</label>
+                    {isEditing ? (
+                      <input
+                        type="email"
+                        value={editData.email}
+                        onChange={(e) => setEditData({ ...editData, email: e.target.value })}
+                        className="adminProfileInput"
+                        placeholder="Enter your email"
+                      />
+                    ) : (
+                      <input className="adminProfileInput" value={userData.email} readOnly />
+                    )}
+                  </div>
+
+                  {isEditing && (
+                    <button onClick={handleSaveProfile} className="adminProfileSaveBtn">
+                      <MdSave size={16} />
+                      Save Changes
+                    </button>
+                  )}
+                </div>
+              </section>
+            </div>
+
+            <div className="adminProfileRight">
+
+              {/* Security */}
+              <section className="adminProfileCard">
+                <div className="adminProfileCardHeader">
+                  <h2>Security</h2>
                 </div>
 
-                {isEditing && (
-                  <button onClick={handleSaveProfile} className="adminProfileSaveBtn">
-                    <MdSave size={18} />
-                    Save Changes
+                <div className="adminProfileCardBody">
+                  <div className="adminMetaRow">
+                    <span className="adminMetaLabel">Last Login</span>
+                    <span className="adminMetaValue">{lastLoginLabel}</span>
+                  </div>
+                  <div className="adminMetaRow">
+                    <span className="adminMetaLabel">Last Password Change</span>
+                    <span className="adminMetaValue">2 days ago</span>
+                  </div>
+
+                  <button
+                    onClick={() => setShowPasswordChange(!showPasswordChange)}
+                    className="adminDarkButton"
+                  >
+                    <MdLock size={16} />
+                    {showPasswordChange ? "Hide Password Change" : "Change Password"}
                   </button>
-                )}
-              </div>
-            </section>
 
-            <section className="adminProfileCard">
-              <div className="adminProfileCardHeader">
-                <h2>Security</h2>
-              </div>
-
-              <div className="adminProfileCardBody">
-                <button
-                  onClick={() => setShowPasswordChange(!showPasswordChange)}
-                  className="adminProfilePasswordBtn"
-                >
-                  <MdLock size={20} />
-                  {showPasswordChange ? "Hide Password Change" : "Change Password"}
-                </button>
-
-                {showPasswordChange && (
-                  <form onSubmit={handlePasswordChange} className="adminProfilePasswordForm">
-                    <div className="adminProfileInputGroup">
-                      <label>Current Password</label>
-                      <div className="passwordInputWrapper">
-                        <input
-                          type={showCurrentPassword ? "text" : "password"}
-                          value={passwordData.currentPassword}
-                          onChange={(e) => setPasswordData({ ...passwordData, currentPassword: e.target.value })}
-                          className="adminProfileInput"
-                          placeholder="Enter current password"
-                          required
-                        />
-                        <button
-                          type="button"
-                          className="eyeToggle"
-                          onClick={() => setShowCurrentPassword(!showCurrentPassword)}
-                        >
-                          {showCurrentPassword ? <MdVisibilityOff size={20} /> : <MdVisibility size={20} />}
-                        </button>
+                  {showPasswordChange && (
+                    <form onSubmit={handlePasswordChange} className="adminProfilePasswordForm">
+                      <div className="adminProfileInputGroup">
+                        <label>CURRENT PASSWORD</label>
+                        <div className="passwordInputWrapper">
+                          <input
+                            type={showCurrentPassword ? "text" : "password"}
+                            value={passwordData.currentPassword}
+                            onChange={(e) => setPasswordData({ ...passwordData, currentPassword: e.target.value })}
+                            className="adminProfileInput"
+                            placeholder="Enter current password"
+                            required
+                          />
+                          <button
+                            type="button"
+                            className="eyeToggle"
+                            onClick={() => setShowCurrentPassword(!showCurrentPassword)}
+                          >
+                            {showCurrentPassword ? <MdVisibilityOff size={16} /> : <MdVisibility size={16} />}
+                          </button>
+                        </div>
                       </div>
-                    </div>
 
-                    <div className="adminProfileInputGroup">
-                      <label>New Password</label>
-                      <div className="passwordInputWrapper">
-                        <input
-                          type={showNewPassword ? "text" : "password"}
-                          value={passwordData.newPassword}
-                          onChange={(e) => setPasswordData({ ...passwordData, newPassword: e.target.value })}
-                          className="adminProfileInput"
-                          placeholder="Enter new password"
-                          required
-                        />
-                        <button
-                          type="button"
-                          className="eyeToggle"
-                          onClick={() => setShowNewPassword(!showNewPassword)}
-                        >
-                          {showNewPassword ? <MdVisibilityOff size={20} /> : <MdVisibility size={20} />}
-                        </button>
+                      <div className="adminProfileInputGroup">
+                        <label>NEW PASSWORD</label>
+                        <div className="passwordInputWrapper">
+                          <input
+                            type={showNewPassword ? "text" : "password"}
+                            value={passwordData.newPassword}
+                            onChange={(e) => setPasswordData({ ...passwordData, newPassword: e.target.value })}
+                            className="adminProfileInput"
+                            placeholder="Enter new password"
+                            required
+                          />
+                          <button
+                            type="button"
+                            className="eyeToggle"
+                            onClick={() => setShowNewPassword(!showNewPassword)}
+                          >
+                            {showNewPassword ? <MdVisibilityOff size={16} /> : <MdVisibility size={16} />}
+                          </button>
+                        </div>
                       </div>
-                    </div>
 
-                    <div className="adminProfileInputGroup">
-                      <label>Confirm New Password</label>
-                      <div className="passwordInputWrapper">
-                        <input
-                          type={showConfirmPassword ? "text" : "password"}
-                          value={passwordData.confirmPassword}
-                          onChange={(e) => setPasswordData({ ...passwordData, confirmPassword: e.target.value })}
-                          className="adminProfileInput"
-                          placeholder="Confirm new password"
-                          required
-                        />
-                        <button
-                          type="button"
-                          className="eyeToggle"
-                          onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                        >
-                          {showConfirmPassword ? <MdVisibilityOff size={20} /> : <MdVisibility size={20} />}
-                        </button>
+                      <div className="adminProfileInputGroup">
+                        <label>CONFIRM NEW PASSWORD</label>
+                        <div className="passwordInputWrapper">
+                          <input
+                            type={showConfirmPassword ? "text" : "password"}
+                            value={passwordData.confirmPassword}
+                            onChange={(e) => setPasswordData({ ...passwordData, confirmPassword: e.target.value })}
+                            className="adminProfileInput"
+                            placeholder="Confirm new password"
+                            required
+                          />
+                          <button
+                            type="button"
+                            className="eyeToggle"
+                            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                          >
+                            {showConfirmPassword ? <MdVisibilityOff size={16} /> : <MdVisibility size={16} />}
+                          </button>
+                        </div>
                       </div>
-                    </div>
 
-                    <button type="submit" className="adminProfileSubmitBtn">
-                      Update Password
-                    </button>
-                  </form>
-                )}
-              </div>
-            </section>
-
+                      <button type="submit" className="adminDarkButton">
+                        Update Password
+                      </button>
+                    </form>
+                  )}
+                </div>
+              </section>
+            </div>
 
           </div>
         </div>

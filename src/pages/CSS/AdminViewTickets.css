@@ -1,509 +1,386 @@
-@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
 
 * {
   box-sizing: border-box;
-}
-
-body {
   margin: 0;
   padding: 0;
-  font-family: "DM Sans", sans-serif;
-  background: #f8fafc;
-  color: #334155;
-  line-height: 1.5;
 }
 
-.adminTicketsView.ticketPageLayout {
+.adminTicketsView,
+.ticketPageLayout {
   display: flex;
   min-height: 100vh;
-  background: #f8fafc;
+  background: #F4F5F7;
+  font-family: 'Inter', sans-serif;
 }
 
-.adminTicketsView .ticketPageMain {
+.ticketPageMain {
   flex: 1;
-  margin-left: 280px;
-  padding: 32px;
-  background: #f8fafc;
-  min-height: 100vh;
+  margin-left: 220px;
+  padding: 24px;
+  background: #F4F5F7;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
 }
 
-.adminTicketsView .ticketPortalWrapper {
-  max-width: 1400px;
-  margin: 0 auto;
-}
-
-.adminTicketsView .portalHeader {
-  background: #1e293b;
-  border-radius: 16px;
-  margin-bottom: 32px;
-  overflow: hidden;
-  position: relative;
-}
-
-/* ensure header title and subtitle stack vertically */
-.adminTicketsView .headerContent {
-  background: #1e293b;
-  padding: 32px 40px;
-  position: relative;
-  z-index: 1;
-}
-
-.adminTicketsView .headerTop {
-  display: flex;
-  align-items: flex-start;
-  gap: 16px;
-}
-
-.adminTicketsView .headerIcon {
-  background: rgba(255, 255, 255, 0.15);
-  color: #ffffff;
-  padding: 10px;
-  border-radius: 10px;
-  flex-shrink: 0;
-}
-
-.adminTicketsView .headerInfo {
-  display: block;
-}
-
-.adminTicketsView .headerInfo h1 {
-  color: #ffffff;
-  font-size: 32px;
-  font-weight: 700;
-  margin: 0 0 6px 0;
-}
-
-
-
-
-.adminTicketsView .filtersSection {
-  background: #ffffff;
-  border-radius: 12px;
-  border: 1px solid #e2e8f0;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  padding: 24px 32px;
-  margin-bottom: 24px;
-  display: flex;
-  gap: 24px;
-  align-items: center;
-  flex-wrap: wrap;
-}
-
-.adminTicketsView .searchContainer {
-  position: relative;
-  flex: 1;
-  min-width: 300px;
-}
-
-.adminTicketsView .searchContainer img {
-  position: absolute;
-  left: 16px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 20px;
-  height: 20px;
-  pointer-events: none;
-}
-
-.adminTicketsView .searchInput {
+.ticketPortalWrapper {
   width: 100%;
-  color: #1e293b;
-  padding: 14px 16px 14px 48px;
-  border: 2px solid #e2e8f0;
-  border-radius: 10px;
-  font-size: 14px;
-  font-family: "DM Sans", sans-serif;
-  background: #f8fafc;
-  transition: all 0.3s ease;
-}
-
-.adminTicketsView .searchInput:focus {
-  outline: none;
-  border-color: #3b82f6;
-  background: #ffffff;
-  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
-}
-
-.adminTicketsView .searchInput::placeholder {
-  color: #94a3b8;
-}
-
-.adminTicketsView .filterControls {
-  display: flex;
-  gap: 16px;
-}
-
-.adminTicketsView .filterSelect {
-  padding: 14px 20px;
-  border: 2px solid #e2e8f0;
-  border-radius: 10px;
-  font-size: 14px;
-  font-weight: 500;
-  font-family: "DM Sans", sans-serif;
-  background: #ffffff;
-  color: #1e293b;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  min-width: 140px;
-}
-
-.adminTicketsView .filterSelect:hover {
-  border-color: #cbd5e1;
-}
-
-.adminTicketsView .filterSelect:focus {
-  outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
-}
-
-.adminTicketsView .resultsSummary {
-  margin-bottom: 24px;
-  padding: 0 4px;
-}
-
-.adminTicketsView .resultsSummary p {
-  color: #64748b;
-  font-size: 14px;
-  margin: 0;
-  font-weight: 600;
-}
-
-.adminTicketsView .loadingContainer,
-.adminTicketsView .errorContainer {
+  max-width: 1200px;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 100px 20px;
-  text-align: center;
+  gap: 20px;
 }
 
-.adminTicketsView .loadingContainer img,
-.adminTicketsView .errorContainer img {
-  margin-bottom: 20px;
+/* ── Page header (replaces dark hero) ── */
+.portalHeader {
+  background: transparent;
+  border: none;
+  padding: 0;
 }
 
-.adminTicketsView .loadingContainer p,
-.adminTicketsView .errorContainer p {
-  color: #64748b;
-  font-size: 16px;
-  margin: 0;
-  font-weight: 500;
+.headerContent {
+  width: 100%;
 }
 
-.adminTicketsView .emptyState {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 80px 20px;
-  text-align: center;
-  background: #ffffff;
-  border-radius: 16px;
-  border: 2px dashed #cbd5e1;
-}
-
-.adminTicketsView .emptyState img {
-  margin-bottom: 24px;
-  opacity: 0.5;
-}
-
-.adminTicketsView .emptyState h3 {
-  color: #1e293b;
-  font-size: 22px;
-  font-weight: 600;
-  margin: 0 0 8px 0;
-}
-
-.adminTicketsView .emptyState p {
-  color: #64748b;
-  margin: 0;
-  font-size: 15px;
-}
-
-.adminTicketsView .ticketsGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
-  gap: 24px;
-}
-
-.adminTicketsView .supportTicketCard {
-  background: #ffffff;
-  border-radius: 16px;
-  border: 1px solid #e2e8f0;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  overflow: hidden;
-  position: relative;
-}
-
-.adminTicketsView .supportTicketCard:hover {
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
-  border-color: #cbd5e1;
-}
-
-.adminTicketsView .cardHeader {
+.headerTop {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  padding: 24px 24px 16px 24px;
-  border-bottom: 1px solid #f1f5f9;
+  gap: 16px;
 }
 
-.adminTicketsView .ticketInfo h3 {
-  color: #3b82f6;
-  font-size: 13px;
-  font-weight: 700;
-  margin: 0 0 6px 0;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-.adminTicketsView .ticketInfo h4 {
-  color: #1e293b;
-  font-size: 18px;
-  font-weight: 600;
-  margin: 0;
-  line-height: 1.4;
-}
-
-.adminTicketsView .DeleteButton {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  padding: 0;
-  position: relative;
-  overflow: hidden;
-  flex-shrink: 0;
-  background: #ef4444;
-}
-
-.adminTicketsView .DeleteButton:hover {
-  background: #dc2626;
-}
-
-.adminTicketsView .DeleteButton:active {
-  background: #b91c1c;
-}
-
-.adminTicketsView .DeleteButton svg {
-  color: #ffffff;
-  width: 22px;
-  height: 22px;
-  display: block;
-  position: relative;
-  z-index: 1;
-}
-
-.adminTicketsView .ticketDescription {
-  padding: 0 24px 20px 24px;
-  color: #64748b;
-  line-height: 1.7;
-  font-size: 14px;
-  margin: 0;
-}
-
-.adminTicketsView .ticketMetadata {
-  padding: 20px 24px;
-  background: #f8fafc;
-  border-top: 1px solid #f1f5f9;
-}
-
-.adminTicketsView .metaRow {
-  display: flex;
-  gap: 32px;
-  margin-bottom: 16px;
-}
-
-.adminTicketsView .metaGroup {
+.headerInfo {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  align-items: flex-start;
+  gap: 2px;
 }
 
-.adminTicketsView .metaLabel {
-  font-size: 11px;
-  color: #64748b;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.8px;
+.headerInfo svg {
+  display: none;
 }
 
-.adminTicketsView .metaValue {
-  font-size: 14px;
-  color: #1e293b;
-  font-weight: 600;
+.headerInfo h1 {
+  font-size: 20px;
+  font-weight: 500;
+  color: #111827;
+  margin: 0 0 2px 0;
 }
 
-.adminTicketsView .badgeRow {
-  display: flex;
+.headerInfo::after {
+  content: "View, filter and manage every ticket in the system";
+  font-size: 13px;
+  color: #6B7280;
+}
+
+/* ── Filters ── */
+.filtersSection {
+  background: #ffffff;
+  border: 1px solid #E5E7EB;
+  border-radius: 10px;
+  padding: 16px;
+  display: grid;
+  grid-template-columns: 1fr auto;
   gap: 12px;
   align-items: center;
+}
+
+.searchContainer {
+  width: 100%;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 9px 12px;
+  background: #ffffff;
+  border: 1px solid #E5E7EB;
+  border-radius: 8px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: #111827;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+.searchInput:focus {
+  border-color: #0D9488;
+  box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1);
+}
+
+.searchInput::placeholder {
+  color: #9CA3AF;
+}
+
+.filterControls {
+  display: flex;
+  gap: 8px;
+}
+
+.filterSelect {
+  padding: 9px 28px 9px 12px;
+  background: #ffffff;
+  border: 1px solid #E5E7EB;
+  border-radius: 8px;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  color: #374151;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 12 12'%3E%3Cpath fill='%236B7280' d='M6 8L2 4h8z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  transition: border-color 0.15s ease;
+}
+
+.filterSelect:focus {
+  outline: none;
+  border-color: #0D9488;
+  box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1);
+}
+
+/* ── Results summary ── */
+.resultsSummary p {
+  font-size: 12px;
+  color: #6B7280;
+  margin: 0;
+}
+
+/* ── Ticket grid ── */
+.ticketsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 16px;
+}
+
+.supportTicketCard {
+  background: #ffffff;
+  border: 1px solid #E5E7EB;
+  border-radius: 10px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.supportTicketCard:hover {
+  border-color: #0D9488;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+}
+
+.supportTicketCard .cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #F3F4F6;
+}
+
+.ticketInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.ticketInfo h3 {
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  font-weight: 600;
+  color: #6B7280;
+  margin: 0;
+}
+
+.ticketInfo h4 {
+  font-size: 14px;
+  font-weight: 500;
+  color: #111827;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+}
+
+.DeleteButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  background: #EF4444;
+  border: 1px solid #EF4444;
+  border-radius: 6px;
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background 0.15s ease;
+  flex-shrink: 0;
+}
+
+.DeleteButton:hover {
+  background: #DC2626;
+}
+
+.ticketMetadata {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.metaRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.metaGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.metaLabel {
+  font-size: 10px;
+  font-weight: 600;
+  color: #6B7280;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.metaValue {
+  font-size: 12px;
+  color: #374151;
+}
+
+.badgeRow {
+  display: flex;
+  gap: 6px;
   flex-wrap: wrap;
 }
 
-.adminTicketsView .statusBadge {
-  padding: 6px 14px;
-  border-radius: 8px;
-  font-size: 11px;
+/* badges (v2 palette) */
+.statusBadge,
+.priorityBadge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 6px;
+  font-size: 10px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.8px;
+  letter-spacing: 0.04em;
 }
 
-.adminTicketsView .status-open {
-  background: #fef3c7;
-  color: #92400e;
+.status-open {
+  background: #E1F5EE;
+  color: #0F6E56;
 }
 
-.adminTicketsView .status-in-progress {
-  background: #e0e7ff;
-  color: #3730a3;
+.status-in-progress {
+  background: #EEEDFE;
+  color: #534AB7;
 }
 
-.adminTicketsView .status-closed {
-  background: #d1fae5;
-  color: #065f46;
+.status-closed {
+  background: #F1EFE8;
+  color: #5F5E5A;
 }
 
-.adminTicketsView .priorityBadge {
-  padding: 6px 14px;
-  border-radius: 8px;
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.8px;
+.priority-critical {
+  background: #FCEBEB;
+  color: #A32D2D;
 }
 
-.adminTicketsView .priority-high {
-  background: #fee2e2;
-  color: #dc2626;
+.priority-high {
+  background: #FAEEDA;
+  color: #854F0B;
 }
 
-.adminTicketsView .priority-medium {
-  background: #fef3c7;
-  color: #d97706;
+.priority-medium {
+  background: #E6F1FB;
+  color: #185FA5;
 }
 
-.adminTicketsView .priority-low {
-  background: #d1fae5;
-  color: #166534;
+.priority-low {
+  background: #EAF3DE;
+  color: #3B6D11;
 }
 
-.adminTicketsView .cardFooter {
-  padding: 16px 24px;
-  border-top: 1px solid #f1f5f9;
-  background: #ffffff;
-}
-
-.adminTicketsView .createdBy {
+.cardFooter {
+  border-top: 1px solid #F3F4F6;
+  padding-top: 10px;
   display: flex;
   align-items: center;
-  font-size: 13px;
-  color: #64748b;
+}
+
+.createdBy {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  color: #6B7280;
+}
+
+/* ── Loading / empty / error ── */
+.loadingContainer,
+.errorContainer,
+.emptyState {
+  background: #ffffff;
+  border: 1px solid #E5E7EB;
+  border-radius: 10px;
+  padding: 40px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #6B7280;
+  min-height: 220px;
+}
+
+.loadingContainer p,
+.errorContainer p,
+.emptyState h3 {
+  font-size: 14px;
   font-weight: 500;
+  margin: 0;
+  color: #374151;
 }
 
-.adminTicketsView .createdBy img {
-  margin-right: 8px;
+.emptyState p {
+  font-size: 12px;
+  color: #9CA3AF;
+  margin-top: 4px;
 }
 
-@media (max-width: 1200px) {
-  .adminTicketsView .ticketPageMain {
-    margin-left: 260px;
-  }
-
-  .adminTicketsView .ticketsGrid {
-    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-  }
-}
-
-@media (max-width: 900px) {
-  .adminTicketsView .ticketPageMain {
+/* responsive */
+@media (max-width: 1024px) {
+  .ticketPageMain {
     margin-left: 0;
-    padding: 24px 16px;
   }
 
-  .adminTicketsView .headerContent {
-    padding: 24px 28px;
+  .filtersSection {
+    grid-template-columns: 1fr;
   }
 
-  .adminTicketsView .headerInfo h1 {
-    font-size: 28px;
-  }
-
-  .adminTicketsView .filtersSection {
-    padding: 20px 24px;
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .adminTicketsView .searchContainer {
-    min-width: auto;
-  }
-
-  .adminTicketsView .filterControls {
-    flex-direction: column;
-  }
-
-  .adminTicketsView .filterSelect {
+  .filterControls {
     width: 100%;
   }
 
-  .adminTicketsView .ticketsGrid {
-    grid-template-columns: 1fr;
-    gap: 20px;
+  .filterSelect {
+    flex: 1;
   }
 }
 
-@media (max-width: 480px) {
-  .adminTicketsView .ticketPageMain {
+@media (max-width: 768px) {
+  .ticketPageMain {
     padding: 16px;
   }
 
-  .adminTicketsView .headerContent {
-    padding: 20px 24px;
-  }
-
-  .adminTicketsView .headerInfo h1 {
-    font-size: 24px;
-  }
-
-  .adminTicketsView .headerInfo p {
-    font-size: 14px;
-  }
-
-  .adminTicketsView .filtersSection {
-    padding: 16px 20px;
-  }
-
-  .adminTicketsView .cardHeader {
-    padding: 20px 20px 12px 20px;
-  }
-
-  .adminTicketsView .ticketInfo h4 {
-    font-size: 16px;
-  }
-
-  .adminTicketsView .DeleteButton {
-    width: 36px;
-    height: 36px;
-  }
-
-  .adminTicketsView .DeleteButton svg {
-    width: 20px;
-    height: 20px;
-  }
-
-  .adminTicketsView .metaRow {
-    flex-direction: column;
-    gap: 16px;
+  .ticketsGrid {
+    grid-template-columns: 1fr;
   }
 }

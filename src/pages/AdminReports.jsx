@@ -515,7 +515,7 @@ function AdminReports() {
           cx={x}
           cy={y}
           r="6"
-          fill="#3b82f6"
+          fill="#0D9488"
           className="dataPoint"
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
@@ -573,7 +573,7 @@ function AdminReports() {
           <polyline
             points={pointsString}
             fill="none"
-            stroke="#3b82f6"
+            stroke="#0D9488"
             strokeWidth="2"
             className="trendLine"
           />

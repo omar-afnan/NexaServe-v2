@@ -1,31 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap");
-
-:root {
-  --primary: #4F46E5;
-  --primaryDark: #4338CA;
-  --primaryLight: #6366f1;
-
-  --success: #10b981;
-  --warning: #f59e0b;
-  --danger: #ef4444;
-
-  --gray50: #f9fafb;
-  --gray100: #f3f4f6;
-  --gray200: #e5e7eb;
-  --gray300: #d1d5db;
-  --gray400: #9ca3af;
-  --gray500: #6b7280;
-  --gray600: #4b5563;
-  --gray700: #374151;
-  --gray800: #1f2937;
-  --gray900: #111827;
-
-  --surface: #ffffff;
-  --background: #f9fafb;
-
-  --fontDisplay: 'DM Sans', sans-serif;
-  --fontBody: 'DM Sans', sans-serif;
-}
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
 
 * {
   box-sizing: border-box;
@@ -36,13 +9,17 @@
 .adminProfileLayout {
   display: flex;
   min-height: 100vh;
-  background: var(--background);
+  background: #F4F5F7;
+  font-family: 'Inter', sans-serif;
 }
 
 .adminProfileMain {
   flex: 1;
-  margin-left: 280px;
-  padding: 2rem 1.5rem;
+  margin-left: 220px;
+  padding: 24px;
+  background: #F4F5F7;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
 }
 
 .adminProfileContainer {
@@ -50,297 +27,273 @@
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 20px;
 }
 
+/* ── Page header ── */
 .adminProfileHeader {
-  margin-bottom: 1rem;
+  padding-bottom: 8px;
 }
 
 .adminProfileHeader h1 {
-  font-family: var(--fontDisplay);
-  font-size: 2rem;
-  font-weight: 800;
-  color: var(--gray900);
-  margin: 0 0 0.5rem 0;
-  letter-spacing: -0.02em;
+  font-size: 20px;
+  font-weight: 500;
+  color: #111827;
+  margin: 0 0 2px 0;
 }
 
 .adminProfileHeader p {
-  font-size: 1rem;
-  color: var(--gray500);
+  font-size: 13px;
+  color: #6B7280;
   margin: 0;
 }
 
+/* ── Two-column layout ── */
 .adminProfileGrid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.5rem;
+  grid-template-columns: 58fr 40fr;
+  gap: 20px;
+  align-items: start;
 }
 
+.adminProfileLeft,
+.adminProfileRight {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ── White cards ── */
 .adminProfileCard {
-  background: var(--surface);
-  border-radius: 1rem;
-  border: 1px solid var(--gray200);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-  overflow: hidden;
-  transition: all 0.3s ease;
-}
-
-.adminProfileCard:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  border-color: var(--gray300);
+  background: #ffffff;
+  border: 1px solid #E5E7EB;
+  border-radius: 10px;
+  padding: 20px;
 }
 
 .adminProfileCardHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1.5rem 1.75rem;
-  border-bottom: 1px solid var(--gray200);
-  background: var(--gray50);
+  padding-bottom: 12px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid #E5E7EB;
 }
 
 .adminProfileCardHeader h2 {
-  font-family: var(--fontDisplay);
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: var(--gray900);
+  font-size: 14px;
+  font-weight: 600;
+  color: #111827;
   margin: 0;
 }
 
 .adminProfileCardBody {
-  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
 }
 
+/* ── Edit button ── */
 .adminProfileEditBtn {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.625rem 1rem;
-  background: var(--surface);
-  border: 1px solid var(--gray300);
-  border-radius: 0.5rem;
-  color: var(--gray700);
-  font-family: var(--fontBody);
-  font-size: 0.875rem;
-  font-weight: 600;
+  gap: 5px;
+  padding: 5px 12px;
+  background: #ffffff;
+  border: 1px solid #D1D5DB;
+  border-radius: 6px;
+  color: #374151;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: background 0.15s ease;
 }
 
 .adminProfileEditBtn:hover {
-  background: var(--gray50);
-  border-color: var(--gray400);
+  background: #F9FAFB;
 }
 
-.adminProfilePasswordBtn {
-  display: inline-flex;
+/* ── Avatar block ── */
+.adminAvatarBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 0 18px 0;
+  border-bottom: 1px solid #E5E7EB;
+  margin-bottom: 18px;
+}
+
+.adminAvatar {
+  width: 64px;
+  height: 64px;
+  background: #CCFBF1;
+  border-radius: 50%;
+  display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  width: 100%;
-  padding: 0.625rem 1rem;
-  background: var(--surface);
-  border: 1px solid var(--gray300);
-  border-radius: 0.5rem;
-  color: var(--gray700);
-  font-family: var(--fontBody);
-  font-size: 0.875rem;
+  color: #0D9488;
+  font-size: 22px;
   font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
+  flex-shrink: 0;
+  margin-bottom: 4px;
 }
 
-.adminProfilePasswordBtn:hover {
-  background: var(--gray50);
-  border-color: var(--gray400);
+.adminName {
+  font-size: 18px;
+  font-weight: 500;
+  color: #111827;
+  margin: 0;
 }
 
-.adminProfileSaveBtn {
+.adminEmail {
+  font-size: 13px;
+  color: #6B7280;
+  margin: 0;
+}
+
+.adminRoleBadge {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  width: 100%;
-  padding: 0.875rem 1.5rem;
-  background: var(--primary);
-  border: none;
-  border-radius: 0.5rem;
-  color: white;
-  font-family: var(--fontBody);
-  font-size: 0.938rem;
+  padding: 4px 12px;
+  background: #EDE9FE;
+  color: #5B21B6;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  margin-top: 4px;
+}
+
+/* ── Field label ── */
+.adminProfileInputGroup label {
+  display: block;
+  font-size: 10px;
   font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  margin-top: 0.5rem;
+  color: #6B7280;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 8px;
 }
 
-.adminProfileSaveBtn:hover {
-  background: var(--primaryDark);
-}
-
-.adminProfileSubmitBtn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  width: 100%;
-  padding: 0.875rem 1.5rem;
-  background: var(--primary);
-  border: none;
-  border-radius: 0.5rem;
-  color: white;
-  font-family: var(--fontBody);
-  font-size: 0.938rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  margin-top: 0.5rem;
-}
-
-.adminProfileSubmitBtn:hover {
-  background: var(--primaryDark);
-}
-
+/* ── Inputs ── */
 .adminProfileInputGroup {
   display: flex;
   flex-direction: column;
-  gap: 0.625rem;
-  margin-bottom: 1.25rem;
+  margin-bottom: 14px;
 }
 
 .adminProfileInputGroup:last-child {
   margin-bottom: 0;
 }
 
-.adminProfileInputGroup label {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: var(--gray700);
-}
-
 .adminProfileInput {
   width: 100%;
-  padding: 0.875rem 1rem;
-  background: var(--surface);
-  border: 1px solid var(--gray300);
-  border-radius: 0.5rem;
-  font-family: var(--fontBody);
-  font-size: 0.938rem;
-  color: var(--gray900);
+  padding: 9px 12px;
+  background: #ffffff;
+  border: 1px solid #E5E7EB;
+  border-radius: 7px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: #111827;
   outline: none;
-  transition: all 0.2s ease;
+  transition: border-color 0.15s ease;
 }
 
 .adminProfileInput:focus {
-  border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+  border-color: #0D9488;
+  box-shadow: 0 0 0 3px rgba(13,148,136,0.1);
+}
+
+.adminProfileInput:read-only {
+  background: #F9FAFB;
+  color: #6B7280;
+  cursor: default;
 }
 
 .adminProfileInput::placeholder {
-  color: var(--gray400);
+  color: #9CA3AF;
 }
 
-.adminProfileInputDisplay {
-  padding: 0.875rem 1rem;
-  background: var(--gray50);
-  border: 1px solid var(--gray200);
-  border-radius: 0.5rem;
-  font-size: 0.938rem;
-  color: var(--gray900);
-}
-
-.adminProfileRoleBadge {
+/* ── Save button ── */
+.adminProfileSaveBtn {
   display: inline-flex;
   align-items: center;
-  padding: 0.625rem 1rem;
-  background: #4F46E5;
-  color: white;
-  border-radius: 0.5rem;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  padding: 10px 16px;
+  background: #0D9488;
+  border: none;
+  border-radius: 8px;
+  color: #ffffff;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
   font-weight: 600;
-  font-size: 0.875rem;
-  letter-spacing: 0.02em;
-  width: fit-content;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  margin-top: 8px;
 }
 
+.adminProfileSaveBtn:hover {
+  background: #0f766e;
+}
+
+/* ── Meta rows ── */
+.adminMetaRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  font-size: 13px;
+  border-bottom: 1px solid #F3F4F6;
+}
+
+.adminMetaRow:last-of-type {
+  border-bottom: none;
+}
+
+.adminMetaLabel {
+  color: #374151;
+}
+
+.adminMetaValue {
+  color: #6B7280;
+}
+
+/* ── Dark full-width button ── */
+.adminDarkButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 11px 16px;
+  background: #111827;
+  border: none;
+  border-radius: 8px;
+  color: #ffffff;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  margin-top: 14px;
+}
+
+.adminDarkButton:hover {
+  background: #1F2937;
+}
+
+/* ── Password form ── */
 .adminProfilePasswordForm {
-  margin-top: 1.5rem;
-  padding: 1.5rem;
-  background: var(--gray50);
-  border-radius: 0.75rem;
-  border: 1px solid var(--gray200);
+  margin-top: 14px;
+  padding: 14px;
+  background: #F9FAFB;
+  border: 1px solid #E5E7EB;
+  border-radius: 8px;
 }
 
-.adminProfilePasswordForm .adminProfileInputGroup {
-  margin-bottom: 1rem;
-}
-
-@media (max-width: 1024px) {
-  .adminProfileMain {
-    margin-left: 0;
-  }
-
-  .adminProfileGrid {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 768px) {
-  .adminProfileMain {
-    padding: 1.5rem 1rem;
-  }
-
-  .adminProfileHeader h1 {
-    font-size: 1.5rem;
-  }
-
-  .adminProfileCardHeader {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
-  }
-
-  .adminProfileCardHeader {
-    padding: 1.25rem;
-  }
-
-  .adminProfileCardBody {
-    padding: 1.25rem;
-  }
-
-  .adminProfileEditBtn {
-    width: 100%;
-    justify-content: center;
-  }
-
-  .adminProfilePasswordBtn {
-    width: 100%;
-    justify-content: center;
-  }
-}
-
-@media (max-width: 480px) {
-  .adminProfileMain {
-    padding: 1rem;
-  }
-
-  .adminProfileHeader h1 {
-    font-size: 1.25rem;
-  }
-
-  .adminProfileCardHeader {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.75rem;
-    padding: 1rem;
-  }
-}
-
-/* Password Toggle */
 .passwordInputWrapper {
   position: relative;
   display: flex;
@@ -349,47 +302,51 @@
 
 .passwordInputWrapper .adminProfileInput {
   flex: 1;
-  padding-right: 45px;
+  padding-right: 42px;
 }
 
 .eyeToggle {
   position: absolute;
-  right: 12px;
+  right: 10px;
   background: none;
   border: none;
   cursor: pointer;
-  color: var(--gray-400, #9ca3af);
+  color: #9CA3AF;
   padding: 4px;
   display: flex;
   align-items: center;
-  justify-content: center;
 }
 
 .eyeToggle:hover {
-  color: var(--primary);
+  color: #0D9488;
 }
 
-/* Toast */
+/* ── Toast ── */
 .toast {
   position: fixed;
-  bottom: 1.5rem;
-  right: 1.5rem;
-  padding: 0.75rem 1.25rem;
-  border-radius: 0.5rem;
-  font-size: 0.875rem;
+  bottom: 24px;
+  right: 24px;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-size: 13px;
   font-weight: 500;
-  color: white;
-  background: var(--success);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  animation: adminFadeIn 0.2s ease;
+  color: #ffffff;
+  background: #0D9488;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  animation: fadeIn 0.2s ease;
   z-index: 1000;
 }
 
-.toast--error {
-  background: var(--danger);
+.toast--error { background: #EF4444; }
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+/* ── Responsive ── */
+@media (max-width: 1024px) {
+  .adminProfileMain { margin-left: 0; }
+  .adminProfileGrid { grid-template-columns: 1fr; }
 }
 
-@keyframes adminFadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+@media (max-width: 768px) {
+  .adminProfileMain { padding: 16px; }
 }

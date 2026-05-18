@@ -1,24 +1,36 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useLocation } from "react-router-dom";
 import {
   Mail,
   Lock,
   Eye,
   EyeOff,
-  LogIn
+  ArrowRight
 } from "lucide-react";
 import "./CSS/Login.css";
+
+const ROLE_TABS = [
+  { key: "user", label: "End User", buttonLabel: "User Portal" },
+  { key: "support", label: "Support Agent", buttonLabel: "Support Portal" },
+  { key: "admin", label: "Admin", buttonLabel: "Admin Panel" }
+];
 
 export default function Login() {
   const location = useLocation();
   const sessionExpired = location.state?.reason === "session_expired";
 
+  const [activeRole, setActiveRole] = useState("user");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({ email: "", password: "" });
-  const [rememberMe, setRememberMe] = useState(false);
+  const [rememberMe, setRememberMe] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+
+  const activeTab = useMemo(
+    () => ROLE_TABS.find((t) => t.key === activeRole) || ROLE_TABS[0],
+    [activeRole]
+  );
 
   const validateForm = () => {
     const newErrors = { email: "", password: "" };
@@ -64,26 +76,12 @@ export default function Login() {
       }
 
       const data = await res.json();
-     // using session storage to store token adn user info for that specific session
-      if (data.token) {
-        sessionStorage.setItem("token", data.token);
-      }
 
-      if (data.role) {
-        sessionStorage.setItem("role", data.role);
-      }
-
-      if (data.userName) {
-        sessionStorage.setItem("userName", data.userName);
-      }
-
-      if (data.userId) {
-        sessionStorage.setItem("userId", data.userId);
-      }
-
-      if (data.email) {
-        sessionStorage.setItem("userEmail", data.email);
-      }
+      if (data.token) sessionStorage.setItem("token", data.token);
+      if (data.role) sessionStorage.setItem("role", data.role);
+      if (data.userName) sessionStorage.setItem("userName", data.userName);
+      if (data.userId) sessionStorage.setItem("userId", data.userId);
+      if (data.email) sessionStorage.setItem("userEmail", data.email);
 
       await new Promise(resolve => setTimeout(resolve, 500));
 
@@ -111,96 +109,165 @@ export default function Login() {
   };
 
   return (
-    <div className="authPage">
+    <div className="authSplit">
 
-
-      <div className="loginContainer">
-        <div className="loginCard">
-          <div className="loginHeader">
-
-            <h1 className="brandTitle">Welcome Back</h1>
-            <p className="brandSubtitle">Sign in to continue to Nexa Serve</p>
+      {/* ── Left panel ── */}
+      <div className="authLeft">
+        <div className="authBrand">
+          <div className="brandLogoSquare">N</div>
+          <div className="brandLogoText">
+            <div className="brandLogoName">Nexa Serve</div>
+            <div className="brandLogoMeta">IT SUPPORT · V2.4</div>
           </div>
+        </div>
 
-          {sessionExpired && (
-            <p className="errorText" style={{ textAlign: "center", marginBottom: "12px" }}>
-              Your session has expired, please log in again.
+        <div className="authLeftCenter">
+          <div className="authFormBlock">
+            <h1 className="authTitle">Sign in to your portal</h1>
+            <p className="authSubtitle">
+              Welcome back. Choose the workspace you want to enter.
             </p>
-          )}
 
-          <form className="formContainer" onSubmit={handleLogin}>
-            <div className="formField">
-              <label>Email Address</label>
-              <div className="inputWrapper">
-                <Mail className="inputIcon" />
-                <input
-                  type="email"
-                  placeholder="Enter your email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  disabled={isLoading}
-                  className="formInput"
-                />
-              </div>
-              {errors.email && <p className="errorText">{errors.email}</p>}
-            </div>
-
-            <div className="formField">
-              <label>Password</label>
-              <div className="inputWrapper">
-                <Lock className="inputIcon" />
-                <input
-                  type={showPassword ? "text" : "password"}
-                  placeholder="Enter your password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  disabled={isLoading}
-                  className="formInput passwordInput"
-                />
+            <div className="roleTabs" role="tablist">
+              {ROLE_TABS.map((tab) => (
                 <button
+                  key={tab.key}
                   type="button"
-                  className="togglePassword"
-                  onClick={() => setShowPassword(!showPassword)}
-                  tabIndex={-1}
+                  role="tab"
+                  className={`roleTab ${activeRole === tab.key ? "roleTabActive" : ""}`}
+                  onClick={() => setActiveRole(tab.key)}
                 >
-                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  {tab.label}
                 </button>
-              </div>
-              {errors.password && <p className="errorText">{errors.password}</p>}
+              ))}
             </div>
 
-            <div className="formOptions">
-              <label className="checkboxLabel">
+            {sessionExpired && (
+              <p className="errorText sessionExpiredText">
+                Your session has expired, please log in again.
+              </p>
+            )}
+
+            <form className="authForm" onSubmit={handleLogin}>
+              <div className="formField">
+                <label>Email address</label>
+                <div className="inputWrapper">
+                  <Mail className="inputIcon" size={16} />
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    disabled={isLoading}
+                    className="formInput"
+                  />
+                </div>
+                {errors.email && <p className="errorText">{errors.email}</p>}
+              </div>
+
+              <div className="formField">
+                <div className="passwordLabelRow">
+                  <label>Password</label>
+                  <a href="#" className="forgotLink">Forgot?</a>
+                </div>
+                <div className="inputWrapper">
+                  <Lock className="inputIcon" size={16} />
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    disabled={isLoading}
+                    className="formInput hasEye"
+                  />
+                  <button
+                    type="button"
+                    className="togglePassword"
+                    onClick={() => setShowPassword(!showPassword)}
+                    tabIndex={-1}
+                  >
+                    {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                  </button>
+                </div>
+                {errors.password && <p className="errorText">{errors.password}</p>}
+              </div>
+
+              <label className="rememberRow">
                 <input
                   type="checkbox"
                   checked={rememberMe}
                   onChange={(e) => setRememberMe(e.target.checked)}
                   disabled={isLoading}
-                  className="checkbox"
                 />
-                <span>Remember me</span>
+                <span>Keep me signed in for 30 days</span>
               </label>
-              <a href="#" className="forgotLink">
-                Forgot Password?
-              </a>
+
+              <button type="submit" className="submitBtn" disabled={isLoading}>
+                {isLoading ? (
+                  <>
+                    <span className="loginSpinner"></span>
+                    Signing in...
+                  </>
+                ) : (
+                  <>
+                    Sign in
+                  </>
+                )}
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <div className="authFooter">
+          © 2026 Nexa Serve · <a href="#">Status</a> · <a href="#">Privacy</a> · <a href="#">Terms</a>
+        </div>
+      </div>
+
+      {/* ── Right panel ── */}
+      <div className="authRight">
+        <div className="authRightTop">
+          <span className="statusPill">
+            <span className="statusDotGreen" />
+            ALL SYSTEMS OPERATIONAL
+          </span>
+        </div>
+
+        <div className="authRightCenter">
+          <h2 className="marketingTitle">
+            One support workspace.
+            <br />
+            Three views built for the job.
+          </h2>
+          <p className="marketingSub">
+            Users raise tickets and chat with the AI assistant. Agents triage and
+            resolve. Admins audit, predict, and report. Nexa Serve keeps every role
+            focused on what matters.
+          </p>
+
+          <div className="marketingStats">
+            <div className="statBox">
+              <div className="statBoxLabel">TICKETS RESOLVED THIS MONTH</div>
+              <div className="statBoxValue">1,284</div>
+              <div className="statBoxDelta">+12% vs last</div>
             </div>
+            <div className="statBox">
+              <div className="statBoxLabel">AVERAGE FIRST RESPONSE</div>
+              <div className="statBoxValue">8.7 min</div>
+              <div className="statBoxDelta">−23% vs last</div>
+            </div>
+            <div className="statBox">
+              <div className="statBoxLabel">ACTIVE AGENTS</div>
+              <div className="statBoxValue">14</div>
+              <div className="statBoxDelta">across 3 timezones</div>
+            </div>
+            <div className="statBox">
+              <div className="statBoxLabel">ML CLASSIFICATION ACCURACY</div>
+              <div className="statBoxValue">77.7%</div>
+              <div className="statBoxDelta">mBERT model</div>
+            </div>
+          </div>
+        </div>
 
-            <button type="submit" className="submitBtn" disabled={isLoading}>
-              {isLoading ? (
-                <>
-                  <span className="spinner"></span>
-                  Signing In...
-                </>
-              ) : (
-                <>
-                  Sign In
-                  <LogIn size={18} />
-                </>
-              )}
-            </button>
-          </form>
-
-
+        <div className="authRightFooter">
+          <Lock size={11} /> Secured with JWT · bcrypt password hashing
         </div>
       </div>
     </div>
