@@ -56,7 +56,9 @@ app = Flask(__name__)
 CORS(app)  # allow frontend requests
 
 MODEL_DIR = "./models"
-DATABASE_PATH = "../tickets.db"  # sqlite database path 
+# Fix: previously a relative path that broke when the service was started from
+# a different CWD. Resolve to an absolute path based on this file's location.
+DATABASE_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'tickets.db')
 
 category_vectorizer = None
 category_model = None
@@ -421,41 +423,59 @@ def get_stats():
             'error': str(e)
         }), 500
 
-@app.route('/retrain', methods=['POST'])
-def retrain():
+# Fix: retrain status dict so the background worker can report progress to
+# pollers (previously /retrain blocked the Flask request thread for minutes).
+_retrain_status = {
+    'state': 'idle',          # idle | running | success | failed
+    'current_script': None,
+    'failed_script': None,
+    'error': None,
+    'output': ''
+}
+
+
+def _run_retrain_background():
+    import subprocess
     try:
-        import subprocess
-        # Fix: previously only TrainModel.py (priority) ran here. The mBERT
-        # category model was never retrained. Run both sequentially and report
-        # which script failed if either non-zero exits.
+        _retrain_status.update({'state': 'running', 'current_script': 'TrainModel.py',
+                                'failed_script': None, 'error': None, 'output': ''})
         priority_result = subprocess.run(['python', 'TrainModel.py'], capture_output=True, text=True)
         if priority_result.returncode != 0:
-            return jsonify({
-                'success': False,
-                'failed_script': 'TrainModel.py',
-                'error': priority_result.stderr
-            }), 500
+            _retrain_status.update({'state': 'failed', 'failed_script': 'TrainModel.py',
+                                    'error': priority_result.stderr, 'current_script': None})
+            return
 
+        _retrain_status['current_script'] = 'TrainMBERT.py'
         mbert_result = subprocess.run(['python', 'TrainMBERT.py'], capture_output=True, text=True)
         if mbert_result.returncode != 0:
-            return jsonify({
-                'success': False,
-                'failed_script': 'TrainMBERT.py',
-                'error': mbert_result.stderr
-            }), 500
+            _retrain_status.update({'state': 'failed', 'failed_script': 'TrainMBERT.py',
+                                    'error': mbert_result.stderr, 'current_script': None})
+            return
 
         load_models()
-        return jsonify({
-            'success': True,
-            'message': 'Model retrained successfully',
-            'output': priority_result.stdout + '\n' + mbert_result.stdout
-        })
-
+        _retrain_status.update({'state': 'success', 'current_script': None,
+                                'output': priority_result.stdout + '\n' + mbert_result.stdout})
     except Exception as e:
-        return jsonify({
-            'success': False,
-            'error': str(e)
-        }), 500
+        _retrain_status.update({'state': 'failed', 'error': str(e), 'current_script': None})
+
+
+@app.route('/retrain', methods=['POST'])
+def retrain():
+    # Fix: previously this ran subprocess.run synchronously on the Flask
+    # request thread, causing HTTP timeouts on multi-minute training jobs.
+    # Kick off training in a background thread and return 202 immediately;
+    # callers can poll /retrain/status.
+    import threading
+    if _retrain_status.get('state') == 'running':
+        return jsonify({'message': 'Retraining already in progress', 'status': 'running'}), 202
+    thread = threading.Thread(target=_run_retrain_background, daemon=True)
+    thread.start()
+    return jsonify({'message': 'Retraining started', 'status': 'running'}), 202
+
+
+@app.route('/retrain/status', methods=['GET'])
+def retrain_status():
+    return jsonify(_retrain_status)
 
 if __name__ == '__main__':
     models_loaded = load_models()

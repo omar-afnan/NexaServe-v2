@@ -98,12 +98,12 @@ const truncate = (s, n) => {
     console.log(
       `Sessions escalated to ticket: ${escalated} (${pct(escalated, total)}%)`
     );
-    console.log(`Auto-created tickets:         ${autoTicketCount}`);
+    console.log(`Auto-created tickets:${autoTicketCount}`);
     console.log("");
     console.log("PRIORITY CORRECTION (RO4)");
     console.log(`ML priority kept:             ${mlKept}`);
     console.log(
-      `Llama corrected priority:     ${llamaCorrected} (${pct(llamaCorrected, totalTickets)}% of all tickets)`
+      `Llama corrected priority:${llamaCorrected} (${pct(llamaCorrected, totalTickets)}% of all tickets)`
     );
     console.log(`Fallback priority:            ${fallback}`);
     

@@ -1,6 +1,7 @@
 
 import request from "supertest";
 import app from "../app.js";
+import db from "../database.js";
 
 let userToken = "";
 let adminToken = "";
@@ -40,7 +41,17 @@ describe("Tickets Tests", () => {
     res = await request(app)
       .post("/auth/signup")
       .send(admin);
-    adminToken = res.body.token;
+    // Fix: signup no longer accepts role=admin (security fix). Promote the
+    // test account directly in the DB, then re-login so the JWT reflects
+    // the admin role.
+    await new Promise((resolve, reject) => {
+      db.run("UPDATE users SET role = 'admin' WHERE email = ?", [admin.userEmail],
+        (err) => (err ? reject(err) : resolve()));
+    });
+    const adminLogin = await request(app)
+      .post("/auth/login")
+      .send({ userEmail: admin.userEmail, userPassword: admin.userPassword });
+    adminToken = adminLogin.body.token;
 
     res = await request(app)
       .post("/auth/signup")
@@ -79,7 +90,7 @@ describe("Tickets Tests", () => {
       expect(res.statusCode).toBe(401);
     });
 
-    test("missing fields → 500", async () => {
+    test("missing fields → 400", async () => {
       const res = await request(app)
         .post("/tickets")
         .set("Authorization", `Bearer ${userToken}`)
@@ -87,7 +98,8 @@ describe("Tickets Tests", () => {
           title: "Incomplete Ticket",
         });
 
-      expect(res.statusCode).toBe(500);
+      // Fix: 400 is the correct status for missing required fields
+      expect(res.statusCode).toBe(400);
     });
 
     test("all priorities", async () => {
@@ -194,10 +206,11 @@ describe("Tickets Tests", () => {
     });
 
     test("admin update status", async () => {
+      // Fix: "Pending" is not a valid status; use "In Progress"
       const res = await request(app)
         .put(`/tickets/${ticketId}`)
         .set("Authorization", `Bearer ${adminToken}`)
-        .send({ status: "Pending" });
+        .send({ status: "In Progress" });
 
       expect(res.statusCode).toBe(200);
     });

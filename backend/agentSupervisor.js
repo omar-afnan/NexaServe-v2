@@ -158,9 +158,15 @@ async function reassignFromOverloaded(overloadedAgentId, allAgents, overloadedSe
     );
   }
 
-  // Fix: after reassignment, warn (do not chain-reassign) if the receiving
-  // agent now exceeds 10 open tickets avoids cascading reassignment loops.
-  const newLoad = (target.open_count || 0) + movable.length;
+  // Fix: previously approximated newLoad as target.open_count + movable.length.
+  // Re-query the actual open ticket count after reassignment for an accurate
+  // warning threshold check.
+  const newLoadRows = await dbAll(
+    `SELECT COUNT(*) AS cnt FROM tickets
+     WHERE assigned_to = ? AND status != 'Closed'`,
+    [target.userId]
+  );
+  const newLoad = newLoadRows[0]?.cnt || 0;
   if (newLoad > 10) {
     console.warn(
       `[Supervisor] Warning: ${target.name} now holds ${newLoad} open tickets after reassignment (exceeds 10)`

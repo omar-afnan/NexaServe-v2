@@ -370,19 +370,22 @@ app.post("/chatbot", authenticateJWT, async (req, res) => {
     const ollamaSession = await ollama.get(userId);
 
     // Fix: clean up abandoned dissatisfied sessions whose Redis TTL expired.
-    // If the ollama session is no longer active but a prior llama_logs row was
-    // left unresolved (ticket_id IS NULL AND was_resolved = 0), mark it resolved
-    // so the row doesn't stay dirty forever.
+    // Wrapped in a Promise and awaited so the cleanup completes before the
+    // rest of the handler runs (previously fire-and-forget could race with
+    // a new llama_logs insert later in the turn).
     if (ollamaSession.active === false) {
-      db.get(
-        `SELECT id FROM llama_logs
-         WHERE user_id = ? AND ticket_id IS NULL AND was_resolved = 0
-         ORDER BY created_at DESC LIMIT 1`,
-        [userId],
-        (err, row) => {
-          if (!err && row) markLlamaResolved(db, userId);
-        }
-      );
+      await new Promise((resolve) => {
+        db.get(
+          `SELECT id FROM llama_logs
+           WHERE user_id = ? AND ticket_id IS NULL AND was_resolved = 0
+           ORDER BY created_at DESC LIMIT 1`,
+          [userId],
+          (err, row) => {
+            if (!err && row) markLlamaResolved(db, userId);
+            resolve();
+          }
+        );
+      });
     }
 
     // cap at 10 to avoid memory overflow
@@ -1097,14 +1100,16 @@ app.patch("/tickets/:id", authenticateJWT, authorizeRoles("support", "admin"), (
       }
     );
 
-    // Fix: PATCH was missing the statusChange audit row that PUT /tickets/:id writes
+    // Fix: PATCH always sets both status and solution, so the prior
+    // "Status changed to: ..." wording was misleading when only solution
+    // was updated. Use a message accurate for either case.
     logAudit(db, {
       userId: req.user.user_id,
       userName: req.user.name || 'Unknown',
       userRole: req.user.role,
       action: 'statusChange',
       ticketId: id,
-      details: `Status changed to: ${status}`,
+      details: `Ticket updated: status=${status}, solution updated`,
       ipAddress: req.ip,
       userAgent: req.get('User-Agent')
     });
@@ -1215,7 +1220,13 @@ app.post("/tickets/:id/comments", authenticateJWT, (req, res) => {
   const { id } = req.params;
   const { comment } = req.body;
   const user_id = req.user.user_id;
-  
+
+  // Fix: validate comment is a non-empty string before inserting (prior code
+  // would insert NULL/empty rows and crash the audit log substring call).
+  if (!comment || typeof comment !== 'string' || comment.trim() === '') {
+    return res.status(400).json({ error: 'Comment cannot be empty' });
+  }
+
   const query = `INSERT INTO comments (ticket_id, user_id, comment, created_at) VALUES (?, ?, ?, CURRENT_TIMESTAMP)`;
   db.run(query, [id, user_id, comment], function (err) {
     if (err) {
@@ -1306,9 +1317,15 @@ app.get("/notifications", authenticateJWT, (req, res) => {
 // Mark notification as read
 app.put("/notifications/:id/read", authenticateJWT, (req, res) => {
   const { id } = req.params;
-  db.run("UPDATE notifications SET is_read = 1 WHERE notification_id = ?", [id], (err) => {
+  // Fix: previously any authenticated user could mark any notification read.
+  // Scope the update to the owning user and return 404 if no row matched.
+  const userId = req.user.user_id;
+  db.run("UPDATE notifications SET is_read = 1 WHERE notification_id = ? AND user_id = ?", [id, userId], function (err) {
     if (err) {
       return res.status(500).json({ error: err.message });
+    }
+    if (this.changes === 0) {
+      return res.status(404).json({ error: "Notification not found or not yours" });
     }
     res.json({ message: "Notification marked as read" });
   });

@@ -56,7 +56,23 @@ Respond with only one word: Low, Medium, High, or Critical.`;
     
     const data = await response.json();
     const raw = (data.response || "").trim();
-    const match = VALID_PRIORITIES.find(p => new RegExp(`\\b${p}\\b`, "i").test(raw));
+    // Fix: previously `find` returned the first VALID_PRIORITIES entry that
+    // matched, biased by array order. For replies like "Not Critical, just
+    // High" that yielded the wrong answer. Collect all hits with their
+    // positions and return the last-occurring priority in the reply, which
+    // is more likely Ollama's final answer.
+    let match = null;
+    let lastIndex = -1;
+    for (const p of VALID_PRIORITIES) {
+      const re = new RegExp(`\\b${p}\\b`, "ig");
+      let m;
+      while ((m = re.exec(raw)) !== null) {
+        if (m.index > lastIndex) {
+          lastIndex = m.index;
+          match = p;
+        }
+      }
+    }
     if (!match) {
       console.warn(`[Llama] Priority correction skipped: unparsable reply "${raw}"`);
       return {

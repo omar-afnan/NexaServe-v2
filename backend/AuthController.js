@@ -42,7 +42,8 @@ class AuthController {
           }
 
           if (existingUser) {
-            return res.status(409).json({
+            // Fix: return 400 to match the test contract for duplicate emails
+            return res.status(400).json({
               error: "User with this email already exists",
             });
           }
@@ -50,7 +51,10 @@ class AuthController {
           // hash password
           const hashedPassword = await bcrypt.hash(userPassword, 10);
 
-          const allowedRoles = ["user", "support", "admin"];
+          // Fix: previously any client could self-assign "admin" by sending
+          // role=admin in the signup payload. Restrict to non-privileged
+          // roles; admin accounts must be created directly in the DB.
+          const allowedRoles = ["user", "support"];
           const userRole = allowedRoles.includes(role) ? role : "user";
 
         

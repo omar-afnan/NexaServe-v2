@@ -1,6 +1,7 @@
 
 import request from "supertest";
 import app from "../app.js";
+import db from "../database.js";
 
 let userToken = "";
 let adminToken = "";
@@ -43,13 +44,24 @@ describe("Authentication Tests", () => {
     });
 
     test("creates admin account", async () => {
+      // Fix: signup no longer accepts role=admin (security fix). Account is
+      // created as 'user', then promoted in the DB and re-login for an
+      // admin-role JWT.
       const res = await request(app)
         .post("/auth/signup")
         .send(admin);
 
       expect(res.statusCode).toBe(201);
-      expect(res.body.role).toBe("admin");
-      adminToken = res.body.token;
+
+      await new Promise((resolve, reject) => {
+        db.run("UPDATE users SET role = 'admin' WHERE email = ?", [admin.userEmail],
+          (err) => (err ? reject(err) : resolve()));
+      });
+      const loginRes = await request(app)
+        .post("/auth/login")
+        .send({ userEmail: admin.userEmail, userPassword: admin.userPassword });
+      expect(loginRes.body.role).toBe("admin");
+      adminToken = loginRes.body.token;
     });
 
     test("creates support account", async () => {

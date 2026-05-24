@@ -125,30 +125,26 @@ const pad = (s, n) => String(s).padEnd(n);
       );
     }
     console.log("");
-    console.log(`Gini coefficient (open tickets):     ${gini.toFixed(2)}`);
-    console.log(`Perfect equal distribution Gini:     ${giniEqual.toFixed(2)}`);
-    console.log(
-      `Random spread (min=${minOpen}, max=${maxOpen}) Gini:  ${giniRandom.toFixed(2)}`
+    console.log(`Gini coefficient (open tickets):${gini.toFixed(2)}`);
+    console.log(`Perfect equal distribution Gini:${giniEqual.toFixed(2)}`);
+    console.log( `Random spread (min=${minOpen}, max=${maxOpen}) Gini:  ${giniRandom.toFixed(2)}`
     );
     console.log("");
     console.log("SUPERVISOR LOG ANALYSIS");
     console.log(`Total supervisor cycles:     ${totalCycles}`);
     console.log(`Total agent flag rows:       ${totalLogRows}`);
-    console.log(
-      `Normal flags:                ${flagCounts.normal} (${pct(flagCounts.normal, totalLogRows)}%)`
+    console.log(`Normal flags:${flagCounts.normal} (${pct(flagCounts.normal, totalLogRows)}%)`);
+
+    console.log( `Overloaded flags:${flagCounts.overloaded} (${pct(flagCounts.overloaded, totalLogRows)}%)`
     );
-    console.log(
-      `Overloaded flags:            ${flagCounts.overloaded} (${pct(flagCounts.overloaded, totalLogRows)}%)`
+
+    console.log( `Underperforming flags:${flagCounts.underperforming} (${pct(flagCounts.underperforming, totalLogRows)}%)`
     );
-    console.log(
-      `Underperforming flags:       ${flagCounts.underperforming} (${pct(flagCounts.underperforming, totalLogRows)}%)`
-    );
-    console.log(`Redistribution triggered:    ${redistTriggered} times`);
+    console.log(`Redistribution triggered:${redistTriggered} times`);
     console.log(`Total tickets redistributed: ${totalRedistributed}`);
     console.log("");
     console.log("PER-AGENT FLAG HISTORY");
-    console.log(
-      `${pad("Agent", 22)}${pad("Normal", 10)}${pad("Overloaded", 14)}${pad("Underperforming", 16)}`
+    console.log(`${pad("Agent", 22)}${pad("Normal", 10)}${pad("Overloaded", 14)}${pad("Underperforming", 16)}`
     );
     for (const r of perAgentFlags) {
       console.log(
