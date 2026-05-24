@@ -31,6 +31,9 @@ import {
 import "./CSS/AdminReports.css";
 import AdminSideBar from "../components/AdminSideBar";
 import fetchWithAuth from "../api/fetchWithAuth";
+import StatusPieChart from "../components/charts/StatusPieChart";
+import PriorityBarChart from "../components/charts/PriorityBarChart";
+import TicketTrendsChart from "../components/charts/TicketTrendsChart";
 
 function AdminReports() {
 
@@ -298,329 +301,6 @@ function AdminReports() {
 
   const statusData = getStatusData();
 
-  const statusColors = {
-    'Open': '#FFA500',
-    'Closed': '#4CAF50',
-    'In Progress': '#2196F3',
-    'Pending': '#FFC107',
-    'Resolved': '#8BC34A'
-  }
-
-  const renderPieChart = () => {
-    if (stats.totalTickets === 0) {
-      return <p className="emptyMessage">No tickets available</p>;
-    }
-
-    const pieSlices = [];
-
-    let cumulativePercent = 0;
-
-    Object.entries(statusData).forEach(([status, count]) => {
-
-      const percent = (count / stats.totalTickets) * 100;
-
-      const startAngle = cumulativePercent * 3.6;
-
-      const endAngle = (cumulativePercent + percent) * 3.6;
-
-      cumulativePercent += percent;
-
-      const startX = 50 + 40 * Math.cos((startAngle - 90) * Math.PI / 180);
-      //fixing angle offset so it like 12 instead of 3 
-      const startY = 50 + 40 * Math.sin((startAngle - 90) * Math.PI / 180);
-
-      const endX = 50 + 40 * Math.cos((endAngle - 90) * Math.PI / 180);
-
-      const endY = 50 + 40 * Math.sin((endAngle - 90) * Math.PI / 180);
-
-      let largeArc;
-      if (percent > 50) {
-        largeArc = 1;
-      }
-      else {
-        largeArc = 0;
-      }
-
-      let fillColor;
-      if (statusColors[status]) {
-        fillColor = statusColors[status];
-      }
-      else {
-        fillColor = '#94a3b8';
-      }
-
-      pieSlices.push(
-        <path
-          key={status}
-          d={`M 50 50 L ${startX} ${startY} A 40 40 0 ${largeArc} 1 ${endX} ${endY} Z`}
-          fill={fillColor}
-        />
-      );
-    });
-
-    const legendItems = [];
-    Object.entries(statusData).forEach(([status, count]) => {
-      const percentage = ((count / stats.totalTickets) * 100).toFixed(1);
-
-      let legendColor;
-      if (statusColors[status]) {
-        legendColor = statusColors[status];
-      } else {
-        legendColor = '#94a3b8';
-      }
-
-      legendItems.push(
-        <div key={status} className="legendItem">
-
-          <span className="legendColor" style={
-            {
-              backgroundColor: legendColor
-            }}>
-          </span>
-
-          <span className="legendLabel">
-            {status}
-          </span>
-
-          <span className="legendValue">
-            {count} ({percentage}%)
-          </span>
-
-        </div>
-      );
-    });
-
-    return (
-      <>
-        <div className="pieChart">
-
-          <svg viewBox="0 0 100 100" className="pieChartSvg">
-            {pieSlices}
-          </svg>
-        </div>
-
-        <div className="pieLegend">
-          {legendItems}
-        </div>
-      </>
-    );
-  };
-
-  const getTicketTrendsData = () => {
-    const trendsData = [];
-    const today = new Date();
-
-    for (let i = 6; i >= 0; i--) {
-      const date = new Date(today);
-      date.setDate(today.getDate() - i);
-
-      const dateString = date.toISOString().split('T')[0];
-
-      let count = 0;
-      tickets.forEach(ticket => {
-        const ticketDate = new Date(ticket.created_at).toISOString().split('T')[0];
-        if (ticketDate === dateString) {
-          count = count + 1;
-        }
-      });
-
-      const dayName = date.toLocaleDateString('en-US', { weekday: 'short' });
-
-      trendsData.push({
-        day: dayName,
-        date: dateString,
-        count: count
-      });
-    }
-
-    return trendsData;
-  };
-
-  const renderLineChart = () => {
-    const trendsData = getTicketTrendsData();
-
-    if (tickets.length === 0) {
-      return <p className="emptyMessage">No trend data available</p>;
-    }
-
-    let maxCount = 0;
-    trendsData.forEach(item => {
-      if (item.count > maxCount) {
-        maxCount = item.count;
-      }
-    });
-
-    if (maxCount === 0) {
-      maxCount = 1;
-    }
-
-    const chartWidth = 280;
-    const chartHeight = 150;
-    const padding = 30;
-    const pointsArray = [];
-
-    trendsData.forEach((item, index) => {
-      const x = padding + (index * ((chartWidth - padding * 2) / (trendsData.length - 1)));
-      const y = chartHeight - padding - ((item.count / maxCount) * (chartHeight - padding * 2));
-      pointsArray.push(`${x},${y}`);
-    });
-
-    const pointsString = pointsArray.join(' ');
-
-    const dataPoints = [];
-    trendsData.forEach((item, index) => {
-      const x = padding + (index * ((chartWidth - padding * 2) / (trendsData.length - 1)));
-      const y = chartHeight - padding - ((item.count / maxCount) * (chartHeight - padding * 2));
-
-      const handleMouseEnter = () => {
-        let tooltipX = x;
-        if (x < 60) {
-          tooltipX = 60;
-        }
-        if (x > chartWidth - 60) {
-          tooltipX = chartWidth - 60;
-        }
-
-        let tooltipY;
-        if (y < 50) {
-          tooltipY = y + 50;
-        } else {
-          tooltipY = y - 10;
-        }
-
-        setTooltip({
-          show: true,
-          x: tooltipX,
-          y: tooltipY,
-          day: item.day,
-          date: item.date,
-          count: item.count
-        });
-      };
-
-      const handleMouseLeave = () => {
-        setTooltip({
-          show: false,
-          x: 0,
-          y: 0,
-          day: '',
-          date: '',
-          count: 0
-        });
-      };
-
-      dataPoints.push(
-        <circle
-          key={index}
-          cx={x}
-          cy={y}
-          r="6"
-          fill="#0D9488"
-          className="dataPoint"
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-          style={{ cursor: 'pointer' }}
-        />
-      );
-    });
-
-    const xLabels = [];
-    trendsData.forEach((item, index) => {
-      const x = padding + (index * ((chartWidth - padding * 2) / (trendsData.length - 1)));
-
-      xLabels.push(
-        <text
-          key={index}
-          x={x}
-          y={chartHeight - 8}
-          textAnchor="middle"
-          fontSize="10"
-          fill="#64748b"
-        >
-          {item.day}
-        </text>
-      );
-    });
-
-    const yLabels = [];
-    for (let i = 0; i <= 4; i++) {
-      const value = Math.round((maxCount / 4) * i);
-      const y = chartHeight - padding - ((i / 4) * (chartHeight - padding * 2));
-
-      yLabels.push(
-        <text
-          key={i}
-          x="10"
-          y={y + 4}
-          fontSize="10"
-          fill="#64748b"
-        >
-          {value}
-        </text>
-      );
-    }
-
-    return (
-      <div className="lineChartWrapper">
-        <svg viewBox={`0 0 ${chartWidth} ${chartHeight}`} className="lineChartSvg">
-
-          <line x1={padding} y1={padding} x2={padding} y2={chartHeight - padding} stroke="#e2e8f0" strokeWidth="1" />
-          <line x1={padding} y1={chartHeight - padding} x2={chartWidth - padding} y2={chartHeight - padding} stroke="#e2e8f0" strokeWidth="1" />
-
-          {yLabels}
-          {xLabels}
-
-          <polyline
-            points={pointsString}
-            fill="none"
-            stroke="#0D9488"
-            strokeWidth="2"
-            className="trendLine"
-          />
-
-          {dataPoints}
-
-          {tooltip.show && (
-            <g>
-              <rect
-                x={tooltip.x - 40}
-                y={tooltip.y - 32}
-                width="80"
-                height="30"
-                rx="4"
-                fill="#1e293b"
-                className="tooltipBox"
-              />
-              <text
-                x={tooltip.x}
-                y={tooltip.y - 18}
-                textAnchor="middle"
-                fontSize="11"
-                fontWeight="bold"
-                fill="#ffffff"
-              >
-                {tooltip.count} ticket{tooltip.count !== 1 ? 's' : ''}
-              </text>
-              <text
-                x={tooltip.x}
-                y={tooltip.y - 6}
-                textAnchor="middle"
-                fontSize="9"
-                fill="#94a3b8"
-              >
-                {tooltip.date}
-              </text>
-            </g>
-          )}
-        </svg>
-
-        <div className="trendSummary">
-          <p>Last 7 days ticket activity - Hover over points for details</p>
-        </div>
-      </div>
-    );
-  };
-
   const handleExportCSV = () => {
     const csvContent = [
       ["Ticket ID", "Title", "Category", "Priority", "Status", "Created At"].join(","),
@@ -787,7 +467,7 @@ function AdminReports() {
                 </h2>
                 <div className="chartContent">
                   <div className="pieChartContainer">
-                    {renderPieChart()}
+                    <StatusPieChart statusData={statusData} totalTickets={stats.totalTickets} />
                   </div>
                 </div>
               </div>
@@ -798,48 +478,7 @@ function AdminReports() {
                   Tickets by Priority
                 </h2>
                 <div className="chartContent">
-                  {stats.totalTickets > 0 ? (
-                    <>
-                      <div className="statusItem">
-                        <div className="statusLabel">
-                          <span>Critical Priority</span>
-                          <span className="statusCount">{stats.criticalPriorityTickets}</span>
-                        </div>
-                        <div className="statusBarTrack">
-                          <div className="criticalBar" style={{ width: `${(stats.criticalPriorityTickets / stats.totalTickets) * 100}%` }}></div>
-                        </div>
-                      </div>
-                      <div className="statusItem">
-                        <div className="statusLabel">
-                          <span>High Priority</span>
-                          <span className="statusCount">{stats.highPriorityTickets}</span>
-                        </div>
-                        <div className="statusBarTrack">
-                          <div className="highBar" style={{ width: `${(stats.highPriorityTickets / stats.totalTickets) * 100}%` }}></div>
-                        </div>
-                      </div>
-                      <div className="statusItem">
-                        <div className="statusLabel">
-                          <span>Medium Priority</span>
-                          <span className="statusCount">{stats.mediumPriorityTickets}</span>
-                        </div>
-                        <div className="statusBarTrack">
-                          <div className="mediumBar" style={{ width: `${(stats.mediumPriorityTickets / stats.totalTickets) * 100}%` }}></div>
-                        </div>
-                      </div>
-                      <div className="statusItem">
-                        <div className="statusLabel">
-                          <span>Low Priority</span>
-                          <span className="statusCount">{stats.lowPriorityTickets}</span>
-                        </div>
-                        <div className="statusBarTrack">
-                          <div className="lowBar" style={{ width: `${(stats.lowPriorityTickets / stats.totalTickets) * 100}%` }}></div>
-                        </div>
-                      </div>
-                    </>
-                  ) : (
-                    <p className="emptyMessage">No ticket data available</p>
-                  )}
+                  <PriorityBarChart stats={stats} />
                 </div>
               </div>
             </div>
@@ -852,7 +491,7 @@ function AdminReports() {
                   Ticket Trends (Last 7 Days)
                 </h2>
                 <div className="chartContent">
-                  {renderLineChart()}
+                  <TicketTrendsChart tickets={tickets} tooltip={tooltip} setTooltip={setTooltip} />
                 </div>
               </div>
             </div>

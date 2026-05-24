@@ -129,17 +129,31 @@ export default function Login() {
             </p>
 
             <div className="roleTabs" role="tablist">
-              {ROLE_TABS.map((tab) => (
-                <button
-                  key={tab.key}
-                  type="button"
-                  role="tab"
-                  className={`roleTab ${activeRole === tab.key ? "roleTabActive" : ""}`}
-                  onClick={() => setActiveRole(tab.key)}
-                >
-                  {tab.label}
-                </button>
-              ))}
+              {ROLE_TABS.map((tab) => {
+                const isActive = activeRole === tab.key;
+                return (
+                  <button
+                    key={tab.key}
+                    type="button"
+                    role="tab"
+                    className={`roleTab ${isActive ? "roleTabActive" : ""}`}
+                    onClick={() => setActiveRole(tab.key)}
+                    style={{
+                      opacity: isActive ? 1 : 0.4,
+                      transform: isActive ? "scale(1.02)" : "scale(0.96)",
+                      transition: "opacity 200ms ease, transform 200ms ease",
+                    }}
+                    onMouseEnter={(e) => {
+                      if (!isActive) e.currentTarget.style.opacity = 1;
+                    }}
+                    onMouseLeave={(e) => {
+                      if (!isActive) e.currentTarget.style.opacity = 0.4;
+                    }}
+                  >
+                    {tab.label}
+                  </button>
+                );
+              })}
             </div>
 
             {sessionExpired && (

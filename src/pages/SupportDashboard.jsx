@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 import "./CSS/SupportDashboard.css";
 import SideBar from "../components/sideBar";
+import TicketTable from "../components/TicketTable";
 import fetchWithAuth from "../api/fetchWithAuth";
 
 import {
@@ -178,25 +179,10 @@ function Dashboard() {
     }
   };
 
-  const topTenTickets = useMemo(() => {
-    const filtered = activeFilter === "All"
+  const filteredTickets = useMemo(() => {
+    return activeFilter === "All"
       ? tickets
       : tickets.filter((t) => t.status === activeFilter);
-
-    return filtered
-      .slice()
-      .sort((a, b) => {
-        const priorityOrder = {
-          critical: 0,
-          high: 1,
-          medium: 2,
-          low: 3
-        };
-        const aPriority = String(a.priority || "medium").toLowerCase();
-        const bPriority = String(b.priority || "medium").toLowerCase();
-        return (priorityOrder[aPriority] ?? 4) - (priorityOrder[bPriority] ?? 4);
-      })
-      .slice(0, 10);
   }, [tickets, activeFilter]);
 
   return (
@@ -313,137 +299,12 @@ function Dashboard() {
               </div>
             ) : (
               <div className={`tableWrapper ticketTableWrapper ${isAnimating ? "tableAnimating" : ""}`}>
-                <table className="ticketsTable">
-
-                  <thead>
-
-                    <tr>
-                      <th>
-                        <div className="thContent">
-                          <span>ID</span>
-                        </div>
-                      </th>
-
-                      <th>
-                        <div className="thContent">
-                          <span>Title</span>
-                        </div>
-                      </th>
-
-                      <th>
-                        <div className="thContent">
-                          <span>Category</span>
-                        </div>
-                      </th>
-
-                      <th>
-                        <div className="thContent">
-                          <IoWarning size={14} />
-                          <span>Priority</span>
-                        </div>
-                      </th>
-
-                      <th>
-                        <div className="thContent">
-                          <MdCheckCircle size={14} />
-                          <span>Status</span>
-                        </div>
-                      </th>
-
-                      <th>
-                        <div className="thContent">
-                          <MdAccessTime size={14} />
-                          <span>Created</span>
-                        </div>
-                      </th>
-
-                      <th>
-                        <div className="thContent">
-                          <span>Actions</span>
-                        </div>
-                      </th>
-                    </tr>
-                  </thead>
-
-                  <tbody>
-                    {topTenTickets.map((ticket) => (
-                      <tr
-                        key={ticket.ticket_id}
-                        className="ticketRow"
-                      >
-                        <td>
-                          <span className="ticketId">{ticket.ticket_id}</span>
-                        </td>
-                        <td>
-                          <div className="ticketTitle">{ticket.title}</div>
-                        </td>
-                        <td>
-                          <span className="categoryBadge">{ticket.category}</span>
-                        </td>
-                        <td>
-                          <span
-                            className={`priorityBadge priority-${String(
-                              ticket.priority || "low"
-                            ).toLowerCase()}`}
-                          >
-                            {ticket.priority === 0 || ticket.priority === "0"
-                              ? "Not Set"
-                              : ticket.priority}
-                          </span>
-                        </td>
-                        <td>
-                          <select
-                            value={ticket.status}
-                            onChange={(e) =>
-                              changeStatus(ticket.ticket_id, e.target.value)
-                            }
-                            className={`statusSelect status-${ticket.status
-                              .toLowerCase()
-                              .replace(" ", "-")}`}
-                          >
-                            <option value="Open">Open</option>
-
-                            <option value="In Progress">In Progress</option>
-
-                            <option value="Closed">Closed</option>
-                          </select>
-                        </td>
-                        <td>
-                          <span className="ticketDate">
-                            {new Date(ticket.created_at).toLocaleDateString(
-                              "en-US",
-                              {
-                                month: "short",
-                                day: "numeric",
-                                year: "numeric"
-                              }
-                            )}
-                            <br />
-                            <span className="ticketTime">
-                              {new Date(ticket.created_at).toLocaleTimeString(
-                                "en-US",
-                                {
-                                  hour: "2-digit",
-                                  minute: "2-digit"
-                                }
-                              )}
-                            </span>
-                          </span>
-                        </td>
-                        <td>
-                          <button
-                            className="deleteButton"
-                            onClick={() => handleDelete(ticket.ticket_id)}
-                            title="Delete ticket"
-                          >
-                            <MdDelete size={18} />
-
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+                <TicketTable
+                  tickets={filteredTickets}
+                  onStatusChange={changeStatus}
+                  onDelete={handleDelete}
+                  pageSize={10}
+                />
               </div>
             )}
           </section>

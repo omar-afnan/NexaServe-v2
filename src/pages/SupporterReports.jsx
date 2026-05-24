@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Sidebar from '../components/sideBar';
 import './CSS/SupporterReports.css';
+import SupportCategoryChart from '../components/charts/SupportCategoryChart';
+import SupportPriorityChart from '../components/charts/SupportPriorityChart';
+import SupportStatusChart from '../components/charts/SupportStatusChart';
 
 // React Icons
 import {
@@ -822,38 +825,7 @@ function SupporterReports() {
                   <HiChartBar size={20} className="chartIconAlt" />
                 </div>
                 <div className="chartBody">
-                  {Object.entries(stats.categoryBreakdown).length > 0 ? (
-                    <div className="barChartWrapper">
-                      {Object.entries(stats.categoryBreakdown).map(
-                        ([category, count]) => {
-                          const percentage = (
-                            (count / stats.totalTickets) * 100
-                          ).toFixed(1);
-                          return (
-                            <div key={category} className="barChartRow">
-                              <div className="barLabel">
-                                <span className="barCategory">{category}</span>
-                                <span className="barCount">
-                                  {count} ({percentage}%)
-                                </span>
-                              </div>
-                              <div className="barTrack">
-                                <div
-                                  className="barFill"
-                                  style={{ width: `${percentage}%` }}
-                                />
-                              </div>
-                            </div>
-                          );
-                        }
-                      )}
-                    </div>
-                  ) : (
-                    <div className="emptyChart">
-                      <MdPieChart size={48} />
-                      <p>No category data available</p>
-                    </div>
-                  )}
+                  <SupportCategoryChart categoryBreakdown={stats.categoryBreakdown} totalTickets={stats.totalTickets} />
                 </div>
               </div>
             )}
@@ -871,52 +843,7 @@ function SupporterReports() {
 
 
                 <div className="chartBody">
-                  {Object.entries(stats.priorityBreakdown).length > 0 ? (
-
-                    <div className="priorityGrid">
-
-                      {Object.entries(stats.priorityBreakdown)
-                        .sort((a, b) => {
-                          const order =
-                          {
-                            "Critical": 0, "High": 1, "Medium": 2, "Low": 3
-
-                          };
-                          return (order[a[0]] || 4) - (order[b[0]] || 4);
-                        })
-                        .map(([priority, count]) => {
-                          const percentage = (
-                            (count / stats.totalTickets) * 100
-                          ).toFixed(1);
-                          return (
-                            <div
-                              key={priority}
-                              className={`priorityItem priority-${priority.toLowerCase()}`}
-                            >
-                              <div className="priorityHeader">
-                                <span className="priorityLabel">{priority}</span>
-                                <span className="priorityPercentage">
-                                  {percentage}%
-                                </span>
-                              </div>
-                              <p className="priorityCount">{count}</p>
-                              <div className="priorityBar">
-                                <div
-                                  className="priorityBarFill"
-                                  style={{ width: `${percentage}%` }}
-                                />
-                              </div>
-                            </div>
-                          );
-                        }
-                        )}
-                    </div>
-                  ) : (
-                    <div className="emptyChart">
-                      <MdShowChart size={48} />
-                      <p>No priority data available</p>
-                    </div>
-                  )}
+                  <SupportPriorityChart priorityBreakdown={stats.priorityBreakdown} totalTickets={stats.totalTickets} />
                 </div>
               </div>
             )}
@@ -931,31 +858,7 @@ function SupporterReports() {
                   <h2>Status Distribution</h2>
                 </div>
               </div>
-              <div className="statusGrid">
-                {Object.entries(stats.statusBreakdown).map(([status, count]) => {
-                  const percentage = (
-                    (count / stats.totalTickets) * 100
-                  ).toFixed(1);
-                  return (
-                    <div
-                      key={status}
-                      className={`statusCard status-${status
-                        .toLowerCase()
-                        .replace(" ", "-")}`}
-                    >
-                      <h4>{status}</h4>
-                      <p className="statusNumber">{count}</p>
-                      <div className="statusProgress">
-                        <div
-                          className="statusProgressFill"
-                          style={{ width: `${percentage}%` }}
-                        />
-                      </div>
-                      <span className="statusPercentage">{percentage}%</span>
-                    </div>
-                  );
-                })}
-              </div>
+              <SupportStatusChart statusBreakdown={stats.statusBreakdown} totalTickets={stats.totalTickets} />
             </div>
           )}
 

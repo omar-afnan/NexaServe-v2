@@ -19,6 +19,8 @@ import AuditLogs from "./pages/Audit_Logs";
 import AdminProfilePage from "./pages/adminProfilePage";
 import AgentPerformance from "./pages/AgentPerformance";
 import MyPerformance from "./pages/MyPerformance";
+import SupportNotifications from "./pages/SupportNotifications";
+import AdminNotifications from "./pages/AdminNotifications";
 
 
 const RequireAuth = ({ allowed, children }) => {
@@ -102,6 +104,15 @@ export default function App() {
           element={
             <RequireAuth allowed={['support']}>
               <MyPerformance />
+            </RequireAuth>
+          }
+        />
+
+        <Route
+          path="/support/notifications"
+          element={
+            <RequireAuth allowed={['support', 'admin']}>
+              <SupportNotifications />
             </RequireAuth>
           }
         />
@@ -205,6 +216,15 @@ export default function App() {
           element={
             <RequireAuth allowed={['admin']}>
               <AdminReports />
+            </RequireAuth>
+          }
+        />
+
+        <Route
+          path="/admin/notifications"
+          element={
+            <RequireAuth allowed={['admin']}>
+              <AdminNotifications />
             </RequireAuth>
           }
         />

@@ -9,6 +9,7 @@ import {
   MdPerson,
   MdHeadset,
   MdAnalytics,
+  MdNotifications,
 } from "react-icons/md";
 
 function AdminSideBar() {
@@ -48,6 +49,13 @@ function AdminSideBar() {
               Dashboard
             </a>
           </li>
+          <li>
+            <a href="/admin/notifications" className={isActive("/admin/notifications") ? "active" : ""}>
+              <MdNotifications size={18} />
+              Notifications
+            </a>
+          </li>
+
           <li>
             <a href="/admin/tickets" className={isActive("/admin/tickets") ? "active" : ""}>
               <MdConfirmationNumber size={18} />

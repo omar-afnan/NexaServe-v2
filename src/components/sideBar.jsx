@@ -10,6 +10,7 @@ import {
   MdLogout,
   MdHeadset,
   MdInsights,
+  MdNotifications,
 } from "react-icons/md";
 
 function SideBar() {
@@ -51,6 +52,13 @@ function SideBar() {
           </li>
 
           <li>
+            <Link to="/support/notifications" className={isActive("/support/notifications") ? "active" : ""}>
+              <MdNotifications size={18} />
+              Notifications
+            </Link>
+          </li>
+
+          <li>
             <Link to="/tickets" className={isActive("/tickets") ? "active" : ""}>
               <MdConfirmationNumber size={18} />
               Tickets
@@ -70,6 +78,7 @@ function SideBar() {
               My Performance
             </Link>
           </li>
+
 
           <li>
             <Link to="/support-profile" className={isActive("/support-profile") ? "active" : ""}>
