@@ -123,7 +123,10 @@ async function askOllama(prompt, stats) {
   }
 }
 
-async function reassignFromOverloaded(overloadedAgentId, allAgents) {
+async function reassignFromOverloaded(overloadedAgentId, allAgents, overloadedSet = new Set()) {
+  // Fix: previously this picked the single least-loaded agent without checking
+  // whether that agent was also flagged overloaded in this cycle. Pull a list
+  // of candidates ordered by load and skip any already-overloaded agents.
   const loadRows = await dbAll(
     `SELECT u.userId, u.name, COUNT(t.ticket_id) AS open_count
      FROM users u
@@ -131,13 +134,12 @@ async function reassignFromOverloaded(overloadedAgentId, allAgents) {
        ON t.assigned_to = u.userId AND t.status != 'Closed'
      WHERE u.role = 'support' AND u.userId != ?
      GROUP BY u.userId
-     ORDER BY open_count ASC
-     LIMIT 1`,
+     ORDER BY open_count ASC`,
     [overloadedAgentId]
   );
 
-  if (!loadRows.length) return null;
-  const target = loadRows[0];
+  const target = loadRows.find(r => !overloadedSet.has(r.userId));
+  if (!target) return null;
 
   const movable = await dbAll(
     `SELECT ticket_id FROM tickets
@@ -156,6 +158,15 @@ async function reassignFromOverloaded(overloadedAgentId, allAgents) {
     );
   }
 
+  // Fix: after reassignment, warn (do not chain-reassign) if the receiving
+  // agent now exceeds 10 open tickets avoids cascading reassignment loops.
+  const newLoad = (target.open_count || 0) + movable.length;
+  if (newLoad > 10) {
+    console.warn(
+      `[Supervisor] Warning: ${target.name} now holds ${newLoad} open tickets after reassignment (exceeds 10)`
+    );
+  }
+
   return `Reassigned ${movable.length} ticket(s) to ${target.name}`;
 }
 
@@ -170,6 +181,9 @@ export async function runSupervisorCycle() {
       return;
     }
 
+    // Fix: track overloaded agents in this cycle so we don't reassign tickets
+    // to another agent that's also been flagged as overloaded.
+    const overloadedSet = new Set();
     for (const agent of agents) {
       try {
         const stats = await getAgentStats(agent.userId);
@@ -178,7 +192,8 @@ export async function runSupervisorCycle() {
 
         let actionTaken = decision.action || null;
         if (decision.flag === "overloaded") {
-          const reassignNote = await reassignFromOverloaded(agent.userId, agents);
+          overloadedSet.add(agent.userId);
+          const reassignNote = await reassignFromOverloaded(agent.userId, agents, overloadedSet);
           if (reassignNote) {
             actionTaken = actionTaken
               ? `${actionTaken} | ${reassignNote}`

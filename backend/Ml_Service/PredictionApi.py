@@ -425,21 +425,32 @@ def get_stats():
 def retrain():
     try:
         import subprocess
-        result = subprocess.run(['python', 'TrainModel.py'], capture_output=True, text=True)
-        
-        if result.returncode == 0:
-            load_models()
-            return jsonify({
-                'success': True,
-                'message': 'Model retrained successfully',
-                'output': result.stdout
-            })
-        else:
+        # Fix: previously only TrainModel.py (priority) ran here. The mBERT
+        # category model was never retrained. Run both sequentially and report
+        # which script failed if either non-zero exits.
+        priority_result = subprocess.run(['python', 'TrainModel.py'], capture_output=True, text=True)
+        if priority_result.returncode != 0:
             return jsonify({
                 'success': False,
-                'error': result.stderr
+                'failed_script': 'TrainModel.py',
+                'error': priority_result.stderr
             }), 500
-            
+
+        mbert_result = subprocess.run(['python', 'TrainMBERT.py'], capture_output=True, text=True)
+        if mbert_result.returncode != 0:
+            return jsonify({
+                'success': False,
+                'failed_script': 'TrainMBERT.py',
+                'error': mbert_result.stderr
+            }), 500
+
+        load_models()
+        return jsonify({
+            'success': True,
+            'message': 'Model retrained successfully',
+            'output': priority_result.stdout + '\n' + mbert_result.stdout
+        })
+
     except Exception as e:
         return jsonify({
             'success': False,

@@ -369,6 +369,22 @@ app.post("/chatbot", authenticateJWT, async (req, res) => {
 
     const ollamaSession = await ollama.get(userId);
 
+    // Fix: clean up abandoned dissatisfied sessions whose Redis TTL expired.
+    // If the ollama session is no longer active but a prior llama_logs row was
+    // left unresolved (ticket_id IS NULL AND was_resolved = 0), mark it resolved
+    // so the row doesn't stay dirty forever.
+    if (ollamaSession.active === false) {
+      db.get(
+        `SELECT id FROM llama_logs
+         WHERE user_id = ? AND ticket_id IS NULL AND was_resolved = 0
+         ORDER BY created_at DESC LIMIT 1`,
+        [userId],
+        (err, row) => {
+          if (!err && row) markLlamaResolved(db, userId);
+        }
+      );
+    }
+
     // cap at 10 to avoid memory overflow
     const conversation = await conv.get(userId);
     // push the latest message
@@ -1080,6 +1096,18 @@ app.patch("/tickets/:id", authenticateJWT, authorizeRoles("support", "admin"), (
         error: "Ticket not found"
       }
     );
+
+    // Fix: PATCH was missing the statusChange audit row that PUT /tickets/:id writes
+    logAudit(db, {
+      userId: req.user.user_id,
+      userName: req.user.name || 'Unknown',
+      userRole: req.user.role,
+      action: 'statusChange',
+      ticketId: id,
+      details: `Status changed to: ${status}`,
+      ipAddress: req.ip,
+      userAgent: req.get('User-Agent')
+    });
 
     res.json(
       {
