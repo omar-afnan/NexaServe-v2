@@ -81,7 +81,13 @@ export default function MyPerformance() {
         <div className="mpContainer">
           <div className="mpTopBar">
             <div>
-              <h1>My Performance</h1>
+              <h1>
+                <MdInsights size={22} style={
+                  {
+                    marginRight: 8, verticalAlign: 'middle', backgroundColor: '#0f766e', color: "white", borderRadius: '50%', padding: '2px'
+                  }} />
+                My Performance
+              </h1>
               <p>Your personal workload evaluation</p>
             </div>
           </div>

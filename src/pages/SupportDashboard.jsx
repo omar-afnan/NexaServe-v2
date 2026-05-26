@@ -193,7 +193,10 @@ function Dashboard() {
         <div className="dashboardContainer">
           <div className="dashboardTopBar">
             <div className="topBarLeft">
-              <h1>Triage Queue</h1>
+              <h1>
+                <MdPendingActions size={22} style={{ marginRight: 8, verticalAlign: 'middle', color: '#0f766e' }} />
+                Triage Queue
+              </h1>
               <p>Manage and resolve assigned tickets</p>
             </div>
           </div>
@@ -271,7 +274,10 @@ function Dashboard() {
           <section className="ticketsSection">
             <div className="sectionHeader">
               <div className="sectionHeaderLeft">
-                <h2>Recent Assigned Tickets</h2>
+                <h2>
+                  <IoTicketSharp size={20} style={{ marginRight: 8, verticalAlign: 'middle', color: '#0f766e' }} />
+                  Recent Assigned Tickets
+                </h2>
               </div>
               <div className="filterPills">
                 {["All", "Open", "In Progress", "Closed"].map((f) => (

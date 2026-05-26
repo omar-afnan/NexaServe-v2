@@ -249,7 +249,13 @@ function AuditLogs() {
 
         <div className="auditHero">
           <div className="heroContent">
-            <h1>Audit Logs</h1>
+            <h1>
+              <MdHistory size={24} style={
+                {
+                  marginRight: 8, verticalAlign: 'middle', backgroundColor: '#0f766e', color: "white", borderRadius: '50%', padding: '2px'
+                }} />
+              Audit Logs
+            </h1>
             <p>Track every action across the system</p>
           </div>
           <div className="heroActions">

@@ -8,6 +8,7 @@
 .notifMain {
   flex: 1;
   padding: 32px;
+  margin-left: 220px;
 }
 
 .notifHeader {
@@ -27,7 +28,7 @@
   width: 40px;
   height: 40px;
   border-radius: 8px;
-  background: #4F46E5;
+  background: #0f766e;
   color: #fff;
   display: flex;
   align-items: center;
@@ -72,13 +73,13 @@
 }
 
 .notifBtnPrimary {
-  background: #4F46E5;
+  background: #0f766e;
   color: #fff;
-  border-color: #4F46E5;
+  border-color: black;
 }
 
 .notifBtnPrimary:hover {
-  background: #4338ca;
+  background: #0f766e;
 }
 
 .notifBtnDanger {
@@ -99,8 +100,13 @@
 }
 
 @keyframes notifFadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 .notifItem {

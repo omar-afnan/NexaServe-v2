@@ -18,12 +18,14 @@ function TicketTable({
 }) {
   const [page, setPage] = useState(1);
 
-  useEffect(() => {
-    setPage(1);
-  }, [tickets]);
-
   const totalPages = Math.max(1, Math.ceil((tickets?.length || 0) / pageSize));
   const safePage = Math.min(page, totalPages);
+
+  useEffect(() => {
+    if (page > totalPages) {
+      setPage(Math.max(1, totalPages));
+    }
+  }, [tickets, totalPages, page]);
 
   const pageTickets = useMemo(() => {
     if (!Array.isArray(tickets)) return [];

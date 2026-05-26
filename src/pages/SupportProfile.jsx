@@ -14,7 +14,12 @@ import {
   MdCancel,
   MdLock,
   MdVisibility,
-  MdVisibilityOff
+  MdVisibilityOff,
+  MdHeadsetMic,
+  MdAccessTime,
+  MdShield,
+  MdInsights,
+  MdNotificationsActive
 } from "react-icons/md";
 
 function SupportProfile() {
@@ -42,6 +47,8 @@ function SupportProfile() {
     dailyDigest: false,
     teamAnnouncements: false
   });
+  const [prefSaved, setPrefSaved] = useState(false);
+  const prefSavedTimer = useRef(null);
 
   const [passwordData, setPasswordData] = useState({
     currentPassword: "",
@@ -69,6 +76,28 @@ function SupportProfile() {
   useEffect(() => {
     if (userData.userId) fetchPerformance(userData.userId);
   }, [userData.userId]);
+
+  useEffect(() => {
+    if (!userData.userId) return;
+    try {
+      const stored = localStorage.getItem(`notif_prefs_${userData.userId}`);
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        setNotifPrefs((prev) => ({ ...prev, ...parsed }));
+      }
+    } catch (e) {
+      // ignore parse errors, keep defaults
+    }
+  }, [userData.userId]);
+
+  const handleSavePrefs = () => {
+    if (userData.userId) {
+      localStorage.setItem(`notif_prefs_${userData.userId}`, JSON.stringify(notifPrefs));
+    }
+    if (prefSavedTimer.current) clearTimeout(prefSavedTimer.current);
+    setPrefSaved(true);
+    prefSavedTimer.current = setTimeout(() => setPrefSaved(false), 2000);
+  };
 
   const loadUserData = () => {
     const name = sessionStorage.getItem("userName") || "";
@@ -246,7 +275,10 @@ function SupportProfile() {
 
           <header className="pageHeader">
             <div>
-              <h1>Profile</h1>
+              <h1>
+                <MdHeadsetMic size={22} style={{ marginRight: 8, verticalAlign: 'middle', color: '#0f766e' }} />
+                Profile
+              </h1>
               <p>Manage your account information</p>
             </div>
           </header>
@@ -259,7 +291,10 @@ function SupportProfile() {
               {/* Agent Profile */}
               <section className="profileCard">
                 <div className="cardHeader">
-                  <h2>Agent Profile</h2>
+                  <h2>
+                    <MdHeadsetMic size={20} style={{ marginRight: 8, verticalAlign: 'middle', color: '#0f766e' }} />
+                    Agent Profile
+                  </h2>
                   <button onClick={toggleEdit} className="editBtn">
                     {isEditing ? (
                       <><MdCancel size={14} /><span>Cancel</span></>
@@ -349,7 +384,10 @@ function SupportProfile() {
               {/* Working Hours */}
               <section className="profileCard">
                 <div className="cardHeader">
-                  <h2>Working Hours</h2>
+                  <h2>
+                    <MdAccessTime size={20} style={{ marginRight: 8, verticalAlign: 'middle', color: '#0f766e' }} />
+                    Working Hours
+                  </h2>
                 </div>
                 <div className="cardBody">
                   <div className="metaRow">
@@ -366,7 +404,10 @@ function SupportProfile() {
               {/* Security */}
               <section className="profileCard">
                 <div className="cardHeader">
-                  <h2>Security</h2>
+                  <h2>
+                    <MdShield size={20} style={{ marginRight: 8, verticalAlign: 'middle', color: '#0f766e' }} />
+                    Security
+                  </h2>
                 </div>
                 <div className="cardBody">
                   <div className="metaRow">
@@ -454,7 +495,10 @@ function SupportProfile() {
               {/* Performance */}
               <section className="profileCard">
                 <div className="cardHeader">
-                  <h2>Performance</h2>
+                  <h2>
+                    <MdInsights size={20} style={{ marginRight: 8, verticalAlign: 'middle', color: '#0f766e' }} />
+                    Performance
+                  </h2>
                 </div>
                 <div className="cardBody">
                   <div className="perfStatsRow">
@@ -477,7 +521,10 @@ function SupportProfile() {
               {/* Notifications */}
               <section className="profileCard">
                 <div className="cardHeader">
-                  <h2>Notifications</h2>
+                  <h2>
+                    <MdNotificationsActive size={20} style={{ marginRight: 8, verticalAlign: 'middle', color: '#0f766e' }} />
+                    Notifications
+                  </h2>
                 </div>
                 <div className="cardBody">
                   <label className="notifRow">
@@ -516,10 +563,27 @@ function SupportProfile() {
                   <button
                     type="button"
                     className="darkButton"
-                    onClick={() => showToast("Preferences saved!")}
+                    onClick={handleSavePrefs}
                   >
                     Save Preferences
                   </button>
+
+                  {prefSaved && (
+                    <div
+                      style={{
+                        marginTop: 10,
+                        padding: "8px 12px",
+                        borderRadius: 6,
+                        background: "#ECFDF5",
+                        color: "#065F46",
+                        border: "1px solid #A7F3D0",
+                        fontSize: 13,
+                        fontWeight: 500
+                      }}
+                    >
+                      Preferences saved
+                    </div>
+                  )}
                 </div>
               </section>
 

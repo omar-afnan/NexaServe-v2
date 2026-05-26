@@ -1,16 +1,13 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useMemo, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import UserSideBar from "../../components/userSideBar";
 import "../CSS/userProfile.css";
 
 import {
-  MdPerson,
-  MdEmail,
   MdEdit,
   MdSave,
   MdCancel,
   MdLock,
-  MdBadge,
   MdVisibility,
   MdVisibilityOff
 } from "react-icons/md";
@@ -38,6 +35,11 @@ export default function UserProfile() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(true);
   const [toast, setToast] = useState(null);
+  const [notifPrefs, setNotifPrefs] = useState({
+    ticketUpdates: true,
+    statusChanges: true,
+    supportReplies: true
+  });
   const toastTimer = useRef(null);
 
   const showToast = (msg, type = "success") => {
@@ -71,15 +73,14 @@ export default function UserProfile() {
         })
         .then(data => {
           if (!data) return;
-          if (data.name && data.email) {
-            setUserData({ name: data.name, email: data.email, role: data.role || "user" });
-            setEditData({ name: data.name, email: data.email });
-            setLoading(false);
-            // Update sessionStorage
-            sessionStorage.setItem("userName", data.name);
+          const name = data.name || sessionStorage.getItem("userName") || "User";
+          const email = data.email || sessionStorage.getItem("userEmail") || "user@nexaserve.com";
 
-            sessionStorage.setItem("userEmail", data.email);
-          }
+          setUserData({ name, email, role: data.role || "user" });
+          setEditData({ name, email });
+          setLoading(false);
+          sessionStorage.setItem("userName", name);
+          sessionStorage.setItem("userEmail", email);
         })
         .catch(() => {
           // Fallback to sessionStorage if API fails
@@ -200,6 +201,26 @@ export default function UserProfile() {
 
 
 
+  const initials = useMemo(() => {
+    return userData.name
+      ? userData.name.split(" ").map((word) => word[0]).join("").toUpperCase().slice(0, 2)
+      : "U";
+  }, [userData.name]);
+
+  const lastLoginLabel = useMemo(() => {
+    const stored = sessionStorage.getItem("lastLogin");
+    const date = stored ? new Date(stored) : new Date();
+
+    return date.toLocaleString("en-GB", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit"
+    });
+  }, []);
+
+
 
   if (loading) {
     return (
@@ -232,177 +253,200 @@ export default function UserProfile() {
 
           <header className="pageHeader">
             <div>
-              <h1>Profile Settings</h1>
+              <h1>Profile</h1>
               <p>Manage your account information</p>
             </div>
           </header>
 
 
           <div className="contentGrid">
-
-            {/* PROFILE INFORMATION  */}
-            <section className="profileCard">
-              <div className="cardHeader">
-                <h2>Profile Information</h2>
-                <button onClick={handleEditToggle} className="editBtn">
-                  {isEditing ? (
-                    <>
-                      <MdCancel size={18} />
-                      <span>Cancel</span>
-                    </>
-                  ) : (
-                    <>
-                      <MdEdit size={18} />
-                      <span>Edit</span>
-                    </>
-                  )}
-                </button>
-              </div>
-
-              <div className="cardBody">
-                <div className="inputGroup">
-                  <label>
-                    <MdPerson size={20} />
-                    Full Name
-                  </label>
-                  {isEditing ? (
-                    <input
-                      type="text"
-                      value={editData.name}
-                      onChange={(e) => setEditData({ ...editData, name: e.target.value })}
-                      className="input"
-                      placeholder="Enter your name"
-                    />
-                  ) : (
-                    <div className="inputDisplay">{userData.name}</div>
-                  )}
-                </div>
-
-                <div className="inputGroup">
-                  <label>
-                    <MdEmail size={20} />
-                    Email Address
-                  </label>
-                  {isEditing ? (
-                    <input
-                      type="email"
-                      value={editData.email}
-                      onChange={(e) => setEditData({ ...editData, email: e.target.value })}
-                      className="input"
-                      placeholder="Enter your email"
-                    />
-                  ) : (
-                    <div className="inputDisplay">{userData.email}</div>
-                  )}
-                </div>
-
-                <div className="inputGroup">
-                  <label>
-                    <MdBadge size={20} />
-                    Role
-                  </label>
-                  <div className="roleBadge">User</div>
-                </div>
-
-                {isEditing && (
-                  <button onClick={handleSaveProfile} className="saveBtn">
-                    <MdSave size={18} />
-                    Save Changes
+            <div className="leftColumn">
+              <section className="profileCard">
+                <div className="cardHeader">
+                  <h2>User Profile</h2>
+                  <button onClick={handleEditToggle} className="editBtn">
+                    {isEditing ? (
+                      <><MdCancel size={14} /><span>Cancel</span></>
+                    ) : (
+                      <><MdEdit size={14} /><span>Edit</span></>
+                    )}
                   </button>
-                )}
-              </div>
-            </section>
+                </div>
 
-            {/*SECURITY CARD*/}
-            <section className="profileCard">
-              <div className="cardHeader">
-                <h2>Security</h2>
-              </div>
+                <div className="cardBody">
+                  <div className="agentAvatarBlock">
+                    <div className="agentAvatar">{initials}</div>
+                    <p className="agentName">{userData.name || "User"}</p>
+                    <p className="agentEmail">{userData.email}</p>
+                    <span className="roleBadge">USER</span>
+                  </div>
 
-              <div className="cardBody">
-                <button
-                  onClick={() => setShowPasswordChange(!showPasswordChange)}
-                  className="passwordToggleBtn"
-                >
-                  <MdLock size={20} />
-                  {showPasswordChange ? "Hide Password Change" : "Change Password"}
-                </button>
+                  <div className="inputGroup">
+                    <label>FULL NAME</label>
+                    {isEditing ? (
+                      <input
+                        type="text"
+                        value={editData.name}
+                        onChange={(e) => setEditData({ ...editData, name: e.target.value })}
+                        className="input"
+                        placeholder="Enter your name"
+                      />
+                    ) : (
+                      <input className="input" value={userData.name} readOnly />
+                    )}
+                  </div>
 
-                {showPasswordChange && (
-                  <form onSubmit={handlePasswordChange} className="passwordForm">
-                    <div className="inputGroup">
-                      <label>Current Password</label>
-                      <div className="passwordInputWrapper">
-                        <input
-                          type={showCurrentPassword ? "text" : "password"}
-                          value={passwordData.currentPassword}
-                          onChange={(e) => setPasswordData({ ...passwordData, currentPassword: e.target.value })}
-                          className="input"
-                          placeholder="Enter current password"
-                          required
-                        />
-                        <button
-                          type="button"
-                          className="eyeToggle"
-                          onClick={() => setShowCurrentPassword(!showCurrentPassword)}
-                        >
-                          {showCurrentPassword ? <MdVisibilityOff size={20} /> : <MdVisibility size={20} />}
-                        </button>
-                      </div>
-                    </div>
+                  <div className="inputGroup">
+                    <label>EMAIL ADDRESS</label>
+                    {isEditing ? (
+                      <input
+                        type="email"
+                        value={editData.email}
+                        onChange={(e) => setEditData({ ...editData, email: e.target.value })}
+                        className="input"
+                        placeholder="Enter your email"
+                      />
+                    ) : (
+                      <input className="input" value={userData.email} readOnly />
+                    )}
+                  </div>
 
-                    <div className="inputGroup">
-                      <label>New Password</label>
-                      <div className="passwordInputWrapper">
-                        <input
-                          type={showNewPassword ? "text" : "password"}
-                          value={passwordData.newPassword}
-                          onChange={(e) => setPasswordData({ ...passwordData, newPassword: e.target.value })}
-                          className="input"
-                          placeholder="Enter new password"
-                          required
-                        />
-                        <button
-                          type="button"
-                          className="eyeToggle"
-                          onClick={() => setShowNewPassword(!showNewPassword)}
-                        >
-                          {showNewPassword ? <MdVisibilityOff size={20} /> : <MdVisibility size={20} />}
-                        </button>
-                      </div>
-                    </div>
-
-                    <div className="inputGroup">
-                      <label>Confirm New Password</label>
-                      <div className="passwordInputWrapper">
-                        <input
-                          type={showConfirmPassword ? "text" : "password"}
-                          value={passwordData.confirmPassword}
-                          onChange={(e) => setPasswordData({ ...passwordData, confirmPassword: e.target.value })}
-                          className="input"
-                          placeholder="Confirm new password"
-                          required
-                        />
-                        <button
-                          type="button"
-                          className="eyeToggle"
-                          onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                        >
-                          {showConfirmPassword ? <MdVisibilityOff size={20} /> : <MdVisibility size={20} />}
-                        </button>
-                      </div>
-                    </div>
-
-                    <button type="submit" className="submitBtn">
-                      Update Password
+                  {isEditing && (
+                    <button onClick={handleSaveProfile} className="saveButton">
+                      <MdSave size={16} />
+                      Save Changes
                     </button>
-                  </form>
-                )}
+                  )}
+                </div>
+              </section>
 
-              </div>
-            </section>
+              <section className="profileCard">
+                <div className="cardHeader">
+                  <h2>Security</h2>
+                </div>
 
+                <div className="cardBody">
+                  <div className="metaRow">
+                    <span className="metaLabel">Last Login</span>
+                    <span className="metaValue">{lastLoginLabel}</span>
+                  </div>
+                  <div className="metaRow">
+                    <span className="metaLabel">Account Role</span>
+                    <span className="metaValue">User</span>
+                  </div>
 
+                  <button
+                    onClick={() => setShowPasswordChange(!showPasswordChange)}
+                    className="darkButton"
+                  >
+                    <MdLock size={16} />
+                    {showPasswordChange ? "Hide Password Change" : "Change Password"}
+                  </button>
+
+                  {showPasswordChange && (
+                    <form onSubmit={handlePasswordChange} className="passwordForm">
+                      <div className="inputGroup">
+                        <label>CURRENT PASSWORD</label>
+                        <div className="passwordInputWrapper">
+                          <input
+                            type={showCurrentPassword ? "text" : "password"}
+                            value={passwordData.currentPassword}
+                            onChange={(e) => setPasswordData({ ...passwordData, currentPassword: e.target.value })}
+                            className="input"
+                            placeholder="Enter current password"
+                            required
+                          />
+                          <button type="button" className="eyeToggle" onClick={() => setShowCurrentPassword(!showCurrentPassword)}>
+                            {showCurrentPassword ? <MdVisibilityOff size={18} /> : <MdVisibility size={18} />}
+                          </button>
+                        </div>
+                      </div>
+
+                      <div className="inputGroup">
+                        <label>NEW PASSWORD</label>
+                        <div className="passwordInputWrapper">
+                          <input
+                            type={showNewPassword ? "text" : "password"}
+                            value={passwordData.newPassword}
+                            onChange={(e) => setPasswordData({ ...passwordData, newPassword: e.target.value })}
+                            className="input"
+                            placeholder="Enter new password"
+                            required
+                          />
+                          <button type="button" className="eyeToggle" onClick={() => setShowNewPassword(!showNewPassword)}>
+                            {showNewPassword ? <MdVisibilityOff size={18} /> : <MdVisibility size={18} />}
+                          </button>
+                        </div>
+                      </div>
+
+                      <div className="inputGroup">
+                        <label>CONFIRM NEW PASSWORD</label>
+                        <div className="passwordInputWrapper">
+                          <input
+                            type={showConfirmPassword ? "text" : "password"}
+                            value={passwordData.confirmPassword}
+                            onChange={(e) => setPasswordData({ ...passwordData, confirmPassword: e.target.value })}
+                            className="input"
+                            placeholder="Confirm new password"
+                            required
+                          />
+                          <button type="button" className="eyeToggle" onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
+                            {showConfirmPassword ? <MdVisibilityOff size={18} /> : <MdVisibility size={18} />}
+                          </button>
+                        </div>
+                      </div>
+
+                      <button type="submit" className="darkButton">
+                        Update Password
+                      </button>
+                    </form>
+                  )}
+                </div>
+              </section>
+            </div>
+
+            <div className="rightColumn">
+              <section className="profileCard">
+                <div className="cardHeader">
+                  <h2>Notifications</h2>
+                </div>
+
+                <div className="cardBody">
+                  <label className="notifRow">
+                    <input
+                      type="checkbox"
+                      checked={notifPrefs.ticketUpdates}
+                      onChange={(e) => setNotifPrefs({ ...notifPrefs, ticketUpdates: e.target.checked })}
+                    />
+                    <span>Email me about my ticket updates</span>
+                  </label>
+                  <label className="notifRow">
+                    <input
+                      type="checkbox"
+                      checked={notifPrefs.statusChanges}
+                      onChange={(e) => setNotifPrefs({ ...notifPrefs, statusChanges: e.target.checked })}
+                    />
+                    <span>Notify me when a ticket status changes</span>
+                  </label>
+                  <label className="notifRow">
+                    <input
+                      type="checkbox"
+                      checked={notifPrefs.supportReplies}
+                      onChange={(e) => setNotifPrefs({ ...notifPrefs, supportReplies: e.target.checked })}
+                    />
+                    <span>Notify me when support replies</span>
+                  </label>
+
+                  <button
+                    type="button"
+                    className="darkButton"
+                    onClick={() => showToast("Preferences saved!")}
+                  >
+                    Save Preferences
+                  </button>
+                </div>
+              </section>
+            </div>
           </div>
         </div>
       </main>

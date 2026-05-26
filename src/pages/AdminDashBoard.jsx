@@ -175,7 +175,10 @@ function AdminDashboard() {
             <div className="headerInner">
               <div className="heroText">
                 <div>
-                  <h1>Dashboard</h1>
+                  <h1>
+                    <MdDashboard size={22} style={{ marginRight: 8, verticalAlign: 'middle', color: '#0f766e' }} />
+                    Dashboard
+                  </h1>
                   <p className="heroSubtitle">System overview</p>
                 </div>
               </div>
@@ -325,7 +328,10 @@ function AdminDashboard() {
           <section className="ticketsSection">
             <div className="sectionHeader">
               <div className="sectionHeaderLeft">
-                <h2>Recent Tickets</h2>
+                <h2>
+                  <IoTicketSharp size={20} style={{ marginRight: 8, verticalAlign: 'middle', color: '#0f766e' }} />
+                  Recent Tickets
+                </h2>
               </div>
             </div>
 
@@ -355,7 +361,10 @@ function AdminDashboard() {
 
           {/* QUICK ACTIONS */}
           <section className="quickActionsSection">
-            <h2>Quick Actions</h2>
+            <h2>
+              <MdPendingActions size={20} style={{ marginRight: 8, verticalAlign: 'middle', color: '#0f766e' }} />
+              Quick Actions
+            </h2>
 
             <div className="quickActionsButtons">
               <a href="/admin/tickets" className="actionButtonPrimary">

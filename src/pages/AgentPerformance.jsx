@@ -107,7 +107,13 @@ export default function AgentPerformance() {
         <div className="apContainer">
           <div className="apTopBar">
             <div>
-              <h1>Agent Performance</h1>
+              <h1>
+                <MdAnalytics size={22} style={
+                  {
+                    marginRight: 8, verticalAlign: 'middle', backgroundColor: '#0f766e', color: "white"
+                  }} />
+                Agent Performance
+              </h1>
               <p>AI-powered workload supervision</p>
             </div>
             <div className="apTopBarRight">

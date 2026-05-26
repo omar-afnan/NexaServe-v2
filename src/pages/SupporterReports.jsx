@@ -661,7 +661,10 @@ function SupporterReports() {
           {/* top bar */}
           <div className="reportsTopBar">
             <div>
-              <h1>Reports</h1>
+              <h1>
+                <MdBarChart size={22} style={{ marginRight: 8, verticalAlign: 'middle', color: '#0f766e' }} />
+                Reports
+              </h1>
               <p>Your performance and ticket analytics</p>
             </div>
             <div className="reportsTopBarRight">

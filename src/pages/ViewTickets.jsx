@@ -4,7 +4,8 @@ import {
   MdDelete,
   MdPerson,
   MdRefresh,
-  MdError
+  MdError,
+  MdConfirmationNumber
 } from "react-icons/md";
 import './CSS/ViewTickets.css';
 import SideBar from "../components/sideBar";
@@ -138,7 +139,10 @@ function ViewTickets() {
           <div className="portalHeader">
             <div className="headerContent">
               <div className="headerInfo">
-                <h1>Support Tickets</h1>
+                <h1>
+                  <MdConfirmationNumber size={22} style={{ marginRight: 8, verticalAlign: 'middle', display: 'inline-block', color: '#0f766e' }} />
+                  Support Tickets
+                </h1>
                 <p>Manage and resolve incoming support requests</p>
               </div>
             </div>

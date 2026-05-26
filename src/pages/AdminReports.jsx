@@ -19,6 +19,7 @@ import {
   MdShowChart,
   MdDownload,
   MdRefresh,
+  MdLabel,
 } from "react-icons/md";
 
 import {
@@ -333,10 +334,13 @@ function AdminReports() {
         <header className="reportsHero">
           <div className="heroContent">
 
-            <div className="heroIcon">
-              <MdBarChart size={28} />
-            </div>
-            <h1>System Reports and  Analytics</h1>
+            <h1>
+              <MdBarChart size={22} style={
+                {
+                  marginRight: 8, verticalAlign: 'middle', backgroundColor: '#0f766e', color: '#fff', borderRadius: '4px', padding: '2px'
+                }} />
+              System Reports and Analytics
+            </h1>
           </div>
           <button className="exportBtn" onClick={handleExportCSV}>
             <MdDownload size={16} />
@@ -500,10 +504,10 @@ function AdminReports() {
             <div className="mlSection">
               <div className="mlSectionHeader">
                 <h2>
-                      <IoStatsChart size={24} style={
-                        {
-                          marginRight: 8, verticalAlign: 'middle'
-                        }} />
+                  <IoStatsChart size={24} style={
+                    {
+                      marginRight: 8, verticalAlign: 'middle'
+                    }} />
                   ML Predictive Analysis
                 </h2>
                 <button onClick={fetchMLStats} className="mlRefreshBtn">
@@ -524,14 +528,13 @@ function AdminReports() {
                 </div>
               ) : mlStats ? (
                 <>
-              
+
                   <div className="mlModelInfo">
                     <div className="mlModelCard">
-                      <span className="mlModelLabel">Category Model</span>
-                      <span className="mlModelValue">mBERT</span>
-                      <span className="mlModelSubtitle">
+                      <span className="mlModelLabel">mBERT</span>
+                      <span className="mlModelValue">
                         {mlStats.model_info?.category_accuracy != null
-                          ? `${mlStats.model_info.category_accuracy}% accuracy`
+                          ? `${mlStats.model_info.category_accuracy}%`
                           : 'N/A'}
                       </span>
                     </div>
@@ -557,7 +560,10 @@ function AdminReports() {
                   <div className="mlTrendsGrid">
                     {/* Category Trends */}
                     <div className="mlTrendCard">
-                      <h3>Category Trends (This Week vs Last)</h3>
+                      <h3>
+                        <MdBarChart size={20} style={{ marginRight: 8, verticalAlign: 'middle' }} />
+                        Category Trends (This Week vs Last)
+                      </h3>
                       <div className="mlTrendTable">
                         <div className="mlTrendHeader">
                           <span>Category</span>
@@ -593,7 +599,10 @@ function AdminReports() {
 
 
                     <div className="mlTrendCard">
-                      <h3>Common Issue Keywords</h3>
+                      <h3>
+                        <MdLabel size={20} style={{ marginRight: 8, verticalAlign: 'middle' }} />
+                        Common Issue Keywords
+                      </h3>
                       <div className="mlKeywordCloud">
                         {mlStats.common_keywords?.slice(0, 12).map((kw) => (
                           <span key={kw.word} className="mlKeywordTag">

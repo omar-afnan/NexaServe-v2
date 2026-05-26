@@ -107,7 +107,10 @@ function SupportNotifications() {
               <MdNotifications size={22} />
             </div>
             <div>
-              <h1 className="notifTitle">Notifications</h1>
+              <h1 className="notifTitle">
+                <MdNotifications size={22} style={{ marginRight: 8, verticalAlign: 'middle', color: '#0f766e' }} />
+                Notifications
+              </h1>
               <p className="notifSubtitle">Updates assigned to your account</p>
             </div>
           </div>

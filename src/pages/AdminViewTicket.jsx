@@ -123,7 +123,13 @@ export default function AdminViewTicket() {
           <div className="headerContent">
             <div className="headerTop">
               <div className="headerInfo">
-                <h1>Admin Tickets</h1>
+                <h1>
+                  <MdConfirmationNumber size={22} style={
+                    {
+                      marginRight: 8, verticalAlign: 'middle', display: 'inline-block', backgroundColor: '#0f766e', color: '#fff', borderRadius: '4px', padding: '2px'
+                    }} />
+                  Admin Tickets
+                </h1>
               </div>
             </div>
           </div>

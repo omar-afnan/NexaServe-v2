@@ -8,7 +8,9 @@ import {
   MdCancel,
   MdLock,
   MdVisibility,
-  MdVisibilityOff
+  MdVisibilityOff,
+  MdPerson,
+  MdShield
 } from "react-icons/md";
 
 function AdminProfile() {
@@ -163,7 +165,14 @@ function AdminProfile() {
 
           <header className="adminProfileHeader">
             <div>
-              <h1>Profile Settings</h1>
+              <h1>
+                <MdPerson size={22} style={
+                  {
+                    marginRight: 8, verticalAlign: 'middle', backgroundColor: '#0f766e', color: "white", borderRadius: '50%', padding: '2px'
+                  }} />
+
+                Profile Settings
+              </h1>
               <p>Manage your admin account information</p>
             </div>
           </header>
@@ -175,7 +184,16 @@ function AdminProfile() {
               {/* Profile Information */}
               <section className="adminProfileCard">
                 <div className="adminProfileCardHeader">
-                  <h2>Profile Information</h2>
+                  <h2>
+                    <MdPerson size={20} style={
+                      {
+                        marginRight: 8, verticalAlign: 'middle',
+                        backgroundColor: '#0f766e', color: "white", borderRadius: '50%',
+                        padding: '2px'
+                      }} />
+                    
+                    Profile Information
+                  </h2>
                   <button onClick={handleEditToggle} className="adminProfileEditBtn">
                     {isEditing ? (
                       <><MdCancel size={14} /><span>Cancel</span></>
@@ -238,7 +256,14 @@ function AdminProfile() {
               {/* Security */}
               <section className="adminProfileCard">
                 <div className="adminProfileCardHeader">
-                  <h2>Security</h2>
+                  <h2>
+                    <MdShield size={20} style={{
+                      marginRight: 8,
+                      verticalAlign: 'middle',
+                       color: "0f766e",
+                    }} />
+                    Security
+                  </h2>
                 </div>
 
                 <div className="adminProfileCardBody">
