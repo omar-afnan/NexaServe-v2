@@ -1,0 +1,51 @@
+{
+  "ranked": [
+    {
+      "name": "mBERT + random oversampling",
+      "accuracy": 0.6163,
+      "macro_f1": 0.5977,
+      "per_class_f1": {
+        "High": 0.691,
+        "Low": 0.5596,
+        "Medium": 0.5425
+      }
+    },
+    {
+      "name": "mBERT + class-weighted loss",
+      "accuracy": 0.5447,
+      "macro_f1": 0.5185,
+      "per_class_f1": {
+        "High": 0.6429,
+        "Low": 0.4548,
+        "Medium": 0.4579
+      }
+    },
+    {
+      "name": "mBERT + SMOTE (combined, original)",
+      "accuracy": 0.5513,
+      "macro_f1": 0.4942,
+      "per_class_f1": {
+        "High": 0.6899,
+        "Low": 0.3454,
+        "Medium": 0.4472
+      }
+    },
+    {
+      "name": "XLM-R + SMOTE",
+      "accuracy": 0.5091,
+      "macro_f1": 0.4582,
+      "per_class_f1": {
+        "High": 0.6503,
+        "Low": 0.3197,
+        "Medium": 0.4046
+      }
+    },
+    {
+      "name": "Majority-class baseline",
+      "accuracy": 0.4954,
+      "macro_f1": 0.2209,
+      "per_class_f1": null
+    }
+  ],
+  "best": "mBERT + random oversampling"
+}
