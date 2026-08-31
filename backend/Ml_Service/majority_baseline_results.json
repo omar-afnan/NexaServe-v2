@@ -1,0 +1,28 @@
+{
+  "english_only": {
+    "split": "English-only (n=9726)",
+    "test_samples": 1946,
+    "class_distribution": {
+      "High": 950,
+      "Medium": 702,
+      "Low": 294
+    },
+    "majority_class": "High",
+    "accuracy": 0.4882,
+    "macro_f1": 0.2187
+  },
+  "combined_en_de": {
+    "split": "Combined EN+DE (n=16825)",
+    "test_samples": 3365,
+    "class_distribution": {
+      "High": 1667,
+      "Medium": 1207,
+      "Low": 491
+    },
+    "majority_class": "High",
+    "accuracy": 0.4954,
+    "macro_f1": 0.2209
+  },
+  "evaluated_at": "2026-08-30T13:14:38.772292",
+  "completed_at": "2026-08-30T13:14:40.320284"
+}

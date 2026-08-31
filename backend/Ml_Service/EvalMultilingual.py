@@ -1,16 +1,17 @@
 """
-Multilingual evaluation: Classical ML vs mBERT on full dataset (all languages).
+Runs the classical ML and mBERT pipelines on the whole dataset (all languages)
+so I can compare them side by side. Writes multilingual_results.json.
+
+Four evaluations in one run:
+  1. Category - TF-IDF + Linear SVM
+  2. Category - mBERT
+  3. Priority - Random Forest + SMOTE
+  4. Priority - mBERT + SMOTE
+
+The JSON also carries a comparison table against the English-only numbers from
+TrainModel.py, EvalMBERT.py and EvalMBERTPriority.py.
+
 Run: python EvalMultilingual.py
-Produces: multilingual_results.json
-
-Evaluations:
-  1. Category Classification  — TF-IDF + Linear SVM (all languages)
-  2. Category Classification  — mBERT (all languages)
-  3. Priority Classification  — Random Forest + SMOTE (all languages)
-  4. Priority Classification  — mBERT + SMOTE (all languages)
-
-Comparison table vs English-only baselines from TrainModel.py / EvalM BERT.py /
-Eval M BERTPriority.py is included in the JSON output.
 """
 
 import os
@@ -26,7 +27,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.svm import LinearSVC
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score, f1_score, classification_report
+from sklearn.metrics import accuracy_score, f1_score, classification_report, confusion_matrix, precision_score, recall_score
 from sklearn.calibration import CalibratedClassifierCV
 from sklearn.preprocessing import LabelEncoder
 from imblearn.over_sampling import SMOTE
@@ -39,6 +40,20 @@ from transformers import get_linear_schedule_with_warmup
 
 warnings.filterwarnings("ignore")
 
+import random
+
+SEED = 42
+
+
+def set_seed(seed=SEED):
+    random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    torch.cuda.manual_seed_all(seed)
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = False
+
+
 CSV_PATH = "./aa_dataset-tickets-multi-lang-5-2-50-version.csv"
 RESULTS_PATH = "./multilingual_results.json"
 MODEL_NAME = "bert-base-multilingual-cased"
@@ -49,7 +64,7 @@ EPOCHS = 3
 LEARNING_RATE = 2e-5
 WARMUP_RATIO = 0.1
 
-# English-only baseline numbers from prior evaluations
+# English-only numbers carried over from the earlier runs, for the comparison table
 ENGLISH_BASELINES = {
     "category_classical_accuracy": 0.8885,
     "category_classical_macro_f1": None,
@@ -62,7 +77,7 @@ ENGLISH_BASELINES = {
 }
 
 
-#  Shared mapping functions (identical to TrainModel.py) 
+# Mapping functions - kept identical to TrainModel.py
 
 def map_to_category(row):
     queue = str(row.get('queue', '')).lower()
@@ -128,7 +143,7 @@ def map_priority(priority_str):
     return 'Medium'
 
 
-#  Priority engineered features (identical to TrainModel.py) 
+# Engineered urgency features for the priority classifier - same as TrainModel.py
 
 def priority_features(texts):
     high_keywords = [
@@ -172,7 +187,7 @@ def priority_features(texts):
     return np.array(features, dtype=np.float32)
 
 
-#  Data loading (no language filter) 
+# Data loading - no language filter here, we want everything
 
 def load_data_multilingual():
     if not os.path.exists(CSV_PATH):
@@ -191,7 +206,7 @@ def load_data_multilingual():
 
     df['mapped_priority'] = df['priority'].apply(map_priority)
 
-    texts, categories, priorities = [], [], []
+    texts, categories, priorities, languages = [], [], [], []
     for _, row in df.iterrows():
         title = str(row.get('subject', '') or '')
         description = str(row.get('body', '') or '')
@@ -200,6 +215,7 @@ def load_data_multilingual():
             texts.append(text)
             categories.append(row['mapped_category'])
             priorities.append(row['mapped_priority'])
+            languages.append(row.get('language', ''))
 
     print(f"Final samples: {len(texts)}")
     print("\nCategory distribution:")
@@ -211,10 +227,10 @@ def load_data_multilingual():
         n = priorities.count(pri)
         print(f"  {pri:<8} {n:>6} ({n/len(priorities)*100:.1f}%)")
 
-    return texts, categories, priorities
+    return texts, categories, priorities, languages
 
 
-#  Evaluation 1 & 3: Classical ML 
+# Evaluations 1 and 3 - the classical ML models
 
 def eval_classical_category(texts, categories):
     print("\n" + "=" * 60)
@@ -331,7 +347,7 @@ def eval_classical_priority(texts, priorities):
     }
 
 
-# ── PyTorch Dataset 
+# PyTorch dataset wrapper
 
 class TicketDataset(Dataset):
     def __init__(self, texts, labels, tokenizer, max_len):
@@ -391,7 +407,7 @@ def run_mbert_eval(model, loader, device):
     return np.array(all_labels), np.array(all_preds)
 
 
-# ── Evaluation 2: mBERT Category ─────────────────────────────────────────────
+# Evaluation 2 - mBERT for category
 
 def eval_mbert_category(texts, categories, device, tokenizer):
     print("\n" + "=" * 60)
@@ -462,9 +478,9 @@ def eval_mbert_category(texts, categories, device, tokenizer):
     }
 
 
-#  Evaluation 4: mBERT Priority 
+# Evaluation 4 - mBERT for priority
 
-def eval_mbert_priority(texts, priorities, device, tokenizer):
+def eval_mbert_priority(texts, priorities, languages, device, tokenizer):
     print("\n" + "=" * 60)
     print("Evaluation 4: Priority Classification — mBERT (multilingual)")
     print("=" * 60)
@@ -475,8 +491,8 @@ def eval_mbert_priority(texts, priorities, device, tokenizer):
     num_classes = len(class_names)
     print(f"Classes ({num_classes}): {class_names}")
 
-    X_train_texts, X_test_texts, y_train, y_test = train_test_split(
-        texts, labels_enc, test_size=0.20, random_state=42, stratify=labels_enc
+    X_train_texts, X_test_texts, y_train, y_test, lang_train, lang_test = train_test_split(
+        texts, labels_enc, languages, test_size=0.20, random_state=42, stratify=labels_enc
     )
     print(f"Train: {len(X_train_texts)}  |  Test: {len(X_test_texts)}")
 
@@ -543,6 +559,38 @@ def eval_mbert_priority(texts, priorities, device, tokenizer):
     print(f"\nClassification Report:\n")
     print(classification_report(y_true, y_pred, target_names=class_names, zero_division=0))
 
+    per_class_precision_arr = precision_score(y_true, y_pred, average=None,
+                                              labels=list(range(num_classes)), zero_division=0)
+    per_class_recall_arr = recall_score(y_true, y_pred, average=None,
+                                        labels=list(range(num_classes)), zero_division=0)
+    per_class_precision = {class_names[i]: round(float(per_class_precision_arr[i]), 4)
+                           for i in range(num_classes)}
+    per_class_recall = {class_names[i]: round(float(per_class_recall_arr[i]), 4)
+                        for i in range(num_classes)}
+
+    cm = confusion_matrix(y_true, y_pred, labels=list(range(num_classes)))
+    print(f"\nConfusion Matrix (rows=true, cols=predicted, order={class_names}):")
+    print(cm)
+    confusion = {"labels": class_names, "matrix": cm.tolist()}
+
+    by_language = {}
+    lang_test_arr = np.array(lang_test)
+    for lang_code in sorted(set(lang_test)):
+        mask = lang_test_arr == lang_code
+        if mask.sum() == 0:
+            continue
+        y_true_lang = y_true[mask]
+        y_pred_lang = y_pred[mask]
+        acc_lang = float(accuracy_score(y_true_lang, y_pred_lang))
+        f1_lang = float(f1_score(y_true_lang, y_pred_lang, average='macro',
+                                 labels=list(range(num_classes)), zero_division=0))
+        by_language[lang_code] = {
+            "test_samples": int(mask.sum()),
+            "accuracy": round(acc_lang, 4),
+            "macro_f1": round(f1_lang, 4),
+        }
+        print(f"  Language '{lang_code}': n={int(mask.sum())}  acc={acc_lang*100:.2f}%  macro-F1={f1_lang*100:.2f}%")
+
     del model
     if device.type == 'cuda':
         torch.cuda.empty_cache()
@@ -554,29 +602,34 @@ def eval_mbert_priority(texts, priorities, device, tokenizer):
         "train_samples_after_smote": len(X_train_balanced),
         "test_samples": len(X_test_texts),
         "per_class_f1": per_class_f1,
+        "per_class_precision": per_class_precision,
+        "per_class_recall": per_class_recall,
+        "confusion_matrix": confusion,
+        "by_language": by_language,
     }
 
 
-#  Main 
+# Main
 
 def main():
+    set_seed()
     started_at = datetime.now().isoformat()
     print(f"\nMultilingual Evaluation (all languages)")
     print(f"Started: {started_at}")
     print(f"mBERT model: {MODEL_NAME}")
     print("=" * 60)
 
-    texts, categories, priorities = load_data_multilingual()
+    texts, categories, priorities, languages = load_data_multilingual()
 
     if len(texts) < 50:
         print("ERROR: Too few samples after mapping. Check CSV path and mapping logic.")
         sys.exit(1)
 
-    # Classical ML evaluations (no GPU needed)
+    # Classical models first - these run on CPU
     cat_classical = eval_classical_category(texts, categories)
     pri_classical = eval_classical_priority(texts, priorities)
 
-    # Set up shared tokenizer and device for both mBERT runs
+    # One tokenizer and device shared by both mBERT runs
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     print(f"\nDevice: {device}")
     if device.type == 'cuda':
@@ -587,9 +640,9 @@ def main():
     tokenizer = BertTokenizer.from_pretrained(MODEL_NAME)
 
     cat_mbert = eval_mbert_category(texts, categories, device, tokenizer)
-    pri_mbert = eval_mbert_priority(texts, priorities, device, tokenizer)
+    pri_mbert = eval_mbert_priority(texts, priorities, languages, device, tokenizer)
 
-    #  Comparison table 
+    # Build the comparison table
     comparison = {
         "category_classification": {
             "english_only_classical": {
@@ -667,7 +720,7 @@ def main():
 
     print(f"\nResults saved to: {os.path.abspath(RESULTS_PATH)}")
 
-    #  Print comparison summary 
+    # Print the summary
     print("\n" + "=" * 70)
     print("COMPARISON SUMMARY")
     print("=" * 70)

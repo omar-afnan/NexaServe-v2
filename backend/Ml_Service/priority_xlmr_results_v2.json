@@ -1,0 +1,97 @@
+{
+  "model": "xlm-roberta-base",
+  "task": "priority_classification",
+  "method": "smote_index_proxy",
+  "dataset": "aa_dataset-tickets-multi-lang-5-2-50-version.csv",
+  "language_filter": "none (all languages)",
+  "split": {
+    "test_size": 0.2,
+    "random_state": 42,
+    "stratified": true
+  },
+  "smote": {
+    "applied_to": "training_split_only",
+    "k_neighbors": 3,
+    "random_state": 42
+  },
+  "hyperparameters": {
+    "max_len": 128,
+    "batch_size": 16,
+    "epochs": 3,
+    "learning_rate": 1e-05,
+    "warmup_ratio": 0.2,
+    "optimizer": "AdamW",
+    "weight_decay": 0.01
+  },
+  "train_samples_after_smote": 20001,
+  "test_samples": 3365,
+  "num_classes": 3,
+  "classes": [
+    "High",
+    "Low",
+    "Medium"
+  ],
+  "device": "cuda",
+  "accuracy": 0.5091,
+  "macro_f1": 0.4582,
+  "weighted_f1": 0.5139,
+  "per_class_f1": {
+    "High": 0.6503,
+    "Low": 0.3197,
+    "Medium": 0.4046
+  },
+  "per_class_precision": {
+    "High": 0.6583,
+    "Low": 0.2632,
+    "Medium": 0.4519
+  },
+  "per_class_recall": {
+    "High": 0.6425,
+    "Low": 0.4073,
+    "Medium": 0.3662
+  },
+  "confusion_matrix": {
+    "labels": [
+      "High",
+      "Low",
+      "Medium"
+    ],
+    "matrix": [
+      [
+        1071,
+        241,
+        355
+      ],
+      [
+        110,
+        200,
+        181
+      ],
+      [
+        446,
+        319,
+        442
+      ]
+    ]
+  },
+  "by_language": {
+    "de": {
+      "test_samples": 1412,
+      "accuracy": 0.5099,
+      "macro_f1": 0.4478
+    },
+    "en": {
+      "test_samples": 1953,
+      "accuracy": 0.5084,
+      "macro_f1": 0.465
+    }
+  },
+  "evaluated_at": "2026-08-30T18:46:36.938185",
+  "completed_at": "2026-08-30T19:01:04.593337",
+  "comparison_baseline": {
+    "combined_smote_mbert_accuracy": 0.3715,
+    "combined_smote_mbert_macro_f1": 0.28,
+    "majority_baseline_accuracy": 0.4954,
+    "majority_baseline_macro_f1": 0.2209
+  }
+}

@@ -1,20 +1,21 @@
 """
-German translation experiment: does translating German tickets to English
-let a monolingual (English-trained) TF-IDF + Linear SVM category model work?
+Quick test of the "just translate it" idea for category classification: if we
+machine-translate the German tickets into English, can the English-only
+TF-IDF + Linear SVM model handle them?
 
-Run separately from the Flask service (PredictionApi.py, port 5006):
+Steps:
+  1. Load the dataset and apply the usual category mapping.
+  2. Train TF-IDF + Linear SVM on the English rows of the 80% training split
+     (random_state=42, same split call as EvalMultilingual.py).
+  3. Pull the German rows out of the 20% test split.
+  4. Translate each one to English with deep_translator's GoogleTranslator.
+     Anything that fails to translate is skipped and counted.
+  5. Report accuracy and macro F1 on what came back.
+
+Run it on its own, not through the Flask service (PredictionApi.py, port 5006):
     python EvalGermanTranslated.py
 
-What it does:
-  1. Loads the same Kaggle multilingual dataset, same category mapping.
-  2. Trains TF-IDF + Linear SVM on the English-only 80% training split
-     (random_state=42, 80/20 stratified split — identical to EvalMultilingual.py).
-  3. Takes the German-only rows from the 20% test split.
-  4. Translates each German ticket text to English via deep_translator GoogleTranslator,
-     with a try/except per call — failed translations are skipped and counted.
-  5. Prints accuracy and macro F1 on the translated German test set.
-
-No new dependencies: pandas, scikit-learn, deep_translator are all already used.
+Nothing new to install - pandas, scikit-learn and deep_translator are already deps.
 """
 
 import os
@@ -32,7 +33,7 @@ from deep_translator import GoogleTranslator
 CSV_PATH = "./aa_dataset-tickets-multi-lang-5-2-50-version.csv"
 
 
-#  Category mapping — identical to TrainModel.py / EvalMultilingual.py
+# Category mapping - identical to TrainModel.py / EvalMultilingual.py
 
 def map_to_category(row):
     queue = str(row.get('queue', '')).lower()
@@ -97,7 +98,7 @@ def load_data():
     df['mapped_category'] = df.apply(map_to_category, axis=1)
     df = df[df['mapped_category'].notna()].copy()
 
-    # text = combined title + description, lowercased — same as the other scripts
+    # text is subject + body, lowercased, like everywhere else
     df['text'] = (
         df['subject'].fillna('').astype(str) + ' ' + df['body'].fillna('').astype(str)
     ).str.strip().str.lower()
@@ -110,14 +111,14 @@ def load_data():
 def main():
     df = load_data()
 
-    # 80/20 stratified split on the FULL multilingual set, seed 42 —
-    # identical split call as EvalMultilingual.py so the test rows match.
+    # Same 80/20 stratified split as EvalMultilingual.py (seed 42, whole
+    # multilingual set) so the German test rows line up with that run.
     train_df, test_df = train_test_split(
         df, test_size=0.20, random_state=42, stratify=df['mapped_category']
     )
     print(f"Train: {len(train_df)}  |  Test: {len(test_df)}")
 
-    # Train the monolingual model on English-only training rows.
+    # Model only ever sees English during training
     train_en = train_df[train_df['language'] == 'en']
     print(f"English training rows: {len(train_en)}")
 
@@ -137,14 +138,14 @@ def main():
     model.fit(X_train, train_en['mapped_category'])
     print("Model trained: TF-IDF + Linear SVM (English-only)")
 
-    # German-only rows from the test split.
+    # Just the German test rows
     test_de = test_df[test_df['language'] == 'de'].reset_index(drop=True)
     print(f"\nGerman test rows: {len(test_de)}")
     if len(test_de) == 0:
         print("No German rows in the test split — nothing to evaluate.")
         return
 
-    # Translate each German ticket to English, skipping failures.
+    # Translate them one by one, skip whatever fails
     translator = GoogleTranslator(source='de', target='en')
     translated_texts = []
     translated_labels = []
@@ -167,7 +168,7 @@ def main():
         print("All translations failed — cannot compute metrics.")
         return
 
-    # Run the English-trained pipeline on the translated text.
+    # Feed the translated text through the English pipeline unchanged
     X_test = vectorizer.transform(translated_texts)
     y_pred = model.predict(X_test)
 
@@ -175,7 +176,7 @@ def main():
     macro_f1 = f1_score(translated_labels, y_pred, average='macro', zero_division=0)
 
     print("\n" + "=" * 55)
-    print("RESULT — German tickets translated to English")
+    print("RESULT - German tickets translated to English")
     print("=" * 55)
     print(f"Evaluated tickets: {len(translated_texts)}  (skipped {skipped})")
     print(f"Accuracy:  {accuracy * 100:.2f}%")

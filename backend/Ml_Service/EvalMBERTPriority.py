@@ -1,12 +1,14 @@
 """
-mBERT baseline evaluation for priority classification.
-Run: python EvalMBERTPriority.py
-Requires: pip install transformers torch imbalanced-learn
-Produces: mbert_priority_results.json  (accuracy, macro F1, per-class F1)
+mBERT baseline for priority classification (English only).
 
-Data loading and preprocessing intentionally mirrors TrainModel.py exactly —
-same CSV, same English filter, same map_priority, same 80/20 / random_state=42 split,
-same SMOTE applied to training split only.
+The point of this one is a clean comparison against the Random Forest baseline,
+so the data path is deliberately the same as TrainModel.py: same CSV, English
+rows only, same map_priority, 80/20 split at random_state=42, SMOTE on the
+training split only.
+
+Run: python EvalMBERTPriority.py
+Needs: transformers, torch, imbalanced-learn
+Writes: mbert_priority_results.json (accuracy, macro F1, per-class F1)
 """
 
 import os
@@ -18,7 +20,7 @@ import pandas as pd
 from datetime import datetime
 
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score, f1_score, classification_report
+from sklearn.metrics import accuracy_score, f1_score, classification_report, confusion_matrix, precision_score, recall_score
 from sklearn.preprocessing import LabelEncoder
 from imblearn.over_sampling import SMOTE
 
@@ -29,6 +31,20 @@ from torch.optim import AdamW
 from transformers import get_linear_schedule_with_warmup
 
 warnings.filterwarnings("ignore")
+
+import random
+
+SEED = 42
+
+
+def set_seed(seed=SEED):
+    random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    torch.cuda.manual_seed_all(seed)
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = False
+
 
 CSV_PATH = "./aa_dataset-tickets-multi-lang-5-2-50-version.csv"
 RESULTS_PATH = "./mbert_priority_results.json"
@@ -41,7 +57,7 @@ LEARNING_RATE = 2e-5
 WARMUP_RATIO = 0.1
 
 
-# ── Data loading — identical to TrainModel.py ──────────────────────────────
+# Data loading - identical to TrainModel.py
 
 def map_to_category(row):
     queue = str(row.get('queue', '')).lower()
@@ -142,7 +158,7 @@ def load_data():
     return texts, labels
 
 
-# ── PyTorch Dataset ────────────────────────────────────────────────────────
+# PyTorch dataset wrapper
 
 class TicketDataset(Dataset):
     def __init__(self, texts, labels, tokenizer, max_len):
@@ -169,7 +185,7 @@ class TicketDataset(Dataset):
         }
 
 
-# ── Training & evaluation ──────────────────────────────────────────────────
+# Training and evaluation
 
 def train_epoch(model, loader, optimizer, scheduler, device):
     model.train()
@@ -209,9 +225,10 @@ def evaluate(model, loader, device):
     return np.array(all_labels), np.array(all_preds)
 
 
-# ── Main ───────────────────────────────────────────────────────────────────
+# Main
 
 def main():
+    set_seed()
     started_at = datetime.now().isoformat()
     print(f"\nmBERT Priority Evaluation")
     print(f"Started: {started_at}")
@@ -234,22 +251,20 @@ def main():
     )
     print(f"Train: {len(X_train_texts)}  |  Test: {len(X_test_texts)}")
 
-    # SMOTE on training split only — mirrors TrainModel.py exactly.
-    # SMOTE needs a numeric feature matrix; we use a simple bag-of-chars index
-    # as a proxy so SMOTE can interpolate in feature space before fine-tuning.
+    # SMOTE on the training split only, same as TrainModel.py. SMOTE needs a
+    # numeric matrix to work on, and we don't want it inventing fake ticket text,
+    # so we feed it the row indices as a stand-in and pull the real texts back
+    # out afterwards by the indices it picked.
     print("\nApplying SMOTE to balance priority training classes...")
     print("Priority class distribution BEFORE SMOTE:")
     unique, counts = np.unique(y_train, return_counts=True)
     for cls, cnt in zip(unique, counts):
         print(f"  {le.classes_[cls]}: {cnt}")
 
-    # Represent each text as its index so SMOTE can resample — the actual
-    # oversampled texts are retrieved by nearest-neighbour indices that SMOTE
-    # produces, preserving real ticket text (no synthetic text hallucination).
     train_indices = np.arange(len(X_train_texts)).reshape(-1, 1).astype(np.float32)
     smote = SMOTE(random_state=42, k_neighbors=3)
     resampled_indices, y_train_balanced = smote.fit_resample(train_indices, y_train)
-    # Map resampled float indices back to the nearest original integer index
+    # SMOTE hands back interpolated float indices; round to the nearest real row
     resampled_indices = np.clip(
         np.round(resampled_indices.flatten()).astype(int),
         0, len(X_train_texts) - 1
@@ -317,6 +332,15 @@ def main():
     print(f"\nClassification Report:\n")
     print(classification_report(y_true, y_pred, target_names=class_names, zero_division=0))
 
+    per_class_precision_arr = precision_score(y_true, y_pred, average=None, labels=list(range(num_classes)), zero_division=0)
+    per_class_recall_arr = recall_score(y_true, y_pred, average=None, labels=list(range(num_classes)), zero_division=0)
+    per_class_precision = {class_names[i]: round(float(per_class_precision_arr[i]), 4) for i in range(num_classes)}
+    per_class_recall = {class_names[i]: round(float(per_class_recall_arr[i]), 4) for i in range(num_classes)}
+
+    cm = confusion_matrix(y_true, y_pred, labels=list(range(num_classes)))
+    print(f"\nConfusion Matrix (rows=true, cols=predicted, order={class_names}):")
+    print(cm)
+
     results = {
         "model": MODEL_NAME,
         "task": "priority_classification",
@@ -341,6 +365,9 @@ def main():
         "macro_f1": round(macro_f1, 4),
         "weighted_f1": round(weighted_f1, 4),
         "per_class_f1": per_class_f1,
+        "per_class_precision": per_class_precision,
+        "per_class_recall": per_class_recall,
+        "confusion_matrix": {"labels": class_names, "matrix": cm.tolist()},
         "evaluated_at": started_at,
         "completed_at": datetime.now().isoformat(),
         "comparison_baseline": {

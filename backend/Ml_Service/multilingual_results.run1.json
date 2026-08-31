@@ -1,0 +1,165 @@
+{
+  "evaluated_at": "2026-08-30T19:21:29.213563",
+  "completed_at": "2026-08-30T19:43:25.582049",
+  "dataset": "aa_dataset-tickets-multi-lang-5-2-50-version.csv",
+  "language_filter": "none (all languages)",
+  "mbert_model": "bert-base-multilingual-cased",
+  "hyperparameters": {
+    "max_len": 128,
+    "batch_size": 16,
+    "epochs": 3,
+    "learning_rate": 2e-05,
+    "warmup_ratio": 0.1,
+    "optimizer": "AdamW",
+    "weight_decay": 0.01
+  },
+  "split": {
+    "test_size": 0.2,
+    "random_state": 42,
+    "stratified": true
+  },
+  "eval_1_category_classical": {
+    "accuracy": 0.8413,
+    "macro_f1": 0.8296,
+    "train_samples": 13460,
+    "test_samples": 3365,
+    "per_class_f1": {
+      "Email": 0.8492,
+      "Hardware": 0.7049,
+      "Network": 0.8555,
+      "Password": 0.9068,
+      "Software": 0.8317
+    }
+  },
+  "eval_2_category_mbert": {
+    "accuracy": 0.9013,
+    "macro_f1": 0.9038,
+    "weighted_f1": 0.9013,
+    "train_samples": 13460,
+    "test_samples": 3365,
+    "per_class_f1": {
+      "Email": 0.8973,
+      "Hardware": 0.8768,
+      "Network": 0.9063,
+      "Password": 0.9474,
+      "Software": 0.8913
+    }
+  },
+  "eval_3_priority_classical": {
+    "accuracy": 0.5542,
+    "macro_f1": 0.4614,
+    "train_samples_after_smote": 20001,
+    "test_samples": 3365,
+    "per_class_f1": {
+      "High": 0.6815,
+      "Low": 0.3241,
+      "Medium": 0.3785
+    }
+  },
+  "eval_4_priority_mbert": {
+    "accuracy": 0.5513,
+    "macro_f1": 0.4942,
+    "weighted_f1": 0.5526,
+    "train_samples_after_smote": 20001,
+    "test_samples": 3365,
+    "per_class_f1": {
+      "High": 0.6899,
+      "Low": 0.3454,
+      "Medium": 0.4472
+    },
+    "per_class_precision": {
+      "High": 0.6918,
+      "Low": 0.325,
+      "Medium": 0.4583
+    },
+    "per_class_recall": {
+      "High": 0.6881,
+      "Low": 0.3686,
+      "Medium": 0.4366
+    },
+    "confusion_matrix": {
+      "labels": [
+        "High",
+        "Low",
+        "Medium"
+      ],
+      "matrix": [
+        [
+          1147,
+          97,
+          423
+        ],
+        [
+          110,
+          181,
+          200
+        ],
+        [
+          401,
+          279,
+          527
+        ]
+      ]
+    },
+    "by_language": {
+      "de": {
+        "test_samples": 1412,
+        "accuracy": 0.5326,
+        "macro_f1": 0.4548
+      },
+      "en": {
+        "test_samples": 1953,
+        "accuracy": 0.5648,
+        "macro_f1": 0.5184
+      }
+    }
+  },
+  "comparison_table": {
+    "category_classification": {
+      "english_only_classical": {
+        "model": "TF-IDF + Linear SVM",
+        "accuracy": 0.8885,
+        "macro_f1": null
+      },
+      "multilingual_classical": {
+        "model": "TF-IDF + Linear SVM",
+        "accuracy": 0.8413,
+        "macro_f1": 0.8296
+      },
+      "english_only_mbert": {
+        "model": "bert-base-multilingual-cased",
+        "accuracy": null,
+        "macro_f1": null,
+        "note": "Run EvalMBERT.py to populate these values"
+      },
+      "multilingual_mbert": {
+        "model": "bert-base-multilingual-cased",
+        "accuracy": 0.9013,
+        "macro_f1": 0.9038
+      }
+    },
+    "priority_classification": {
+      "english_only_classical": {
+        "model": "Random Forest + SMOTE",
+        "accuracy": 0.777,
+        "macro_f1": null
+      },
+      "multilingual_classical": {
+        "model": "Random Forest + SMOTE",
+        "accuracy": 0.5542,
+        "macro_f1": 0.4614
+      },
+      "english_only_mbert": {
+        "model": "bert-base-multilingual-cased",
+        "accuracy": null,
+        "macro_f1": null,
+        "note": "Run EvalMBERTPriority.py to populate these values"
+      },
+      "multilingual_mbert": {
+        "model": "bert-base-multilingual-cased",
+        "accuracy": 0.5513,
+        "macro_f1": 0.4942
+      }
+    }
+  }
+}

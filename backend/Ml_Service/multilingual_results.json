@@ -1,6 +1,6 @@
 {
-  "evaluated_at": "2026-05-11T18:44:05.973845",
-  "completed_at": "2026-05-11T19:05:55.814342",
+  "evaluated_at": "2026-08-30T19:43:49.906395",
+  "completed_at": "2026-08-30T20:05:29.573752",
   "dataset": "aa_dataset-tickets-multi-lang-5-2-50-version.csv",
   "language_filter": "none (all languages)",
   "mbert_model": "bert-base-multilingual-cased",
@@ -32,17 +32,17 @@
     }
   },
   "eval_2_category_mbert": {
-    "accuracy": 0.904,
-    "macro_f1": 0.9047,
-    "weighted_f1": 0.9039,
+    "accuracy": 0.9031,
+    "macro_f1": 0.9037,
+    "weighted_f1": 0.903,
     "train_samples": 13460,
     "test_samples": 3365,
     "per_class_f1": {
       "Email": 0.8984,
-      "Hardware": 0.8768,
-      "Network": 0.9104,
-      "Password": 0.9435,
-      "Software": 0.8941
+      "Hardware": 0.8756,
+      "Network": 0.9088,
+      "Password": 0.9412,
+      "Software": 0.8943
     }
   },
   "eval_3_priority_classical": {
@@ -57,15 +57,61 @@
     }
   },
   "eval_4_priority_mbert": {
-    "accuracy": 0.3715,
-    "macro_f1": 0.28,
-    "weighted_f1": 0.3224,
+    "accuracy": 0.5513,
+    "macro_f1": 0.4942,
+    "weighted_f1": 0.5526,
     "train_samples_after_smote": 20001,
     "test_samples": 3365,
     "per_class_f1": {
-      "High": 0.5707,
-      "Low": 0.2677,
-      "Medium": 0.0017
+      "High": 0.6899,
+      "Low": 0.3454,
+      "Medium": 0.4472
+    },
+    "per_class_precision": {
+      "High": 0.6918,
+      "Low": 0.325,
+      "Medium": 0.4583
+    },
+    "per_class_recall": {
+      "High": 0.6881,
+      "Low": 0.3686,
+      "Medium": 0.4366
+    },
+    "confusion_matrix": {
+      "labels": [
+        "High",
+        "Low",
+        "Medium"
+      ],
+      "matrix": [
+        [
+          1147,
+          97,
+          423
+        ],
+        [
+          110,
+          181,
+          200
+        ],
+        [
+          401,
+          279,
+          527
+        ]
+      ]
+    },
+    "by_language": {
+      "de": {
+        "test_samples": 1412,
+        "accuracy": 0.5326,
+        "macro_f1": 0.4548
+      },
+      "en": {
+        "test_samples": 1953,
+        "accuracy": 0.5648,
+        "macro_f1": 0.5184
+      }
     }
   },
   "comparison_table": {
@@ -88,8 +134,8 @@
       },
       "multilingual_mbert": {
         "model": "bert-base-multilingual-cased",
-        "accuracy": 0.904,
-        "macro_f1": 0.9047
+        "accuracy": 0.9031,
+        "macro_f1": 0.9037
       }
     },
     "priority_classification": {
@@ -111,8 +157,8 @@
       },
       "multilingual_mbert": {
         "model": "bert-base-multilingual-cased",
-        "accuracy": 0.3715,
-        "macro_f1": 0.28
+        "accuracy": 0.5513,
+        "macro_f1": 0.4942
       }
     }
   }
