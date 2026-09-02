@@ -236,6 +236,18 @@ app.get("/", (req, res) => {
   res.send("Backend is running!");
 });
 
+// TEST-ONLY: resets conversation + ollama session state for the calling user.
+// Used exclusively by hybrid_cascade_eval.py to isolate each replayed
+// ticket from previous ones in the same batch run. Only resets the
+// authenticated caller's own state (scoped by their JWT), so this cannot
+// affect any other user's session.
+app.post("/debug/reset-conversation", authenticateJWT, async (req, res) => {
+  const userId = req.user.user_id;
+  await conv.set(userId, []);
+  await ollama.set(userId, { active: false, attempts: 0 });
+  res.json({ message: "Conversation state reset", userId });
+});
+
 const authController = new AuthController();
 app.use("/auth", authController.getRouter());
 

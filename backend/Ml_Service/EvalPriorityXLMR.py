@@ -1,14 +1,12 @@
 """
-XLM-R on the priority task (combined EN+DE), as an architecture comparison
-against the mBERT priority run in EvalMultilingual.py.
-
-Same data, same split, same index-proxy SMOTE. The model is xlm-roberta-base
-instead of bert-base-multilingual-cased. The learning rate and warmup are lower
-here (1e-5 / 0.2 instead of 2e-5 / 0.1) - with the mBERT settings XLM-R
-collapsed to predicting one class, so this is the v2 config that actually
-trains. Results go to priority_xlmr_results_v2.json.
-
+Priority classification — XLM-R baseline (combined EN+DE).
 Run: python EvalPriorityXLMR.py
+Produces: priority_xlmr_results.json
+
+Same split, SMOTE-on-index-proxy balancing, and hyperparameters as the mBERT
+priority run in EvalMultilingual.py, with xlm-roberta-base swapped in for
+bert-base-multilingual-cased. Kept identical apart from the model so the
+comparison isolates the effect of the architecture/pretraining.
 """
 
 import os
@@ -331,6 +329,7 @@ def main():
         "per_class_precision": per_class_precision,
         "per_class_recall": per_class_recall,
         "confusion_matrix": {"labels": class_names, "matrix": cm.tolist()},
+        "predictions": {"y_true": y_true.tolist(), "y_pred": y_pred.tolist()},
         "by_language": by_language,
         "evaluated_at": started_at,
         "completed_at": datetime.now().isoformat(),
@@ -348,8 +347,8 @@ def main():
     print(f"\nResults saved to: {os.path.abspath(RESULTS_PATH)}")
     print("\nComparison summary:")
     print(f"  Majority baseline      : 49.54% accuracy | 22.09% macro F1")
-    print(f"  mBERT + SMOTE          : 37.15% accuracy | 28.00% macro F1")
-    print(f"  XLM-R + SMOTE          : {accuracy*100:.2f}% accuracy | {macro_f1*100:.2f}% macro F1")
+    print(f"  mBERT + SMOTE  : 37.15% accuracy | 28.00% macro F1")
+    print(f"  XLM-R + SMOTE  : {accuracy*100:.2f}% accuracy | {macro_f1*100:.2f}% macro F1")
 
 
 if __name__ == "__main__":

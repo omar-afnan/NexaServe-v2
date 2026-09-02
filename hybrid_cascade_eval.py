@@ -73,6 +73,16 @@ def get_test_sample() -> list[str]:
     return sample[TEXT_COL].astype(str).tolist()
 
 
+def reset_conversation(token: str) -> None:
+    auth_header = token if token.lower().startswith("bearer ") else f"Bearer {token}"
+    resp = requests.post(
+        f"{BACKEND_URL}/debug/reset-conversation",
+        headers={"Authorization": auth_header, "Content-Type": "application/json"},
+        timeout=15,
+    )
+    resp.raise_for_status()
+
+
 def send_message(token: str, message: str, session_id: str) -> dict:
     auth_header = token if token.lower().startswith("bearer ") else f"Bearer {token}"
     resp = requests.post(
@@ -94,6 +104,7 @@ def main():
 
     results = []
     for i, body_text in enumerate(tickets, start=1):
+        reset_conversation(token)
         session_id = f"hybrid_eval_{int(time.time())}_{i}"
         truncated = body_text[:4000]
 

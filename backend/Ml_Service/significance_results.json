@@ -1,0 +1,32 @@
+{
+  "bootstrap_macro_f1": {
+    "mBERT + SMOTE (seeded, combined)": {
+      "point_estimate": 0.4942,
+      "ci_95": [
+        0.4764181512702856,
+        0.5117322101709424
+      ]
+    },
+    "mBERT + class-weighted loss": {
+      "point_estimate": 0.5185,
+      "ci_95": [
+        0.5008496658490759,
+        0.5364492642582475
+      ]
+    },
+    "mBERT + random oversampling": {
+      "point_estimate": 0.5979,
+      "ci_95": [
+        0.5794486542287364,
+        0.6169216292472172
+      ]
+    },
+    "XLM-R + SMOTE": {
+      "point_estimate": 0.4582,
+      "ci_95": [
+        0.44109029167053376,
+        0.474779582695009
+      ]
+    }
+  }
+}

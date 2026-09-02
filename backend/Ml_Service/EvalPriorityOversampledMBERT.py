@@ -1,15 +1,14 @@
 """
-mBERT priority run again, but balanced with plain random oversampling instead
-of the index-proxy SMOTE. The reviewer asked us to try "oversampling or
-balanced sampling", and this is a genuinely different method from what we'd
-already done.
-
-RandomOverSampler just duplicates minority-class training rows (with
-replacement) until every class matches the majority count. Everything else -
-model, split, hyperparameters - is the same as the mBERT priority run in
-EvalMultilingual.py. Writes priority_oversampled_mbert_results.json.
-
+Priority classification — mBERT with random oversampling (combined EN+DE).
 Run: python EvalPriorityOversampledMBERT.py
+Produces: priority_oversampled_mbert_results.json
+
+Same architecture, split, and hyperparameters as the mBERT priority run in
+EvalMultilingual.py, but replaces the SMOTE-on-index-proxy step with genuine
+random oversampling (RandomOverSampler): minority-class training rows are
+duplicated with replacement until every class matches the majority count.
+This is a distinct balancing method from what was already tried, per the
+reviewer's suggestion to test "oversampling or balanced sampling".
 """
 
 import os
@@ -337,6 +336,7 @@ def main():
         "per_class_precision": per_class_precision,
         "per_class_recall": per_class_recall,
         "confusion_matrix": {"labels": class_names, "matrix": cm.tolist()},
+        "predictions": {"y_true": y_true.tolist(), "y_pred": y_pred.tolist()},
         "by_language": by_language,
         "evaluated_at": started_at,
         "completed_at": datetime.now().isoformat(),
@@ -353,9 +353,9 @@ def main():
 
     print(f"\nResults saved to: {os.path.abspath(RESULTS_PATH)}")
     print("\nComparison summary:")
-    print(f"  Majority baseline          : 49.54% accuracy | 22.09% macro F1")
-    print(f"  mBERT + SMOTE (combined)   : 37.15% accuracy | 28.00% macro F1")
-    print(f"  mBERT + random oversample  : {accuracy*100:.2f}% accuracy | {macro_f1*100:.2f}% macro F1")
+    print(f"  Majority baseline : 49.54% accuracy | 22.09% macro F1")
+    print(f"  mBERT + SMOTE (combined) : 37.15% accuracy | 28.00% macro F1")
+    print(f"  mBERT + random oversample : {accuracy*100:.2f}% accuracy | {macro_f1*100:.2f}% macro F1")
 
 
 if __name__ == "__main__":

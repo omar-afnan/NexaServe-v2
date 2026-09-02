@@ -1,17 +1,16 @@
 """
-Runs the classical ML and mBERT pipelines on the whole dataset (all languages)
-so I can compare them side by side. Writes multilingual_results.json.
-
-Four evaluations in one run:
-  1. Category - TF-IDF + Linear SVM
-  2. Category - mBERT
-  3. Priority - Random Forest + SMOTE
-  4. Priority - mBERT + SMOTE
-
-The JSON also carries a comparison table against the English-only numbers from
-TrainModel.py, EvalMBERT.py and EvalMBERTPriority.py.
-
+Multilingual evaluation: Classical ML vs mBERT on full dataset (all languages).
 Run: python EvalMultilingual.py
+Produces: multilingual_results.json
+
+Evaluations:
+  1. Category Classification  TF-IDF + Linear SVM (all languages)
+  2. Category Classification  mBERT (all languages)
+  3. Priority Classification  Random Forest + SMOTE (all languages)
+  4. Priority Classification  mBERT + SMOTE (all languages)
+
+Comparison table vs English-only baselines from TrainModel.py / EvalM BERT.py /
+Eval M BERTPriority.py is included in the JSON output.
 """
 
 import os
@@ -64,7 +63,7 @@ EPOCHS = 3
 LEARNING_RATE = 2e-5
 WARMUP_RATIO = 0.1
 
-# English-only numbers carried over from the earlier runs, for the comparison table
+# English-only baseline numbers from prior evaluations
 ENGLISH_BASELINES = {
     "category_classical_accuracy": 0.8885,
     "category_classical_macro_f1": None,
@@ -77,7 +76,7 @@ ENGLISH_BASELINES = {
 }
 
 
-# Mapping functions - kept identical to TrainModel.py
+#  Shared mapping functions (identical to TrainModel.py) 
 
 def map_to_category(row):
     queue = str(row.get('queue', '')).lower()
@@ -143,7 +142,7 @@ def map_priority(priority_str):
     return 'Medium'
 
 
-# Engineered urgency features for the priority classifier - same as TrainModel.py
+#  Priority engineered features (identical to TrainModel.py) 
 
 def priority_features(texts):
     high_keywords = [
@@ -187,7 +186,7 @@ def priority_features(texts):
     return np.array(features, dtype=np.float32)
 
 
-# Data loading - no language filter here, we want everything
+#  Data loading (no language filter) 
 
 def load_data_multilingual():
     if not os.path.exists(CSV_PATH):
@@ -230,7 +229,7 @@ def load_data_multilingual():
     return texts, categories, priorities, languages
 
 
-# Evaluations 1 and 3 - the classical ML models
+#  Evaluation 1 & 3: Classical ML 
 
 def eval_classical_category(texts, categories):
     print("\n" + "=" * 60)
@@ -347,7 +346,7 @@ def eval_classical_priority(texts, priorities):
     }
 
 
-# PyTorch dataset wrapper
+# ── PyTorch Dataset 
 
 class TicketDataset(Dataset):
     def __init__(self, texts, labels, tokenizer, max_len):
@@ -407,7 +406,7 @@ def run_mbert_eval(model, loader, device):
     return np.array(all_labels), np.array(all_preds)
 
 
-# Evaluation 2 - mBERT for category
+# ── Evaluation 2: mBERT Category ─────────────────────────────────────────────
 
 def eval_mbert_category(texts, categories, device, tokenizer):
     print("\n" + "=" * 60)
@@ -478,7 +477,7 @@ def eval_mbert_category(texts, categories, device, tokenizer):
     }
 
 
-# Evaluation 4 - mBERT for priority
+#  Evaluation 4: mBERT Priority 
 
 def eval_mbert_priority(texts, priorities, languages, device, tokenizer):
     print("\n" + "=" * 60)
@@ -606,10 +605,11 @@ def eval_mbert_priority(texts, priorities, languages, device, tokenizer):
         "per_class_recall": per_class_recall,
         "confusion_matrix": confusion,
         "by_language": by_language,
+        "predictions": {"y_true": y_true.tolist(), "y_pred": y_pred.tolist()},
     }
 
 
-# Main
+#  Main 
 
 def main():
     set_seed()
@@ -625,11 +625,11 @@ def main():
         print("ERROR: Too few samples after mapping. Check CSV path and mapping logic.")
         sys.exit(1)
 
-    # Classical models first - these run on CPU
+    # Classical ML evaluations (no GPU needed)
     cat_classical = eval_classical_category(texts, categories)
     pri_classical = eval_classical_priority(texts, priorities)
 
-    # One tokenizer and device shared by both mBERT runs
+    # Set up shared tokenizer and device for both mBERT runs
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     print(f"\nDevice: {device}")
     if device.type == 'cuda':
@@ -642,7 +642,7 @@ def main():
     cat_mbert = eval_mbert_category(texts, categories, device, tokenizer)
     pri_mbert = eval_mbert_priority(texts, priorities, languages, device, tokenizer)
 
-    # Build the comparison table
+    #  Comparison table 
     comparison = {
         "category_classification": {
             "english_only_classical": {
@@ -720,7 +720,7 @@ def main():
 
     print(f"\nResults saved to: {os.path.abspath(RESULTS_PATH)}")
 
-    # Print the summary
+    #  Print comparison summary 
     print("\n" + "=" * 70)
     print("COMPARISON SUMMARY")
     print("=" * 70)

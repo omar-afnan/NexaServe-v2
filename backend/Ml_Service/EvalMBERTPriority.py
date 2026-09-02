@@ -1,14 +1,12 @@
 """
-mBERT baseline for priority classification (English only).
-
-The point of this one is a clean comparison against the Random Forest baseline,
-so the data path is deliberately the same as TrainModel.py: same CSV, English
-rows only, same map_priority, 80/20 split at random_state=42, SMOTE on the
-training split only.
-
+mBERT baseline evaluation for priority classification.
 Run: python EvalMBERTPriority.py
-Needs: transformers, torch, imbalanced-learn
-Writes: mbert_priority_results.json (accuracy, macro F1, per-class F1)
+Requires: pip install transformers torch imbalanced-learn
+Produces: mbert_priority_results.json  (accuracy, macro F1, per-class F1)
+
+Data loading and preprocessing intentionally mirrors TrainModel.py exactly —
+same CSV, same English filter, same map_priority, same 80/20 / random_state=42 split,
+same SMOTE applied to training split only.
 """
 
 import os
@@ -57,7 +55,7 @@ LEARNING_RATE = 2e-5
 WARMUP_RATIO = 0.1
 
 
-# Data loading - identical to TrainModel.py
+# ── Data loading — identical to TrainModel.py ──────────────────────────────
 
 def map_to_category(row):
     queue = str(row.get('queue', '')).lower()
@@ -158,7 +156,7 @@ def load_data():
     return texts, labels
 
 
-# PyTorch dataset wrapper
+# ── PyTorch Dataset ────────────────────────────────────────────────────────
 
 class TicketDataset(Dataset):
     def __init__(self, texts, labels, tokenizer, max_len):
@@ -185,7 +183,7 @@ class TicketDataset(Dataset):
         }
 
 
-# Training and evaluation
+# ── Training & evaluation ──────────────────────────────────────────────────
 
 def train_epoch(model, loader, optimizer, scheduler, device):
     model.train()
@@ -225,7 +223,7 @@ def evaluate(model, loader, device):
     return np.array(all_labels), np.array(all_preds)
 
 
-# Main
+# ── Main ───────────────────────────────────────────────────────────────────
 
 def main():
     set_seed()
@@ -251,20 +249,22 @@ def main():
     )
     print(f"Train: {len(X_train_texts)}  |  Test: {len(X_test_texts)}")
 
-    # SMOTE on the training split only, same as TrainModel.py. SMOTE needs a
-    # numeric matrix to work on, and we don't want it inventing fake ticket text,
-    # so we feed it the row indices as a stand-in and pull the real texts back
-    # out afterwards by the indices it picked.
+    # SMOTE on training split only — mirrors TrainModel.py exactly.
+    # SMOTE needs a numeric feature matrix; we use a simple bag-of-chars index
+    # as a proxy so SMOTE can interpolate in feature space before fine-tuning.
     print("\nApplying SMOTE to balance priority training classes...")
     print("Priority class distribution BEFORE SMOTE:")
     unique, counts = np.unique(y_train, return_counts=True)
     for cls, cnt in zip(unique, counts):
         print(f"  {le.classes_[cls]}: {cnt}")
 
+    # Represent each text as its index so SMOTE can resample — the actual
+    # oversampled texts are retrieved by nearest-neighbour indices that SMOTE
+    # produces, preserving real ticket text (no synthetic text hallucination).
     train_indices = np.arange(len(X_train_texts)).reshape(-1, 1).astype(np.float32)
     smote = SMOTE(random_state=42, k_neighbors=3)
     resampled_indices, y_train_balanced = smote.fit_resample(train_indices, y_train)
-    # SMOTE hands back interpolated float indices; round to the nearest real row
+    # Map resampled float indices back to the nearest original integer index
     resampled_indices = np.clip(
         np.round(resampled_indices.flatten()).astype(int),
         0, len(X_train_texts) - 1
@@ -368,6 +368,7 @@ def main():
         "per_class_precision": per_class_precision,
         "per_class_recall": per_class_recall,
         "confusion_matrix": {"labels": class_names, "matrix": cm.tolist()},
+        "predictions": {"y_true": y_true.tolist(), "y_pred": y_pred.tolist()},
         "evaluated_at": started_at,
         "completed_at": datetime.now().isoformat(),
         "comparison_baseline": {

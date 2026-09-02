@@ -332,6 +332,7 @@ def main():
         "per_class_precision": per_class_precision,
         "per_class_recall": per_class_recall,
         "confusion_matrix": {"labels": class_names, "matrix": cm.tolist()},
+        "predictions": {"y_true": y_true.tolist(), "y_pred": y_pred.tolist()},
         "by_language": by_language,
         "evaluated_at": started_at,
         "completed_at": datetime.now().isoformat(),
