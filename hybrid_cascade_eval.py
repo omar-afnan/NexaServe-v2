@@ -33,7 +33,7 @@ from sklearn.model_selection import train_test_split
 
 # Config - set these before running
 LOGIN_EMAIL    = "admin@test.com"   # <-- change me
-LOGIN_PASSWORD = "admin123"           # <-- change me
+LOGIN_PASSWORD = ""           # <-- change me
 JWT_TOKEN      = None  # paste a valid JWT here to skip the login call entirely
 
 BACKEND_URL   = "http://localhost:5000"

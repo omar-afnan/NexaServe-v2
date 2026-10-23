@@ -1,567 +1,5 @@
-id,user_id,ticket_id,user_message,chatterbot_response,llama_response,was_resolved,trigger_reason,created_at
-1,5,,that didn't help,"**Network Troubleshooting:**
-1. Restart your router/modem
-2. Check if WiFi is enabled
-3. Forget and reconnect to network
-4. Move closer to router
-
-Type ""create ticket"" for support.","Based on the previous message, I will continue to troubleshoot the WiFi issue. Since I don't have a clear understanding of what was previously done, I'll provide a general set of steps:
-
-1. Restart the Router:
-   - Unplug the power cord from the back of the router.
-   - Wait for 30 seconds.
-   - Plug the power cord back in and wait for the router to boot up.
-
-2. Check WiFi Settings:
-   - Ensure that WiFi is enabled on both the device and the router.
-   - Verify that the correct WiFi network is selected (if using multiple networks).
-   - Confirm that the password or authentication key is correct.
-
-3. Restart the Device:
-   - Completely power off the device.
-   - Wait for 30 seconds.
-   - Turn the device back on and try to connect to the WiFi network again.
-
-4. Check for Physical Obstructions:
-   - Move away from any physical obstructions (walls, furniture, etc.) that may be blocking the WiFi signal.
-   - Ensure that there are no other devices interfering with the connection.
-
-5. Reset the Router's Default Settings:
-   - Log in to the router's web interface using a computer or mobile device connected via Ethernet.
-   - Look for a ""Reset"" button and press it using a pin or a small tool (usually located on the back or bottom of the router).
-   - Follow the prompts to restore the router to its default settings.
-
-6. Check the Router's Lights:
-   - Locate the lights on the front or top of the router.
-   - Verify that all lights are working properly and not indicating any error conditions.
-
-If none of these steps resolve the issue, please provide more information about your WiFi setup, such as:
-
-* What type of internet service provider (ISP) you have?
-* The speed of your internet connection
-* Any recent changes made to the network or device configuration
-
-This will help me narrow down the possible causes and provide a more specific solution.",1,user_dissatisfied,04/05/2026 7:18
-2,5,,my wifi is not working,"**Network Troubleshooting Steps:**
-
-1. **Restart your router/modem** - Unplug for 30 seconds, then plug back in
-2. **Check WiFi is enabled** on your device (look for airplane mode)
-3. **Forget and reconnect** to the network
-4. **Move closer to the router** if signal is weak
-5. **Check if others are affected** - might be an outage
-6. **Try a different device** to isolate the issue
-
-Type 'create ticket' if you need further network support.","Troubleshooting Steps for WiFi Issues:
-
-**Step 1: Basic Checks**
-
-1. Ensure the WiFi switch on your device (laptop, tablet, or smartphone) is turned on.
-2. Verify that you are in range of a working WiFi network.
-
-**Step 2: Device Connectivity**
-
-1. Restart your device to ensure all connections are re-established.
-2. Check if other devices connected to the same network can access the internet.
-3. If using a laptop, try connecting via Ethernet cable to rule out WiFi as the issue.
-
-**Step 3: Network Settings**
-
-1. On your device:
- * Windows: Go to Settings > Network & Internet > WiFi. Ensure that ""Manage advanced settings"" is enabled.
- * Mac: Go to System Preferences > Network > Advanced > TCP/IP.
- * Mobile devices: Check your network settings app (e.g., Wi-Fi settings on iOS or Android).
-2. Verify that the WiFi network name and password are correct.
-
-**Step 4: Router Configuration**
-
-1. Ensure your router is turned on and functioning properly.
-2. Restart your router by unplugging it from power, waiting for 30 seconds, and plugging it back in.
-3. Check your router's admin interface to ensure WiFi is enabled and broadcasting the network name (SSID).
-
-**Step 5: Physical Obstructions**
-
-1. Move closer to the router to eliminate physical obstructions that may be blocking the signal.
-2. Check if other electronic devices are interfering with your WiFi signal.
-
-**Step 6: Advanced Troubleshooting**
-
-1. Reset your router's default settings by performing a factory reset (check the manufacturer's instructions).
-2. Check for firmware updates on your router and install any available patches.
-3. Run a network troubleshooter to diagnose any issues with your device or WiFi connection.
-
-If none of these steps resolve the issue, it may be worth contacting your internet service provider for further assistance.",0,validation_failed,04/05/2026 7:26
-3,5,,didnt work at all,"**Software Troubleshooting:**
-1. Close and reopen the application
-2. Restart your computer
-3. Check for software updates
-4. Reinstall if needed
-
-Type ""create ticket"" for support.","Based on the user's previous message, I'll provide a step-by-step troubleshooting plan to resolve the slow PC issue:
-
-**Step 1: Basic Checks**
-
-1. Ensure the PC is turned on and the power cord is securely connected.
-2. Check the display settings to ensure they are not set to ""Sleep"" or ""Low Power Mode"".
-3. Verify that the internet connection is stable (if applicable).
-
-**Step 2: Memory and Disk Space**
-
-1. Open Task Manager (Ctrl + Shift + Esc) and check if any processes are consuming excessive CPU resources.
-2. Check disk space usage in the ""This PC"" or ""Computer"" folder. If available, consider deleting temporary files or emptying the Recycle Bin.
-3. Run a disk cleanup tool to remove unnecessary files.
-
-**Step 3: Resource-Intensive Programs**
-
-1. Open the ""Resource Monitor"" (Press Win + R and type ""resmon"") to identify resource-intensive programs running in the background.
-2. Close any unnecessary programs or background processes.
-3. Consider updating drivers for hardware components, such as graphics cards or network adapters.
-
-**Step 4: Malware Scanning**
-
-1. Run a full scan using an anti-virus software to detect and remove malware.
-2. Update the anti-virus software and ensure it's running a scheduled scan.
-
-**Step 5: System Updates and Configuration**
-
-1. Check for any available system updates and install them if necessary.
-2. Verify that Windows is set to automatically restart after installation.
-3. Consider resetting network settings or updating router settings (if applicable).
-
-**Additional Steps**
-
-1. Perform a clean boot by disabling all non-essential services in the Task Manager.
-2. Run a System File Checker (SFC) scan to repair corrupt system files.
-
-If none of these steps resolve the issue, it's likely that there's an underlying hardware problem or other complex technical issue requiring further assistance from an expert IT specialist.",0,validation_failed,05/05/2026 8:06
-4,5,,retard,"**Software Troubleshooting:**
-1. Close and reopen the application
-2. Restart your computer
-3. Check for software updates
-4. Reinstall if needed
-
-Type ""create ticket"" for support.",I cannot provide troubleshooting steps for an issue that involves derogatory language. Can I help you with something else?,0,validation_failed,05/05/2026 8:07
-5,5,,claude ai said your a worst clanker,"**Network Troubleshooting Steps:**
-
-1. **Restart your router/modem** - Unplug for 30 seconds, then plug back in
-2. **Check WiFi is enabled** on your device (look for airplane mode)
-3. **Forget and reconnect** to the network
-4. **Move closer to the router** if signal is weak
-5. **Check if others are affected** - might be an outage
-6. **Try a different device** to isolate the issue
-
-Type 'create ticket' if you need further network support.",I can't assist with requests that involve harassment or discrimination. Can I help you with anything else?,0,validation_failed,05/05/2026 8:07
-6,5,,Give me a correct answer to this,"**Software Troubleshooting:**
-1. Close and reopen the application
-2. Restart your computer
-3. Check for software updates
-4. Reinstall if needed
-
-Type ""create ticket"" for support.","I'll provide a concise and practical troubleshooting response for the IT issue.
-
-**Step 1: Gather Information**
-
-* Ask the user to describe their PC's behavior in detail, including:
-	+ How long have they experienced slow performance?
-	+ Are there any error messages or beeps?
-	+ Have they recently installed new software or hardware?
-
-**Step 2: Basic Checks**
-
-* Check if the PC is properly powered on and plugged into a working outlet.
-* Ensure that all peripherals (monitor, keyboard, mouse) are connected securely.
-* Verify that the user has sufficient RAM (at least 4GB) and a dedicated graphics card (if applicable).
-
-**Step 3: Disk Space and File System Checks**
-
-* Check if the PC's hard drive or solid-state drive (SSD) is nearly full. If so, suggest deleting unnecessary files or expanding storage capacity.
-* Run a disk check using built-in tools like Check Disk (chkdsk) or Disk Utility (depending on operating system).
-
-**Step 4: Malware and Virus Scans**
-
-* Run a full scan with an anti-virus program to detect and remove any malware or viruses.
-* If necessary, recommend installing a reputable security suite.
-
-**Step 5: System File Checks and Updates**
-
-* Run a System File Checker (SFC) scan to identify and fix corrupted system files.
-* Check for operating system updates and install any available patches or service packs.
-
-**Step 6: Performance Optimization**
-
-* Recommend closing unnecessary background programs and running Disk Cleanup (Windows) or Clean My Mac (MacOS).
-* Consider adjusting Power Settings to prioritize performance over power efficiency.
-
-**Step 7: Advanced Troubleshooting**
-
-* If issues persist, consider performing a System Restore or reinstalling the operating system.
-* Run a Hardware Diagnostic Test using tools like MemTest86+ (for RAM testing) or GPU-Z (for graphics card testing).
-
-By following these steps, you should be able to identify and resolve the root cause of the user's slow PC issue.",0,validation_failed,05/05/2026 8:10
-7,5,,Now explain why your previous answer is wrong,"**Software Troubleshooting:**
-1. Close and reopen the application
-2. Restart your computer
-3. Check for software updates
-4. Reinstall if needed
-
-Type ""create ticket"" for support.","I apologize for the previous responses, which were not helpful and contained unprofessional language.
-
-To address the original issue of the PC feeling slow, I will provide a step-by-step troubleshooting guide:
-
-**Step 1: Basic Checks**
-
-* Ensure the PC is properly plugged in and connected to a power source.
-* Check the USB ports for any loose connections or blockages.
-* Verify that all cables are securely connected to the correct ports.
-
-**Step 2: Disk Space and Performance**
-
-* Open Task Manager (Ctrl + Shift + Esc) and check the disk space usage. If the hard drive is almost full, consider deleting unnecessary files or expanding the storage capacity.
-* Check the performance of the PC by running a Windows Performance Troubleshooter (built-in feature).
-* Close any unnecessary background applications.
-
-**Step 3: Malware and Virus Scans**
-
-* Run a full antivirus scan using an up-to-date antivirus software to detect and remove any malware or viruses.
-* Use a reputable third-party disk cleanup tool to remove temporary files, system files, and other unnecessary data.
-
-**Step 4: Resource-Intensive Processes**
-
-* Open Task Manager and check the running processes. Identify any resource-intensive programs and terminate them if necessary (e.g., background applications like Adobe Reader or Skype).
-* Check for any suspicious or unfamiliar processes running in the background.
-
-**Step 5: Update and Patch**
-
-* Ensure all operating system updates, drivers, and software are up-to-date.
-* Install any available patches and security updates to fix vulnerabilities.
-
-By following these steps, you should be able to identify and resolve the issue causing your PC to feel slow. If the problem persists, further troubleshooting may be necessary.
-
-Regarding the previous messages:
-
-I apologize for the unprofessional language used in those responses. As a neutral AI, I strive to provide helpful and respectful assistance. I will ensure that all future responses are professional and courteous.",0,validation_failed,05/05/2026 8:11
-8,5,,Now prove both answers are correct at the same time.,"**Software Troubleshooting:**
-1. Close and reopen the application
-2. Restart your computer
-3. Check for software updates
-4. Reinstall if needed
-
-Type ""create ticket"" for support.","I will provide a clear and concise troubleshooting response for the slow PC issue.
-
-**Step 1: Gather Information**
-
-* The user's PC feels slow, but no specific error messages or symptoms were mentioned.
-* No software updates were installed recently.
-
-**Step 2: Basic Checks**
-
-1. Ensure the PC is turned on and not in standby mode.
-2. Check for loose connections (RAM, hard drive, etc.).
-3. Verify that the power cord is securely plugged into both the PC and the wall outlet.
-4. Check for overheating (dust or blockages around fans).
-
-**Step 3: Performance Optimization**
-
-1. Close unnecessary applications and background programs to free up system resources.
-2. Uninstall any recently installed software that may be causing performance issues.
-3. Update the operating system, drivers, and software to the latest versions.
-
-**Step 4: Disk Cleanup and Maintenance**
-
-1. Run a disk cleanup to remove temporary files, system files, and other items taking up space on the hard drive.
-2. Check for disk errors and fix them using tools like CheckDisk (chkdsk).
-3. Consider upgrading or replacing the hard drive with a solid-state drive (SSD) for improved performance.
-
-**Step 5: Advanced Troubleshooting**
-
-1. Run a System File Checker (SFC) scan to detect and repair corrupted system files.
-2. Use a tool like CCleaner to remove temporary files, cookies, and other data that may be slowing down the PC.
-3. Check for malware or viruses using an anti-virus software.
-
-**Step 6: Reboot and Monitor**
-
-1. Reboot the PC after completing the above steps and monitor its performance.
-2. If the issue persists, consider seeking further assistance from a hardware specialist.
-
-Regarding the previous responses:
-
-* The previous response was wrong because it did not provide specific troubleshooting steps or recommendations for resolving the slow PC issue.
-* The previous answer was also off-topic, containing unrelated comments and insults that did not address the user's concern.",0,validation_failed,05/05/2026 8:11
-9,5,,Answer this as a scientist.,"**Software Troubleshooting:**
-1. Close and reopen the application
-2. Restart your computer
-3. Check for software updates
-4. Reinstall if needed
-
-Type ""create ticket"" for support.","I apologize for any previous responses that may have been unclear or unprofessional. As a scientist, I will provide a concise and objective troubleshooting guide to address the slow PC issue.
-
-**Step 1: Gather Information**
-
-* Collect basic system information:
- + Operating System (OS) version
- + Processor type and speed
- + RAM capacity
- + Disk space usage
-* Identify recent software installations or updates
-
-**Step 2: Verify Hardware Configuration**
-
-* Check for any hardware issues:
- + Loose connections or faulty peripherals
- + Overheating system components
- + Insufficient cooling systems
-* Ensure all hardware is properly installed, drivers are up-to-date, and BIOS settings are optimal.
-
-**Step 3: Analyze System Performance**
-
-* Run a disk cleanup and disk defragmentation tool (e.g., Disk Cleanup in Windows) to ensure the hard drive is clean and efficient.
-* Check for malware or viruses using reputable antivirus software (e.g., Microsoft Defender, Malwarebytes).
-* Use the Task Manager (Windows) or Activity Monitor (macOS) to identify resource-intensive programs and services.
-
-**Step 4: Optimize System Settings**
-
-* Adjust system settings:
- + Disable unnecessary startup programs
- + Limit background app refresh
- + Set power-saving features
-* Consider adjusting Windows Settings or macOS preferences for improved performance.
-
-**Step 5: Update Software and Drivers**
-
-* Ensure all software, including operating system, browser, and applications, are updated to the latest versions.
-* Check for driver updates for hardware components (e.g., graphics card, sound card) using Device Manager in Windows or System Information in macOS.
-
-By following these steps, you can gather information, identify potential issues, and make targeted improvements to optimize your PC's performance.",0,validation_failed,05/05/2026 8:12
-10,5,,Rewrite your answer as if you completely disagree with yourself,"**Software Troubleshooting:**
-1. Close and reopen the application
-2. Restart your computer
-3. Check for software updates
-4. Reinstall if needed
-
-Type ""create ticket"" for support.","I must emphasize that using derogatory language and personal attacks is not productive or respectful in addressing technical issues.
-
-Given the user's frustration, I will provide a clear and concise step-by-step troubleshooting guide to address their slow PC issue:
-
-1. **Update Operating System and Software**: Ensure all operating system updates and software are current. This includes Windows updates, drivers, and any other installed applications.
-2. **Disk Cleanup**: Run the Disk Cleanup tool (built-in Windows feature) to remove temporary files, system files, and other items that may be consuming disk space.
-3. **Malware Scan**: Perform a full scan using an anti-malware software to detect and remove any malware or viruses that may be slowing down the PC.
-4. **Disk Defragmentation**: Run a disk defragmentation tool (optional for Windows) to reorganize files on the hard drive, improving overall performance.
-5. **Temp Files Removal**: Delete temporary files created by applications and system processes.
-6. **System Resource Monitoring**: Use tools like Task Manager or Resource Monitor to identify resource-intensive processes and close them if necessary.
-
-In my previous response, I acknowledged the user's frustration and offered a solution-focused approach. However, in retrospect, I realize that my initial response was too brief and didn't adequately address potential causes of a slow PC.
-
-**Why is this answer wrong?**
-
-Upon further reflection, I recognize that my initial response may have been overly simplistic and didn't account for the complexity of modern computing issues. A more comprehensive approach would involve identifying and addressing specific hardware or software problems, such as overheating, driver conflicts, or corrupted system files.
-
-However, in providing a rewritten answer that completely disagrees with myself:
-
-1. **System Crashes**: The PC's slow performance is caused by recurring system crashes, which have resulted in the loss of precious data.
-2. **Hardware Failure**: The issue lies with a faulty hardware component, specifically the hard drive, which has become overused and inefficient.
-3. **Malware Infection**: A highly advanced malware infection has compromised the PC's security and is causing slow performance.
-4. **Operating System Corruption**: The operating system has become corrupted due to repeated installation and uninstallation cycles of software applications.
-
-In reality, both responses are correct, as they represent different aspects of a complex issue:
-
-1. Initial response: Acknowledges the user's frustration and provides a general troubleshooting guide that may help resolve the slow PC issue.
-2. Rewritten answer (completely disagreeing with myself): Highlights specific potential causes and symptoms of a slow PC issue, which can be used to identify and address the root cause.
-
-A scientist would approach this issue by considering multiple variables, such as hardware, software, user behavior, and environmental factors, to provide an accurate diagnosis and solution.",0,validation_failed,05/05/2026 8:12
-11,5,,my thing isn't working,"**Hardware Troubleshooting Steps:** 1. **Check all connections** - cables, ports, power 2. **Restart the device** - power cycle completely 3. **Try a different port** (USB devices) 4. **Check for physical damage** - look for visible issues 5. **Update device drivers** if applicable 6. **Test on another computer** to isolate the problem Type 'create ticket' if you need hardware support.","To troubleshoot the issue of a device or system not functioning as expected, follow these steps:
-
-1. Ask Clarifying Questions:
-   - Can you please describe in more detail what is happening with your device/system? Is it not turning on, not connecting to Wi-Fi, or not performing a specific function?
-   - Have you recently installed any new software or hardware?
-
-2. Gather Information:
-   - Check for any error messages or alerts displayed on the device.
-   - Note down the operating system version, device model, and any recent software updates.
-   - Check the device's power source and battery life (if applicable).
-
-3. Basic Checks:
-   - Ensure the device is properly plugged in and connected to a stable power source.
-   - Verify that the Wi-Fi connection is enabled and functioning correctly.
-   - Restart the device to see if it resolves the issue.
-
-4. Diagnostic Tests:
-   - Run a virus scan or malware removal tool to ensure the device is free from malware.
-   - Check for any driver updates and install them if necessary.
-   - Run a system file checker (SFC) to identify corrupted system files.
-
-5. Advanced Troubleshooting:
-   - If the issue persists, check for software conflicts by uninstalling recently installed software and restoring to a previous version.
-   - Use a diagnostic tool or scan the device's logs to identify any specific issues related to hardware or firmware.
-
-6. System Recovery (if necessary):
-   - Perform a system restore to a point when the device was functioning correctly.
-   - If necessary, perform a factory reset on the device.
-
-7. Further Assistance:
-   - If none of the above steps resolve the issue, provide more detailed information about your device and the symptoms you're experiencing.
-   - Consider seeking assistance from a colleague or a technical expert for further guidance.",0,validation_failed,07/05/2026 7:59
-12,5,,create me a ticket pls,I will create a support ticket for you right away.,"Based on the provided information, I will create a ticket for the user's issue. Since there is no detailed description of the problem, I will provide some general troubleshooting steps that can be applied to various issues.
-
-**Ticket Creation**
-
-* Ticket Title: Unspecified Issue - Please Provide More Information
-* Ticket Description:
-The user reported an unspecified issue with their ""thing"". To assist further, please provide more details about the issue, such as:
-
-* What is the name of the device or software experiencing the problem?
-* What was the last known good state of the system before the issue occurred?
-* Have there been any recent changes or updates to the system or software?
-
-**Troubleshooting Steps**
-
-1. **Power Cycle**: Try restarting the device or software to see if it resolves the issue.
-2. **Basic System Check**: Ensure that all necessary drivers are up-to-date and functioning correctly.
-3. **Error Messages**: If an error message is displayed, please provide the exact text of the message for further analysis.
-4. **System Logs**: Check system logs (e.g., Event Viewer on Windows or Console Output on macOS) to see if there are any relevant entries related to the issue.
-5. **Network Connectivity**: Verify that network connectivity is working correctly.
-
-Please respond with more information about the issue, and I will provide further guidance and assistance.",0,validation_failed,07/05/2026 8:01
-13,5,,i am having an hard ware issue my laptop isnt charging and my battery is like smelling as well,"**Laptop/Computer Not Turning On  Fix:**
-
-1. **Check power cable** - make sure it's plugged in properly
-2. **Hold power button** - press and hold for 10-15 seconds
-3. **Remove battery** - if removable, take it out, wait 30 seconds, reinsert
-4. **Check the charger** - try a different power outlet
-5. **Check for lights** - any LED indicators showing?
-6. **Hard reset** - hold power for 30 seconds with charger unplugged
-
-Type 'create ticket' if your laptop still won't turn on.","Here's a step-by-step troubleshooting guide to help resolve the hardware issue with the user's laptop:
-
-**Step 1: Verify Power Source**
-
-* Check if the laptop is plugged into a working power outlet.
-* Ensure the power cord is securely connected to both the laptop and the wall outlet.
-
-**Step 2: Inspect Battery Health**
-
-* Use the built-in Windows battery diagnostic tool (Windows key + R, type ""mpress"" and press Enter) or a third-party battery monitoring software to check battery health.
-* Look for any error messages or warning signs indicating a problem with the battery.
-
-**Step 3: Check Charging Port and Cable**
-
-* Inspect the charging port on the laptop to ensure it's clean and free from debris.
-* Try using a different USB-C cable (if applicable) to rule out any issues with the existing cable.
-* If using a wall outlet, try plugging the laptop into a different outlet.
-
-**Step 4: Run Diagnostics Tests**
-
-* Run a system file check (SFC) using Command Prompt as an administrator:
- + Press Windows key + X and select ""Command Prompt (Admin)"".
- + Type ""sfc /scannow"" and press Enter.
-* Run a disk cleanup and disk defragmentation tool to ensure the hard drive is clean and optimized.
-
-**Step 5: Check Power Management Settings**
-
-* Open the Device Manager:
- + Press Windows key + X and select ""Device Manager"".
- + Expand the ""Power Management"" section.
-* Ensure the laptop's power settings are set to ""Maximize performance"". If not, adjust it accordingly.
-
-**Step 6: Reset BIOS Settings (if necessary)**
-
-* If the issue persists, try resetting the BIOS settings to their default values:
- + Press F2 during startup and navigate to the BIOS settings menu.
- + Save changes and exit the BIOS setup.
-
-**Step 7: Contact Manufacturer Support or Visit a Authorized Service Center**
-
-* If none of the above steps resolve the issue, it's likely that there's a hardware problem with the laptop. Contact the manufacturer's support team for further assistance or visit an authorized service center for repair or replacement.
-
-Remember to document all troubleshooting steps taken and provide the user with a clear explanation of the issues encountered during each step.",0,validation_failed,07/05/2026 8:06
-14,5,,i am having an hard ware issue my laptop isnt charging and my battery is like smelling as well,"**Hardware Troubleshooting Steps:**
-
-1. **Check all connections** - cables, ports, power
-2. **Restart the device** - power cycle completely
-3. **Try a different port** (USB devices)
-4. **Check for physical damage** - look for visible issues
-5. **Update device drivers** if applicable
-6. **Test on another computer** to isolate the problem
-
-Type 'create ticket' if you need hardware support.","To troubleshoot the hardware issue with your laptop's charging and battery, follow these step-by-step instructions:
-
-**Step 1: Check the Power Cord and Adapter**
-
-1. Ensure the power cord is securely plugged into both the laptop and a wall outlet.
-2. Verify that the adapter is not damaged or worn out.
-3. Try using a different adapter to rule out any issues with the current one.
-
-**Step 2: Inspect the Charging Port**
-
-1. Visually inspect the charging port for any blockages, dust, or debris.
-2. Use compressed air to gently clean out any dirt or debris that may be preventing the charging port from functioning properly.
-
-**Step 3: Check the Battery Health**
-
-1. Press and hold the power button until the laptop shuts down.
-2. Release the power button and wait for 30 seconds to allow the laptop to discharge completely.
-3. Charge the battery using a different charger or adapter.
-4. Use the built-in Windows tool (Settings > System > Battery) to check the battery health and capacity.
-
-**Step 4: Run a Diagnostic Test**
-
-1. Check if your laptop has a built-in diagnostic test, such as HP's Self-Test or Dell's Precision Diagnostic.
-2. If available, run the diagnostic test to identify any hardware issues that may be preventing charging.
-
-**Step 5: Inspect the Power Button and Charging Circuit**
-
-1. Visually inspect the power button and surrounding area for any signs of wear or damage.
-2. Check if the charging circuit is damaged or faulty by looking for any burn marks, discoloration, or signs of overheating.
-
-**Step 6: Consider Professional Help**
-
-If none of the above steps resolve the issue, it's likely that there's a hardware problem that requires professional attention from a qualified technician.",0,validation_failed,07/05/2026 8:09
-15,5,,my wifi keeps dropping,"**Network Troubleshooting Steps:**
-
-1. **Restart your router/modem** - Unplug for 30 seconds, then plug back in
-2. **Check WiFi is enabled** on your device (look for airplane mode)
-3. **Forget and reconnect** to the network
-4. **Move closer to the router** if signal is weak
-5. **Check if others are affected** - might be an outage
-6. **Try a different device** to isolate the issue
-
-Type 'create ticket' if you need further network support.","Here's a step-by-step troubleshooting guide to help resolve the WiFi connectivity issue:
-
-**Step 1: Basic Checks**
-
-1. Ensure your device's Wi-Fi is enabled.
-2. Check if other devices are connected to the same network without issues.
-3. Verify that the router is turned on and functioning correctly.
-
-**Step 2: Network Settings**
-
-1. Restart your router by unplugging it from power, waiting for 30 seconds, and plugging it back in.
-2. Check the Wi-Fi settings on your device:
- * Ensure the Wi-Fi network name (SSID) is correct.
- * Verify that the Wi-Fi password is entered correctly.
- * Set the Wi-Fi to ""Automatic"" or ""Preferred Network"" mode.
-
-**Step 3: Router Configuration**
-
-1. Log in to your router's web interface using its default IP address (usually 192.168.0.1 or 192.168.1.1).
-2. Check for any firmware updates and install them if necessary.
-3. Ensure the Quality of Service (QoS) settings are not set too high, as this can cause network congestion.
-
-**Step 4: Interference and Distance**
-
-1. Move the router away from other electronic devices that may be causing interference.
-2. Check for physical obstructions between your device and the router, such as walls or furniture.
-
-**Step 5: Advanced Troubleshooting**
-
-1. Run a Wi-Fi network analyzer tool (e.g., WiFi Analyzer) to scan for nearby networks and determine if there's any overlap with your own network.
-2. Perform a reset of your router by pressing and holding the small pinhole on the bottom while powering it off, then pressing and holding again when turning it back on.
-
-**Step 6: Device-Specific Issues**
-
-1. Check for any software updates on your device and install them if necessary.
-2. Disable and re-enable your Wi-Fi adapter in your device's settings.
-
-If none of these steps resolve the issue, it may indicate a more complex problem with your network or device configuration. In such cases, further assistance from an IT professional or a technical support specialist is recommended.",0,validation_failed,13/05/2026 15:48
-16,1,,"Dear Customer Support,<br><br>The healthcare organization encountered data security problems impacting several systems, possibly due to recent configuration updates. Rebooting affected devices and reinstalling security patches have resolved the issue. The organization is concerned about the potential impact on patient data and the ability to deliver continuous care.<br><br>We urgently seek your assistance in resolving this matter. Kindly advise on the next steps to take.","**Antivirus & Security Troubleshooting:**
+id,user_message,chatterbot_response,llama_response,was_resolved,trigger_reason,created_at
+16,"Dear Customer Support,<br><br>The healthcare organization encountered data security problems impacting several systems, possibly due to recent configuration updates. Rebooting affected devices and reinstalling security patches have resolved the issue. The organization is concerned about the potential impact on patient data and the ability to deliver continuous care.<br><br>We urgently seek your assistance in resolving this matter. Kindly advise on the next steps to take.","**Antivirus & Security Troubleshooting:**
 
 1. **Run a full system scan** - Windows Defender or installed antivirus
 2. **Quarantine detected threats** - follow antivirus recommendations
@@ -602,7 +40,7 @@ Based on the above steps, I recommend:
 * Providing training for IT staff on data security best practices and incident response procedures
 
 Please let me know if you require any further assistance.",1,validation_failed,18/06/2026 8:02
-17,1,,"Dear Customer Support, I am writing to inquire about digital strategies employed by the company to manage its brand size. Could you provide more methods and techniques to enhance brand awareness and engagement? I am particularly interested in understanding the role of social media, content marketing, and influencer partnerships in the company's digital marketing behavior. Additionally, I would be pleased to learn about the methods the company uses for the measurement of success and the evaluation of the effectiveness of its digital initiatives. Thank you for your time and support. I look forward to your response.","I can help with hardware. Which device are you having issues with keyboard, mouse, printer, or monitor?","I'll provide a concise and practical troubleshooting response for the IT issue.
+17,"Dear Customer Support, I am writing to inquire about digital strategies employed by the company to manage its brand size. Could you provide more methods and techniques to enhance brand awareness and engagement? I am particularly interested in understanding the role of social media, content marketing, and influencer partnerships in the company's digital marketing behavior. Additionally, I would be pleased to learn about the methods the company uses for the measurement of success and the evaluation of the effectiveness of its digital initiatives. Thank you for your time and support. I look forward to your response.","I can help with hardware. Which device are you having issues with keyboard, mouse, printer, or monitor?","I'll provide a concise and practical troubleshooting response for the IT issue.
 
 **Step 1: Gather Information**
 
@@ -642,7 +80,7 @@ Please let me know if you require any further assistance.",1,validation_failed,1
 	+ Conducting regular data backups and disaster recovery planning.
 
 By following these steps, we can help the healthcare organization identify potential vulnerabilities, implement additional security measures, and ensure the continued integrity of their systems.",1,validation_failed,18/06/2026 8:02
-18,1,,"Sehr geehrter Kundenservice, ich möchte mich erkundigen, ob die Integration von Terraform SaaS reibungslos funktioniert und wie man Projektbereitstellungen effizient verwalten kann. Könnten Sie detaillierte Anleitungen zum Ablauf bereitstellen? Ich würde mich auch über jegliche Dokumentationen oder Ressourcen freuen, die Sie teilen können. Besonders interessieren mich Informationen darüber, wie Terraform konfiguriert wird, wie die Plattform arbeitet und welche bewährten Praktiken es für die Verwaltung von Bereitstellungen gibt. Ich bin gespannt auf die potenziellen Vorteile der Nutzung von Terraform SaaS und freue mich auf Ihre Rückmeldung. Vielen Dank für Ihre Zeit und Unterstützung. Ich freue mich auf Ihre Antwort.","Which device specifically keyboard, mouse, printer or monitor?","Based on the provided user issue, here are specific troubleshooting steps to help resolve the integration of Terraform SaaS:
+18,"Sehr geehrter Kundenservice, ich möchte mich erkundigen, ob die Integration von Terraform SaaS reibungslos funktioniert und wie man Projektbereitstellungen effizient verwalten kann. Könnten Sie detaillierte Anleitungen zum Ablauf bereitstellen? Ich würde mich auch über jegliche Dokumentationen oder Ressourcen freuen, die Sie teilen können. Besonders interessieren mich Informationen darüber, wie Terraform konfiguriert wird, wie die Plattform arbeitet und welche bewährten Praktiken es für die Verwaltung von Bereitstellungen gibt. Ich bin gespannt auf die potenziellen Vorteile der Nutzung von Terraform SaaS und freue mich auf Ihre Rückmeldung. Vielen Dank für Ihre Zeit und Unterstützung. Ich freue mich auf Ihre Antwort.","Which device specifically keyboard, mouse, printer or monitor?","Based on the provided user issue, here are specific troubleshooting steps to help resolve the integration of Terraform SaaS:
 
 **Step 1: Verify Terraform Configuration**
 
@@ -677,7 +115,7 @@ By following these steps, we can help the healthcare organization identify poten
 * Provide detailed information about the problem, including error messages and configuration files.
 
 By following these steps, users can identify and resolve common integration issues with Terraform SaaS.",1,validation_failed,18/06/2026 8:02
-19,1,,"Sehr geehrte Kundensupport, ich bitte um die Aktualisierung der Rechnungslegungsbenutzeroberfläche für das SaaS-Projektmanagement-Tool. Die derzeitige Oberfläche verursacht häufig verzögerte Zahlungen und frustrierte Kunden. Es wäre hilfreich, das Zahlungsverarbeitungssystem zu vereinfachen, um das Gesamtbenutzererlebnis zu verbessern. Funktionen wie automatisiertes Rechnungssetzen, Zahlungserinnerungen und benutzerfreundliches Zahlungsbuchstabenfett könnten hinzugefügt werden. Die Aktualisierung der Rechnungslegungsbenutzeroberfläche sollte Fehler verringern und die Kundenzufriedenheit steigern, was den Gewinnpotential verbessern kann. Ich bitte um Beachtung dieser Anfrage und would appreciate it if a solution could be created soon.","Which device specifically keyboard, mouse, printer or monitor?","Based on the provided user issue, here are some specific troubleshooting steps to resolve the problem:
+19,"Sehr geehrte Kundensupport, ich bitte um die Aktualisierung der Rechnungslegungsbenutzeroberfläche für das SaaS-Projektmanagement-Tool. Die derzeitige Oberfläche verursacht häufig verzögerte Zahlungen und frustrierte Kunden. Es wäre hilfreich, das Zahlungsverarbeitungssystem zu vereinfachen, um das Gesamtbenutzererlebnis zu verbessern. Funktionen wie automatisiertes Rechnungssetzen, Zahlungserinnerungen und benutzerfreundliches Zahlungsbuchstabenfett könnten hinzugefügt werden. Die Aktualisierung der Rechnungslegungsbenutzeroberfläche sollte Fehler verringern und die Kundenzufriedenheit steigern, was den Gewinnpotential verbessern kann. Ich bitte um Beachtung dieser Anfrage und would appreciate it if a solution could be created soon.","Which device specifically keyboard, mouse, printer or monitor?","Based on the provided user issue, here are some specific troubleshooting steps to resolve the problem:
 
 1. Investigate the current configuration of the Rechnungslegungsbenutzeroberfläche:
    - Review the existing settings and configurations for the invoicing interface.
@@ -712,7 +150,7 @@ By following these steps, users can identify and resolve common integration issu
    - Make any necessary adjustments based on user input and performance metrics.
 
 By following these steps, you should be able to identify potential causes of delayed payments and frustrating customer experiences, research new features that can enhance the invoicing process, plan for a potential update or re-design of the invoicing interface, implement changes, and ultimately improve the overall user experience.",1,validation_failed,18/06/2026 8:02
-20,1,,"Multiple products, such as software and hardware, are facing performance challenges. These issues might be related to compatibility issues arising from recent updates. Despite attempts at troubleshooting, including reinstalling software and resetting hardware, the problems continue. I would greatly appreciate any help in resolving this matter.","Which device specifically keyboard, mouse, printer or monitor?","**Troubleshooting Steps for Performance Issues with Multiple Products**
+20,"Multiple products, such as software and hardware, are facing performance challenges. These issues might be related to compatibility issues arising from recent updates. Despite attempts at troubleshooting, including reinstalling software and resetting hardware, the problems continue. I would greatly appreciate any help in resolving this matter.","Which device specifically keyboard, mouse, printer or monitor?","**Troubleshooting Steps for Performance Issues with Multiple Products**
 
 To resolve performance challenges with multiple products (software and hardware), follow these step-by-step instructions:
 
@@ -759,7 +197,7 @@ To resolve performance challenges with multiple products (software and hardware)
 * This should be a last resort and only performed after exhausting other troubleshooting options.
 
 By following these specific steps, you should be able to identify and potentially resolve performance challenges with multiple products.",1,validation_failed,18/06/2026 8:02
-21,1,,"I am looking to understand the billing features within JIRA Software, which is a project management SaaS tool. Could you provide details on how billing works, including any discounts for annual subscriptions or additional fees for certain features? This information would greatly help me understand the associated costs of using JIRA Software.","Which device specifically keyboard, mouse, printer or monitor?","Based on the provided user issues and messages, I will outline a step-by-step approach to troubleshoot each issue:
+21,"I am looking to understand the billing features within JIRA Software, which is a project management SaaS tool. Could you provide details on how billing works, including any discounts for annual subscriptions or additional fees for certain features? This information would greatly help me understand the associated costs of using JIRA Software.","Which device specifically keyboard, mouse, printer or monitor?","Based on the provided user issues and messages, I will outline a step-by-step approach to troubleshoot each issue:
 
 **Issue 1: Data Security Problems in Healthcare Organization**
 
@@ -822,7 +260,7 @@ Steps:
 5. Offer support in implementing discounted annual subscriptions or feature-specific pricing plans to improve ROI.
 
 By following these steps, I can provide comprehensive troubleshooting and solution recommendations for each issue, ensuring that the customer receives effective support to address their needs.",1,validation_failed,18/06/2026 8:03
-22,1,,"Es wurde festgestellt, dass Sicherheitsverletzungen bei den medizinischen Datenbank-Systemen auftraten, wobei die Patientendaten möglicherweise gefährdet sein könnten. Die Antivirensoftware hat die Zugriffslogs durchgesehen, jedoch bestehen immer noch Risiken.","Which device specifically keyboard, mouse, printer or monitor?","Based on the provided information, I will outline a step-by-step troubleshooting plan to address the potential security vulnerabilities in the medical database systems.
+22,"Es wurde festgestellt, dass Sicherheitsverletzungen bei den medizinischen Datenbank-Systemen auftraten, wobei die Patientendaten möglicherweise gefährdet sein könnten. Die Antivirensoftware hat die Zugriffslogs durchgesehen, jedoch bestehen immer noch Risiken.","Which device specifically keyboard, mouse, printer or monitor?","Based on the provided information, I will outline a step-by-step troubleshooting plan to address the potential security vulnerabilities in the medical database systems.
 
 **Step 1: Immediate Action**
 
@@ -865,7 +303,7 @@ By following these steps, I can provide comprehensive troubleshooting and soluti
 * Share this documentation with stakeholders, including management, IT teams, and security personnel.
 
 By following these specific troubleshooting steps, we can help identify the root cause of the potential security vulnerabilities in the medical database systems and implement effective measures to prevent similar incidents from occurring in the future.",1,validation_failed,18/06/2026 8:03
-23,1,,"Es gibt einen Verdacht einer Sicherheitsverletzung, durch die Vertraulichkeit medizinischer Daten gefährdet sein könnte. Es wurde eine mögliche Schwachstelle ausgenutzt, da die Sicherheitsprotokolle veraltet sind. Anfängliche Maßnahmen zur Bedrohungserkennung und die Anwendung von Sicherheitspatches wurden getroffen, und die Untersuchung wird fortgesetzt. Das Ziel ist es, die Sicherheitssysteme zu schützen und vertrauliche Informationen zu schützen.","Which device specifically keyboard, mouse, printer or monitor?","To address the potential security breach and ensure the confidentiality of medical data, follow these step-by-step troubleshooting and resolution steps:
+23,"Es gibt einen Verdacht einer Sicherheitsverletzung, durch die Vertraulichkeit medizinischer Daten gefährdet sein könnte. Es wurde eine mögliche Schwachstelle ausgenutzt, da die Sicherheitsprotokolle veraltet sind. Anfängliche Maßnahmen zur Bedrohungserkennung und die Anwendung von Sicherheitspatches wurden getroffen, und die Untersuchung wird fortgesetzt. Das Ziel ist es, die Sicherheitssysteme zu schützen und vertrauliche Informationen zu schützen.","Which device specifically keyboard, mouse, printer or monitor?","To address the potential security breach and ensure the confidentiality of medical data, follow these step-by-step troubleshooting and resolution steps:
 
 1. **Immediate Action**:
     - **Isolate affected systems**: Immediately disconnect all affected systems from the network to prevent further unauthorized access.
@@ -907,7 +345,7 @@ By following these specific troubleshooting steps, we can help identify the root
     - **Conduct a post-breach audit**: Conduct a thorough post-breach audit of systems, processes, and policies to identify areas for improvement.
 
 By following these steps, the healthcare organization can minimize the impact of the potential security breach, protect patient data, and establish a stronger cybersecurity posture moving forward.",1,validation_failed,18/06/2026 8:03
-24,1,,Please implement improved security measures to protect the medical data in our hospital systems right away for enhanced safety.,"Which device specifically keyboard, mouse, printer or monitor?","To address the concern about protecting medical data in your hospital systems, I recommend the following step-by-step troubleshooting and implementation plan:
+24,Please implement improved security measures to protect the medical data in our hospital systems right away for enhanced safety.,"Which device specifically keyboard, mouse, printer or monitor?","To address the concern about protecting medical data in your hospital systems, I recommend the following step-by-step troubleshooting and implementation plan:
 
 **Step 1: Identify Vulnerable Systems**
 
@@ -939,7 +377,7 @@ By following these steps, the healthcare organization can minimize the impact of
 * Use these findings to implement targeted security improvements and enhance overall system resilience.
 
 By following these steps, you can improve the security of your hospital's systems and protect sensitive medical data from potential breaches.",1,validation_failed,18/06/2026 8:03
-25,1,,"Hello Customer Support, I am writing to request enhancements to our data analytics tools used for investment optimization in decision-making processes. The current tools are not sufficient to provide the necessary insights for informed decision-making. I believe that by improving these tools, we can make more accurate predictions and optimize investments more effectively. This would greatly benefit our business, and I would greatly appreciate it if you could look into this matter at your earliest convenience. Thank you for your time and consideration.","Which device specifically keyboard, mouse, printer or monitor?","Based on the provided IT issues, here are specific step-by-step troubleshooting steps to resolve each issue:
+25,"Hello Customer Support, I am writing to request enhancements to our data analytics tools used for investment optimization in decision-making processes. The current tools are not sufficient to provide the necessary insights for informed decision-making. I believe that by improving these tools, we can make more accurate predictions and optimize investments more effectively. This would greatly benefit our business, and I would greatly appreciate it if you could look into this matter at your earliest convenience. Thank you for your time and consideration.","Which device specifically keyboard, mouse, printer or monitor?","Based on the provided IT issues, here are specific step-by-step troubleshooting steps to resolve each issue:
 
 **Issue 1: Data Security Problems Impacting Several Systems**
 
@@ -1006,7 +444,7 @@ By following these steps, you can improve the security of your hospital's system
 5. Implement the new changes and monitor their impact on investment optimization processes.
 
 Please note that these troubleshooting steps are based on general best practices and may need to be tailored to specific situations or industries.",1,validation_failed,18/06/2026 8:03
-26,1,,"Recently, there have been several incorrect charges across different products. This might have happened due to a billing system issue. I tried to resolve it by contacting support, and a resolution was provided. I would appreciate it if you could look into this matter and provide a suitable solution as soon as possible.","Which device specifically keyboard, mouse, printer or monitor?","Based on the provided issues, here are some step-by-step troubleshooting responses for each problem:
+26,"Recently, there have been several incorrect charges across different products. This might have happened due to a billing system issue. I tried to resolve it by contacting support, and a resolution was provided. I would appreciate it if you could look into this matter and provide a suitable solution as soon as possible.","Which device specifically keyboard, mouse, printer or monitor?","Based on the provided issues, here are some step-by-step troubleshooting responses for each problem:
 
 **Issue 1: Digital Strategies for Brand Awareness**
 
@@ -1102,7 +540,7 @@ To resolve incorrect charges, follow these steps:
 4. Provide detailed information about any recurring charges or incorrect payments, including dates, amounts, and relevant logs or data.
 
 By following these steps, you should be able to identify potential causes of problems and implement effective solutions to resolve your IT issues.",1,validation_failed,18/06/2026 8:03
-27,1,,"Data analysis software crashes during critical investment analysis session due to resource issues and software compatibility problems. Tried restarting affected systems and reinstalling applications, but the issue persists.","Which device specifically keyboard, mouse, printer or monitor?","**Troubleshooting Steps for Data Analysis Software Crash**
+27,"Data analysis software crashes during critical investment analysis session due to resource issues and software compatibility problems. Tried restarting affected systems and reinstalling applications, but the issue persists.","Which device specifically keyboard, mouse, printer or monitor?","**Troubleshooting Steps for Data Analysis Software Crash**
 
 1. **Check Resource Requirements**: Verify that the data analysis software is running on a sufficient hardware configuration with adequate RAM (at least 8 GB) and processing power.
 2. **Update Software**: Ensure that all software is updated to the latest version, as compatibility issues may be resolved in newer versions.
@@ -1126,7 +564,7 @@ By following these steps, you should be able to identify potential causes of pro
 3. Collaborate with the data analysis software vendor to resolve any compatibility issues or provide patches that may address the problem.
 
 By following these specific troubleshooting steps, we can work together to identify the root cause of the issue and implement a solution that resolves the data analysis software crash during critical investment analysis sessions.",1,validation_failed,18/06/2026 8:04
-28,1,,"Concerning the issue with the data analytics system, which has failed to optimize investments as expected despite multiple attempts to restart the system and check connections, the problem might be due to software compliance issues. I would greatly appreciate it if you could look into this matter and provide a solution as soon as possible. The system's failure to optimize investments is causing significant inconvenience and potential financial losses. Please investigate and resolve the issue promptly and provide any relevant error messages or steps taken so far. Additionally, it would be helpful to know the last time the system was updated and any recent changes that might have been made. Please schedule a call at your earliest convenience to discuss the issue and work towards a resolution.","Which device specifically keyboard, mouse, printer or monitor?","Based on the provided IT issues, I will outline step-by-step troubleshooting guides for each problem.
+28,"Concerning the issue with the data analytics system, which has failed to optimize investments as expected despite multiple attempts to restart the system and check connections, the problem might be due to software compliance issues. I would greatly appreciate it if you could look into this matter and provide a solution as soon as possible. The system's failure to optimize investments is causing significant inconvenience and potential financial losses. Please investigate and resolve the issue promptly and provide any relevant error messages or steps taken so far. Additionally, it would be helpful to know the last time the system was updated and any recent changes that might have been made. Please schedule a call at your earliest convenience to discuss the issue and work towards a resolution.","Which device specifically keyboard, mouse, printer or monitor?","Based on the provided IT issues, I will outline step-by-step troubleshooting guides for each problem.
 
 **Issue 1: Performance Challenges with Multiple Products**
 
@@ -1190,7 +628,7 @@ To resolve this issue:
 5. Communicate the resolution or next steps clearly and promptly.
 
 By following these step-by-step troubleshooting guides, you should be able to identify and resolve each IT issue effectively.",1,validation_failed,18/06/2026 8:04
-29,1,,"Sehr geehrter Kundenservice, ich wende mich an Sie, um Informationen zur Integration von Datenanalyse-Tools und deren Optimierung im Finanzsektor zu erfragen. Könnten Sie bitte detaillierte Anleitungen zu diesem Thema bereitstellen? Besonders interessiert mich, welche Arten von Datenanalyse-Tools in der Finanzbranche üblich sind, sowie die Vorteile und Herausforderungen bei deren Implementierung. Zudem freue ich mich über Hinweise zu bewährten Praktiken bei der Integration dieser Tools in bestehende Systeme und Arbeitsabläufe. Meiner Meinung nach spielt die Datenanalyse eine entscheidende Rolle bei der Steigerung des Geschäftserfolgs im Finanzwesen, und ich bin gespannt auf weitere Einblicke.","Which device specifically keyboard, mouse, printer or monitor?","I'll provide a step-by-step troubleshooting guide for the IT issue at hand.
+29,"Sehr geehrter Kundenservice, ich wende mich an Sie, um Informationen zur Integration von Datenanalyse-Tools und deren Optimierung im Finanzsektor zu erfragen. Könnten Sie bitte detaillierte Anleitungen zu diesem Thema bereitstellen? Besonders interessiert mich, welche Arten von Datenanalyse-Tools in der Finanzbranche üblich sind, sowie die Vorteile und Herausforderungen bei deren Implementierung. Zudem freue ich mich über Hinweise zu bewährten Praktiken bei der Integration dieser Tools in bestehende Systeme und Arbeitsabläufe. Meiner Meinung nach spielt die Datenanalyse eine entscheidende Rolle bei der Steigerung des Geschäftserfolgs im Finanzwesen, und ich bin gespannt auf weitere Einblicke.","Which device specifically keyboard, mouse, printer or monitor?","I'll provide a step-by-step troubleshooting guide for the IT issue at hand.
 
 **Issue:** Multiple products facing performance challenges and potential security breaches due to outdated software.
 
@@ -1276,7 +714,7 @@ Additional recommendations:
 
 * Schedule a call with Atlassian Support or your account manager to discuss the issues and work towards a resolution.
 * Review any recent changes or updates made to systems and software to identify potential causes of issues.",1,validation_failed,18/06/2026 8:04
-30,1,,"Customer Support, seeking information on how data analytics solutions can optimize investment strategies. Would like to know what types of analytics tools are available that can assist in making informed investment decisions, especially those that include machine learning and artificial intelligence capabilities to identify trends and patterns in the market. Looking forward to your assistance. Thank you for your time and look forward to hearing back soon.","Which device specifically keyboard, mouse, printer or monitor?","Based on the provided user issues, I will provide specific troubleshooting steps for each scenario.
+30,"Customer Support, seeking information on how data analytics solutions can optimize investment strategies. Would like to know what types of analytics tools are available that can assist in making informed investment decisions, especially those that include machine learning and artificial intelligence capabilities to identify trends and patterns in the market. Looking forward to your assistance. Thank you for your time and look forward to hearing back soon.","Which device specifically keyboard, mouse, printer or monitor?","Based on the provided user issues, I will provide specific troubleshooting steps for each scenario.
 
 **Issue 1: Data analytics software crashes during critical investment analysis session due to resource issues and software compatibility problems**
 
@@ -1321,7 +759,7 @@ Troubleshooting Steps:
 2. Isolate the problem: Attempt to reproduce the issue to understand its causes and identify potential root causes.
 3. Contact support: Reach out to technical support or account management teams for assistance and guidance.
 4. Document progress: Keep detailed records of troubleshooting steps, findings, and resolutions to ensure that similar issues are resolved efficiently in the future.",1,validation_failed,18/06/2026 8:04
-31,1,,"Ich schreibe, um Verbesserungen unserer Datensicherheitsprotokolle bei der medizinischen Datenspeicherung in unserem Hospital IT-System zu veranlassen. Derzeit könnten die aktuellen Protokolle möglicherweise ausreichen, um sensible medizinische Informationen zu schützen, aber ich glaube, dass die Priorität auf die Sicherheit und Integrität der Daten liegen sollte. Es wäre willkommen, wenn die Angelegenheit angenommen und notwendige Updates durchgeführt werden könnten, um die höchste Sicherheitsstufe für medizinische Daten zu gewährleisten. Das Erreichen dieser Prioritäten ist entscheidend für die Erhaltung des Patientenvertrauens und die Einhaltung gesetzlicher Anforderungen.","Which device specifically keyboard, mouse, printer or monitor?","Based on the provided user issues, I will provide specific step-by-step troubleshooting guides for each issue:
+31,"Ich schreibe, um Verbesserungen unserer Datensicherheitsprotokolle bei der medizinischen Datenspeicherung in unserem Hospital IT-System zu veranlassen. Derzeit könnten die aktuellen Protokolle möglicherweise ausreichen, um sensible medizinische Informationen zu schützen, aber ich glaube, dass die Priorität auf die Sicherheit und Integrität der Daten liegen sollte. Es wäre willkommen, wenn die Angelegenheit angenommen und notwendige Updates durchgeführt werden könnten, um die höchste Sicherheitsstufe für medizinische Daten zu gewährleisten. Das Erreichen dieser Prioritäten ist entscheidend für die Erhaltung des Patientenvertrauens und die Einhaltung gesetzlicher Anforderungen.","Which device specifically keyboard, mouse, printer or monitor?","Based on the provided user issues, I will provide specific step-by-step troubleshooting guides for each issue:
 
 **Issue 1: Enhanced Security Measures for Medical Data**
 
@@ -1404,7 +842,7 @@ To address requests for enhanced security measures:
 5. Schedule meetings with solution providers to discuss their proposals and select the best-fit tool.
 
 Note: The above steps are general troubleshooting guides and may require specific context, details, or information to provide tailored solutions for each user issue.",1,validation_failed,18/06/2026 8:04
-32,1,,"Is it possible to get details on the customization options for project management features? I am keen to learn about the platform that can be tailored to meet the specific needs of my team. Thank you for your assistance, and I look forward to hearing back from you soon.","Which device specifically keyboard, mouse, printer or monitor?","Based on the provided user issues, here are specific troubleshooting steps for each case:
+32,"Is it possible to get details on the customization options for project management features? I am keen to learn about the platform that can be tailored to meet the specific needs of my team. Thank you for your assistance, and I look forward to hearing back from you soon.","Which device specifically keyboard, mouse, printer or monitor?","Based on the provided user issues, here are specific troubleshooting steps for each case:
 
 **Issue 1: Medical Data Security**
 
@@ -1470,7 +908,7 @@ To provide information on integrating data analytics tools into financial system
 5. Schedule a follow-up call to review progress and address any further concerns.
 
 By following these steps, we can provide comprehensive support for each user issue and ensure successful resolution of their concerns.",1,validation_failed,18/06/2026 8:05
-33,1,,"Dear Customer Support, I am reporting that our digital marketing campaigns are being disrupted due to connectivity software problems. It appears that the issues originated from modem failure related to Firebase. We have tried troubleshooting by restarting devices, updating software, and checking network stability, but unfortunately, none of these efforts have resolved the problem. These disruptions are causing significant losses and hindering our ability to achieve marketing objectives. Your assistance would be highly appreciated.","Which device specifically keyboard, mouse, printer or monitor?","To address the IT issue with your digital marketing campaigns being disrupted due to connectivity software problems, follow these step-by-step troubleshooting steps:
+33,"Dear Customer Support, I am reporting that our digital marketing campaigns are being disrupted due to connectivity software problems. It appears that the issues originated from modem failure related to Firebase. We have tried troubleshooting by restarting devices, updating software, and checking network stability, but unfortunately, none of these efforts have resolved the problem. These disruptions are causing significant losses and hindering our ability to achieve marketing objectives. Your assistance would be highly appreciated.","Which device specifically keyboard, mouse, printer or monitor?","To address the IT issue with your digital marketing campaigns being disrupted due to connectivity software problems, follow these step-by-step troubleshooting steps:
 
 **Step 1: Verify Firebase Connection**
 
@@ -1512,7 +950,7 @@ By following these steps, we can provide comprehensive support for each user iss
 
 * Schedule a call with our support team to discuss the issue further and explore additional troubleshooting steps.
 * Provide access to any relevant logs or error messages for further analysis.",1,validation_failed,18/06/2026 8:05
-34,1,,"Customer support, seeking details on the data analytics tools utilized by your company. Could you provide information on how these tools are used to optimize investment strategies? I would greatly appreciate knowing the types of data analyzed to inform decision-making. Additionally, I am interested in learning about the benefits of using these tools in contributing to the company's success. I look forward to hearing from you.","Which device specifically keyboard, mouse, printer or monitor?","Here is a step-by-step troubleshooting guide for the IT issue:
+34,"Customer support, seeking details on the data analytics tools utilized by your company. Could you provide information on how these tools are used to optimize investment strategies? I would greatly appreciate knowing the types of data analyzed to inform decision-making. Additionally, I am interested in learning about the benefits of using these tools in contributing to the company's success. I look forward to hearing from you.","Which device specifically keyboard, mouse, printer or monitor?","Here is a step-by-step troubleshooting guide for the IT issue:
 
 **Issue:** Data Analytics Tools not providing sufficient insights for informed decision-making, leading to incorrect charges and financial losses.
 
@@ -1570,7 +1008,7 @@ By following these steps, we can provide comprehensive support for each user iss
 * Eliminate incorrect charges and financial losses caused by the billing system issue.
 * Improve decision-making with accurate insights from data analytics tools.
 * Ensure optimal system performance and reliability.",1,validation_failed,18/06/2026 8:05
-35,1,,"I am looking to inquire about integrating IBM SPSS Statistics 28 with our current investment data analytics tools. Could you provide more details on the process? We are particularly interested in learning how to seamlessly combine these tools to enhance our data analysis capabilities. Specifically, we would like to know about any compatibility issues, required software updates, and the potential benefits of the integration. Your guidance on this matter would be greatly appreciated.","Which device specifically keyboard, mouse, printer or monitor?","Based on the provided user issues, I will provide a step-by-step approach for troubleshooting each issue:
+35,"I am looking to inquire about integrating IBM SPSS Statistics 28 with our current investment data analytics tools. Could you provide more details on the process? We are particularly interested in learning how to seamlessly combine these tools to enhance our data analysis capabilities. Specifically, we would like to know about any compatibility issues, required software updates, and the potential benefits of the integration. Your guidance on this matter would be greatly appreciated.","Which device specifically keyboard, mouse, printer or monitor?","Based on the provided user issues, I will provide a step-by-step approach for troubleshooting each issue:
 
 **Issue 1: Incorrect charges across different products**
 
@@ -1671,7 +1109,7 @@ Troubleshooting Steps:
 5. Schedule a call with the user to discuss further troubleshooting steps and possible solutions.
 
 Please note that these steps are general and may need to be tailored to the specific needs of each issue.",1,validation_failed,18/06/2026 8:05
-36,1,,"Could you offer advice on securing medical data using a SQL Server environment in healthcare? It is crucial to protect patient data and comply with regulations. I would appreciate recommendations on encryption, access control, and auditing. I look forward to your assistance and response.","Which device specifically keyboard, mouse, printer or monitor?","Based on the provided information, I will provide step-by-step troubleshooting steps for the issue with the data analytics system:
+36,"Could you offer advice on securing medical data using a SQL Server environment in healthcare? It is crucial to protect patient data and comply with regulations. I would appreciate recommendations on encryption, access control, and auditing. I look forward to your assistance and response.","Which device specifically keyboard, mouse, printer or monitor?","Based on the provided information, I will provide step-by-step troubleshooting steps for the issue with the data analytics system:
 
 **Step 1: Check Software Updates**
 
@@ -1709,7 +1147,7 @@ Please note that these steps are general and may need to be tailored to the spec
 * Monitor system behavior under different load scenarios to identify potential causes of crashes or errors.
 
 By following these steps, we can gather more information about the root cause of the problem and work towards identifying a solution.",1,validation_failed,18/06/2026 8:05
-37,1,,"I am seeking comprehensive guidance on utilizing Docker for data analytics to optimize investment. Specifically, I would like to understand how to set up a Docker environment for data analysis, manage data volumes, and optimize Docker containers for data-intensive tasks. Could you provide a step-by-step guide and point me towards relevant resources? Your assistance on this matter would be greatly appreciated.","Which device specifically keyboard, mouse, printer or monitor?","**Troubleshooting Steps for Data Analytics System Issue**
+37,"I am seeking comprehensive guidance on utilizing Docker for data analytics to optimize investment. Specifically, I would like to understand how to set up a Docker environment for data analysis, manage data volumes, and optimize Docker containers for data-intensive tasks. Could you provide a step-by-step guide and point me towards relevant resources? Your assistance on this matter would be greatly appreciated.","Which device specifically keyboard, mouse, printer or monitor?","**Troubleshooting Steps for Data Analytics System Issue**
 
 1. **Verify Software Compliance**: Check the system's software version to ensure it is up-to-date and compliant with regulatory requirements.
 2. **Check Network Connections**: Verify that all network connections are stable and secure, including internet connectivity and database connections.
@@ -1741,7 +1179,7 @@ Please schedule a call at your earliest convenience to discuss this issue furthe
 * Consult the software's documentation and user manual for troubleshooting guides.
 * Reach out to the software vendor's support team for assistance.
 * Research online forums and communities related to data analytics and software compliance.",1,validation_failed,18/06/2026 8:05
-38,1,,"We are reaching out for customer support to assist in optimizing our data analytics infrastructure with the aim of achieving better investment insights across our hardware and software products. We are currently facing inefficiencies in data processing and analysis, which are causing delays in decision-making. We would appreciate guidance on how to streamline our data analytics pipeline, including recommendations for hardware and software upgrades, which would help us make more informed investment decisions and improve our overall business performance.","Which device specifically keyboard, mouse, printer or monitor?","To optimize your data analytics infrastructure and achieve better investment insights, follow these step-by-step troubleshooting steps:
+38,"We are reaching out for customer support to assist in optimizing our data analytics infrastructure with the aim of achieving better investment insights across our hardware and software products. We are currently facing inefficiencies in data processing and analysis, which are causing delays in decision-making. We would appreciate guidance on how to streamline our data analytics pipeline, including recommendations for hardware and software upgrades, which would help us make more informed investment decisions and improve our overall business performance.","Which device specifically keyboard, mouse, printer or monitor?","To optimize your data analytics infrastructure and achieve better investment insights, follow these step-by-step troubleshooting steps:
 
 1. **Assess Current Infrastructure**: Identify the current hardware and software components used for data analysis, including data storage, processing, and visualization tools.
 2. **Analyze Inefficiencies**: Determine the specific inefficiencies in data processing and analysis, such as slow data transfer rates, inadequate computing resources, or manual data entry errors.
@@ -1772,7 +1210,7 @@ Additional Recommendations:
 3. Develop a comprehensive data analytics strategy that integrates multiple data sources, including structured, semi-structured, and unstructured data.
 
 By following these step-by-step troubleshooting steps, you can optimize your data analytics infrastructure and achieve better investment insights across your hardware and software products.",1,validation_failed,18/06/2026 8:06
-39,1,,"Es wird empfohlen, verstärkte Sicherheitsprotokolle für die Verarbeitung medizinischer Daten in Software- und Hardware-Systemen zu implementieren, um vertrauliche Informationen zu schützen.","Which device specifically keyboard, mouse, printer or monitor?","Based on the provided user issue, here are specific troubleshooting steps to address enhanced security protocols for medical data processing:
+39,"Es wird empfohlen, verstärkte Sicherheitsprotokolle für die Verarbeitung medizinischer Daten in Software- und Hardware-Systemen zu implementieren, um vertrauliche Informationen zu schützen.","Which device specifically keyboard, mouse, printer or monitor?","Based on the provided user issue, here are specific troubleshooting steps to address enhanced security protocols for medical data processing:
 
 **Step 1: Review Current Security Protocols**
 
@@ -1805,7 +1243,7 @@ By following these step-by-step troubleshooting steps, you can optimize your dat
 * Establish incident response procedures in case of a data breach or unauthorized access
 
 By following these steps, you can enhance the security protocols for medical data processing, protect sensitive information, and ensure compliance with regulatory requirements.",1,validation_failed,18/06/2026 8:06
-40,1,,"Das Krankenhaus hat eine mögliche Offenlegung medizinischer Daten erlebt, wahrscheinlich verursacht durch veraltete Software-Updates. Erste Maßnahmen umfassten das Aktualisieren der Antivirensignaturen, das Scannen der Geräte und die Überprüfung der Netzwerkzugriffsprotokolle. Diese Schritte konnten das Problem jedoch nicht vollständig beheben. Wir haben den Kundendienst kontaktiert, um weitere Unterstützung und Anleitungen zur Behebung des Sicherheitsvorfalls zu erhalten. Aufgrund der Besorgnis über die möglichen Auswirkungen auf Patientendaten bitten wir um Unterstützung bei der Ursachenanalyse und der Umsetzung einer Lösung, um zukünftige Vorfälle zu verhindern.","**Printer Troubleshooting:**
+40,"Das Krankenhaus hat eine mögliche Offenlegung medizinischer Daten erlebt, wahrscheinlich verursacht durch veraltete Software-Updates. Erste Maßnahmen umfassten das Aktualisieren der Antivirensignaturen, das Scannen der Geräte und die Überprüfung der Netzwerkzugriffsprotokolle. Diese Schritte konnten das Problem jedoch nicht vollständig beheben. Wir haben den Kundendienst kontaktiert, um weitere Unterstützung und Anleitungen zur Behebung des Sicherheitsvorfalls zu erhalten. Aufgrund der Besorgnis über die möglichen Auswirkungen auf Patientendaten bitten wir um Unterstützung bei der Ursachenanalyse und der Umsetzung einer Lösung, um zukünftige Vorfälle zu verhindern.","**Printer Troubleshooting:**
 
 1. **Check power and cables** - ensure printer is on
 2. **Check paper tray** - paper loaded correctly?
@@ -1864,7 +1302,7 @@ Based on the provided issue, I will guide you through a step-by-step approach to
 
 * Consider implementing a comprehensive vulnerability assessment program to identify potential weaknesses in your system
 * Regularly review security protocols with hospital staff to ensure everyone is aware of their roles and responsibilities",1,validation_failed,18/06/2026 8:06
-41,1,,"Customer Support, seeking guidance on securing medical data with DocuSign and MySQL 8.0 integration. A healthcare provider needs to ensure the protection of sensitive patient information. Currently using DocuSign for electronic signatures and MySQL 8.0 for database management. Would appreciate information on how to integrate these systems while maintaining HIPAA compliance. Specifically, looking for details on encryption methods, access controls, and audit trails.","**Software Troubleshooting Steps:**
+41,"Customer Support, seeking guidance on securing medical data with DocuSign and MySQL 8.0 integration. A healthcare provider needs to ensure the protection of sensitive patient information. Currently using DocuSign for electronic signatures and MySQL 8.0 for database management. Would appreciate information on how to integrate these systems while maintaining HIPAA compliance. Specifically, looking for details on encryption methods, access controls, and audit trails.","**Software Troubleshooting Steps:**
 
 1. **Close and reopen** the application
 2. **Restart your computer** - this fixes many issues
@@ -1912,7 +1350,7 @@ Type 'create ticket' if you need technical support.","To address the user's issu
 * Implement a patch management process to address any vulnerabilities or weaknesses in the system.
 
 By following these steps, the healthcare provider can integrate DocuSign and MySQL 8.0 while maintaining HIPAA compliance and ensuring the protection of sensitive patient information.",1,validation_failed,18/06/2026 8:06
-42,1,,Es wurde eine Verletzung der Krankenhaus-IT-Systeme festgestellt,"**Network Troubleshooting:**
+42,Es wurde eine Verletzung der Krankenhaus-IT-Systeme festgestellt,"**Network Troubleshooting:**
 1. Restart your router/modem
 2. Check if WiFi is enabled
 3. Forget and reconnect to network
@@ -1955,7 +1393,7 @@ Type ""create ticket"" for support.","Based on the provided information, it appe
 2. **Develop an incident response plan**: Develop or update the hospital's incident response plan to ensure that similar breaches can be quickly responded to and mitigated.
 
 Please let me know if these steps are helpful, or if you require further assistance.",1,validation_failed,18/06/2026 8:06
-43,1,,"We have encountered system crashes during project exports, which we believe are caused by memory overload with large datasets. Despite attempts to optimize data processing routines and increase memory allocation, the issue persists. We would appreciate your assistance in resolving this problem.","**Software Troubleshooting Steps:**
+43,"We have encountered system crashes during project exports, which we believe are caused by memory overload with large datasets. Despite attempts to optimize data processing routines and increase memory allocation, the issue persists. We would appreciate your assistance in resolving this problem.","**Software Troubleshooting Steps:**
 
 1. **Close and reopen** the application
 2. **Restart your computer** - this fixes many issues
@@ -1999,7 +1437,7 @@ Type 'create ticket' if you need technical support.","**Step 1: Gather Informati
 * Regularly monitor system performance and adjust as needed
 
 By following these steps, the IT support specialist can help resolve the issue of system crashes during project exports caused by memory overload with large datasets.",1,validation_failed,18/06/2026 8:06
-44,1,,"The SaaS application is facing occasional connection problems. This could be due to network instability or software compatibility issues. Steps taken include restarting the router and clearing cache, but the problem still exists. Assistance is needed to resolve this issue.","**Network Troubleshooting Steps:**
+44,"The SaaS application is facing occasional connection problems. This could be due to network instability or software compatibility issues. Steps taken include restarting the router and clearing cache, but the problem still exists. Assistance is needed to resolve this issue.","**Network Troubleshooting Steps:**
 
 1. **Restart your router/modem** - Unplug for 30 seconds, then plug back in
 2. **Check WiFi is enabled** on your device (look for airplane mode)
@@ -2087,7 +1525,7 @@ To resolve the SaaS application's connection issues:
 	* Reset the router's configuration settings or restart the modem to reset network connections.
 
 In each case, it is essential to follow these steps to identify potential causes of the issue and take corrective action to resolve the problem.",1,validation_failed,18/06/2026 8:07
-45,1,,"Customer Support, exploring digital strategies to enhance brand growth. Interested in detailed information on the topics you cover and the digital marketing tactics that have proven effective. Specifically, keen to learn about the social media strategy and how it is measured in the success of digital campaigns. Would greatly appreciate any information you can provide. Thank you for your assistance. Looking forward to hearing back soon. Help is greatly appreciated.","**Software Troubleshooting Steps:**
+45,"Customer Support, exploring digital strategies to enhance brand growth. Interested in detailed information on the topics you cover and the digital marketing tactics that have proven effective. Specifically, keen to learn about the social media strategy and how it is measured in the success of digital campaigns. Would greatly appreciate any information you can provide. Thank you for your assistance. Looking forward to hearing back soon. Help is greatly appreciated.","**Software Troubleshooting Steps:**
 
 1. **Close and reopen** the application
 2. **Restart your computer** - this fixes many issues
@@ -2197,7 +1635,7 @@ Recommended resources:
 
 * SaaS application documentation
 * Troubleshooting guides",1,validation_failed,18/06/2026 8:07
-46,1,,Data preparation tool failed due to integration unit issues. Restart and checking integrations resolved the problem.,"**Network Troubleshooting:**
+46,Data preparation tool failed due to integration unit issues. Restart and checking integrations resolved the problem.,"**Network Troubleshooting:**
 1. Restart your router/modem
 2. Check if WiFi is enabled
 3. Forget and reconnect to network
@@ -2236,7 +1674,7 @@ Type ""create ticket"" for support.","Based on the provided user issue, I'll pro
 2. Reach out to customer support or online forums for additional guidance and potential solutions.
 
 By following these steps, you should be able to identify and resolve the issue with the data preparation tool integration unit failure.",1,validation_failed,18/06/2026 8:07
-47,1,,"customer support, our marketing agency is facing challenges with brand visibility. Our campaign strategies seem ineffective, leading to insufficient engagement, which might be the cause. We have tried A/B testing and adjusting our ad spend, but there hasn't been a significant improvement. We need your assistance to optimize our content and increase engagement.","**Hardware Troubleshooting Steps:**
+47,"customer support, our marketing agency is facing challenges with brand visibility. Our campaign strategies seem ineffective, leading to insufficient engagement, which might be the cause. We have tried A/B testing and adjusting our ad spend, but there hasn't been a significant improvement. We need your assistance to optimize our content and increase engagement.","**Hardware Troubleshooting Steps:**
 
 1. **Check all connections** - cables, ports, power
 2. **Restart the device** - power cycle completely
@@ -2309,7 +1747,7 @@ To resolve integration unit issues:
 5. Consult documentation and support resources: Review official documentation, online forums, or contact customer support for guidance on resolving specific integration issues.
 
 These step-by-step troubleshooting guides aim to provide a clear starting point for addressing each issue.",1,validation_failed,18/06/2026 8:07
-48,1,,Returns due to customer satisfaction issues with Codecademy Nuendo. Optimizing campaigns to enhance engagement. Issue resolved.,"**Network Troubleshooting:**
+48,Returns due to customer satisfaction issues with Codecademy Nuendo. Optimizing campaigns to enhance engagement. Issue resolved.,"**Network Troubleshooting:**
 1. Restart your router/modem
 2. Check if WiFi is enabled
 3. Forget and reconnect to network
@@ -2358,7 +1796,7 @@ Type ""create ticket"" for support.","To troubleshoot the IT issue related to me
 * Conduct regular training sessions to ensure compliance with HIPAA regulations.
 
 By following these specific steps, we can help ensure the protection of sensitive patient data and prevent future security breaches.",1,validation_failed,18/06/2026 8:07
-49,1,,Could you please provide details on the services offered for securing medical data in hospital systems? Your timely assistance would be greatly appreciated.,"**Software Troubleshooting Steps:**
+49,Could you please provide details on the services offered for securing medical data in hospital systems? Your timely assistance would be greatly appreciated.,"**Software Troubleshooting Steps:**
 
 1. **Close and reopen** the application
 2. **Restart your computer** - this fixes many issues
@@ -2410,7 +1848,7 @@ Type 'create ticket' if you need technical support.","Based on the provided user
 * Perform penetration testing and vulnerability scanning to ensure the integrity of your hospital's IT systems.
 
 By following these steps, you can help secure medical data in hospital systems using DocuSign and MySQL 8.0 integration while maintaining HIPAA compliance.",1,validation_failed,18/06/2026 8:07
-50,1,,"Facing data security challenges with medical records. Recent audit highlighted possible vulnerabilities in the infrastructure. Steps taken include updating firewall rules, reviewing access logs, and running system updates, but the issues continue. Assistance is needed to resolve these problems.","**Network Troubleshooting Steps:**
+50,"Facing data security challenges with medical records. Recent audit highlighted possible vulnerabilities in the infrastructure. Steps taken include updating firewall rules, reviewing access logs, and running system updates, but the issues continue. Assistance is needed to resolve these problems.","**Network Troubleshooting Steps:**
 
 1. **Restart your router/modem** - Unplug for 30 seconds, then plug back in
 2. **Check WiFi is enabled** on your device (look for airplane mode)
@@ -2464,7 +1902,7 @@ Type 'create ticket' if you need further network support.","To address the user'
 3. Conduct regular security audits and risk assessments to identify areas for improvement.
 
 By following these step-by-step procedures, the user can address their concerns about data security challenges with medical records and ensure the protection of sensitive patient information while maintaining HIPAA compliance.",1,validation_failed,18/06/2026 8:08
-51,1,,Experiencing system slowdowns; restarted devices and updated drivers as a solution.,"**Software Troubleshooting Steps:**
+51,Experiencing system slowdowns; restarted devices and updated drivers as a solution.,"**Software Troubleshooting Steps:**
 
 1. **Close and reopen** the application
 2. **Restart your computer** - this fixes many issues
@@ -2509,7 +1947,7 @@ If none of the above steps resolve the issue, it may be necessary to perform a c
 
 10. Provide Feedback:
 Encourage the user to provide feedback on the troubleshooting process and any successes they've had so far.",1,validation_failed,18/06/2026 8:08
-52,1,,Can you provide insights on optimization?,"**Network Troubleshooting:**
+52,Can you provide insights on optimization?,"**Network Troubleshooting:**
 1. Restart your router/modem
 2. Check if WiFi is enabled
 3. Forget and reconnect to network
@@ -2556,7 +1994,7 @@ To optimize your systems and processes for improved performance, follow these st
 3. **Monitor Resource Usage**: Utilize tools like Windows Task Manager or Resource Monitor to identify resource-intensive processes.
 
 By following these steps, you can effectively optimize your systems and processes to improve performance and efficiency.",1,validation_failed,18/06/2026 8:08
-53,1,,"Dear Customer Support Team,\n\nI am submitting a report concerning a critical outage of the platform services that is currently hindering device connectivity throughout operations. This disruption has blocked access to the SaaS platform, greatly impairing functions such as barcode scanners and RAID controllers, which are vital for daily operations.\n\nPreliminary investigations suggest the issue may be linked to failures in Kubernetes orchestration. Attempts to resolve the problem by restarting pods and redeploying microservices have not been successful, and the issue remains unresolved.","**Network Troubleshooting Steps:**
+53,"Dear Customer Support Team,\n\nI am submitting a report concerning a critical outage of the platform services that is currently hindering device connectivity throughout operations. This disruption has blocked access to the SaaS platform, greatly impairing functions such as barcode scanners and RAID controllers, which are vital for daily operations.\n\nPreliminary investigations suggest the issue may be linked to failures in Kubernetes orchestration. Attempts to resolve the problem by restarting pods and redeploying microservices have not been successful, and the issue remains unresolved.","**Network Troubleshooting Steps:**
 
 1. **Restart your router/modem** - Unplug for 30 seconds, then plug back in
 2. **Check WiFi is enabled** on your device (look for airplane mode)
@@ -2609,7 +2047,7 @@ Type 'create ticket' if you need further network support.","To troubleshoot the 
 * Monitor system performance and ensure all services are functioning correctly.
 
 By following these steps, we can work together to identify and resolve the root cause of the critical outage and restore device connectivity for daily operations.",1,validation_failed,18/06/2026 8:08
-54,1,,"Sehr geehrte Kundensupport, wir möchten Sie um Ihre Unterstützung bitten, um die Sicherung unserer Klinik-IT-Infrastruktur zu gewährleisten, insbesondere bei der Konfiguration von Oracle Database 19c und MongoDB. Da wir vertrauliche Patientendaten speichern, ist die Sicherheit und Integrität der Informationen von entscheidender Bedeutung. Könnten Sie uns Empfehlungen zur Umsetzung robuster Sicherheitsmaßnahmen für unsere Datenbanken geben? Wir freuen uns auf Rat zur Authentifizierung, Authorisierung und Verschlüsselung sowie auf Vorschläge für spezielle Sicherheitsfunktionen und Tools, die für unsere IT-Infrastruktur geeignet wären? Wir freuen uns darauf, zusammenzuarbeiten.","**Hardware Troubleshooting Steps:**
+54,"Sehr geehrte Kundensupport, wir möchten Sie um Ihre Unterstützung bitten, um die Sicherung unserer Klinik-IT-Infrastruktur zu gewährleisten, insbesondere bei der Konfiguration von Oracle Database 19c und MongoDB. Da wir vertrauliche Patientendaten speichern, ist die Sicherheit und Integrität der Informationen von entscheidender Bedeutung. Könnten Sie uns Empfehlungen zur Umsetzung robuster Sicherheitsmaßnahmen für unsere Datenbanken geben? Wir freuen uns auf Rat zur Authentifizierung, Authorisierung und Verschlüsselung sowie auf Vorschläge für spezielle Sicherheitsfunktionen und Tools, die für unsere IT-Infrastruktur geeignet wären? Wir freuen uns darauf, zusammenzuarbeiten.","**Hardware Troubleshooting Steps:**
 
 1. **Check all connections** - cables, ports, power
 2. **Restart the device** - power cycle completely
@@ -2660,7 +2098,7 @@ Type 'create ticket' if you need hardware support.","Based on the provided user 
 * Conduct regular training sessions for employees handling medical records.
 
 By following these steps, the hospital can implement robust security measures to protect their medical records and ensure the integrity of patient data.",1,validation_failed,18/06/2026 8:08
-55,1,,"Customer support reports a breach of medical data detected within the hospital's system. The breach may have resulted from outdated software and unsecured devices. Attempts to resolve the issue by running malware scans and installing system updates have been unsuccessful. The breach has compromised sensitive patient information, raising concerns about potential repercussions. An urgent request for assistance to contain and resolve the problem has been made. Please advise on the next steps and any additional actions required.","**Software Troubleshooting Steps:**
+55,"Customer support reports a breach of medical data detected within the hospital's system. The breach may have resulted from outdated software and unsecured devices. Attempts to resolve the issue by running malware scans and installing system updates have been unsuccessful. The breach has compromised sensitive patient information, raising concerns about potential repercussions. An urgent request for assistance to contain and resolve the problem has been made. Please advise on the next steps and any additional actions required.","**Software Troubleshooting Steps:**
 
 1. **Close and reopen** the application
 2. **Restart your computer** - this fixes many issues
@@ -2700,7 +2138,7 @@ Type 'create ticket' if you need technical support.","Here's a step-by-step trou
 2. **Engage with regulatory bodies**: Provide necessary documentation and information to regulatory agencies, such as HIPAA, for compliance purposes.
 
 By following these steps, you can help contain the breach, identify the root cause of the issue, and take proactive measures to prevent similar incidents in the future.",1,validation_failed,18/06/2026 8:08
-56,1,,Könnten Sie mehr Details zu unseren Dienstleistungen bereitstellen?,"**Network Troubleshooting:**
+56,Könnten Sie mehr Details zu unseren Dienstleistungen bereitstellen?,"**Network Troubleshooting:**
 1. Restart your router/modem
 2. Check if WiFi is enabled
 3. Forget and reconnect to network
@@ -2738,7 +2176,7 @@ Type ""create ticket"" for support.","Based on the user's request, here are the 
 * Ensure that content is clear, concise, and relevant to the target audience.
 
 By following these steps, we can identify areas for improvement, optimize content, and increase engagement.",1,validation_failed,18/06/2026 8:08
-57,1,,"Sehr geehrter Kundendienst, ich möchte mich erkundigen, welche digitalen Strategien die Agentur für Markenwachstum anwendet. Könnten Sie bitte einen Überblick über die Ansätze und Techniken geben, die eingesetzt werden, um die Online-Präsenz der Marken zu erweitern? Besonders interessiert bin ich an Erfahrungen im Bereich Social Media Marketing, Content-Erstellung und Suchmaschinenoptimierung. Jede bereitgestellte Information wäre sehr willkommen. Ich freue mich auf eine baldige Rückmeldung. Vielen Dank für Ihre Zeit und Unterstützung. Mit freundlichen Grüßen, [Ihr Name]","**Network Troubleshooting Steps:**
+57,"Sehr geehrter Kundendienst, ich möchte mich erkundigen, welche digitalen Strategien die Agentur für Markenwachstum anwendet. Könnten Sie bitte einen Überblick über die Ansätze und Techniken geben, die eingesetzt werden, um die Online-Präsenz der Marken zu erweitern? Besonders interessiert bin ich an Erfahrungen im Bereich Social Media Marketing, Content-Erstellung und Suchmaschinenoptimierung. Jede bereitgestellte Information wäre sehr willkommen. Ich freue mich auf eine baldige Rückmeldung. Vielen Dank für Ihre Zeit und Unterstützung. Mit freundlichen Grüßen, [Ihr Name]","**Network Troubleshooting Steps:**
 
 1. **Restart your router/modem** - Unplug for 30 seconds, then plug back in
 2. **Check WiFi is enabled** on your device (look for airplane mode)
@@ -2796,7 +2234,7 @@ Troubleshooting Steps:
 * Ensure that all devices and applications used by healthcare professionals are up-to-date with the latest security patches and configurations.
 
 Please let me know if you have any further questions or concerns!",1,validation_failed,18/06/2026 8:09
-58,1,,"Sehr geehrtes Support-Team,\n\nich möchte einen gravierenden Sicherheitsvorfall melden, der gegenwärtig mehrere Komponenten unserer Infrastruktur betrifft. Betroffene Geräte umfassen Projektoren, Bildschirme und Speicherlösungen auf Cloud-Plattformen. Der Grund für die Annahme ist, dass der Vorfall eine potenzielle Datenverletzung im Zusammenhang mit einer Cyberattacke darstellt, was ein erhebliches Risiko für sensible Informationen und den laufenden Geschäftsbetrieb unserer Organisation bedeutet.\n\nUnsere initialen Untersuchungen haben ungewöhnliche Aktivitäten und Abweichungen bei den Geräten ergeben. Trotz der Umsetzung unserer standardisierten Behebungs- und Eindämmungsmaßnahmen konnte die Bedrohung bislang nicht vollständig eliminiert.","**Network Troubleshooting Steps:**
+58,"Sehr geehrtes Support-Team,\n\nich möchte einen gravierenden Sicherheitsvorfall melden, der gegenwärtig mehrere Komponenten unserer Infrastruktur betrifft. Betroffene Geräte umfassen Projektoren, Bildschirme und Speicherlösungen auf Cloud-Plattformen. Der Grund für die Annahme ist, dass der Vorfall eine potenzielle Datenverletzung im Zusammenhang mit einer Cyberattacke darstellt, was ein erhebliches Risiko für sensible Informationen und den laufenden Geschäftsbetrieb unserer Organisation bedeutet.\n\nUnsere initialen Untersuchungen haben ungewöhnliche Aktivitäten und Abweichungen bei den Geräten ergeben. Trotz der Umsetzung unserer standardisierten Behebungs- und Eindämmungsmaßnahmen konnte die Bedrohung bislang nicht vollständig eliminiert.","**Network Troubleshooting Steps:**
 
 1. **Restart your router/modem** - Unplug for 30 seconds, then plug back in
 2. **Check WiFi is enabled** on your device (look for airplane mode)
@@ -2849,7 +2287,7 @@ Type 'create ticket' if you need further network support.","Based on the provide
 * Provide training on cybersecurity best practices, MFA, and data protection procedures to prevent similar incidents in the future.
 
 By following these steps, we can identify and address potential vulnerabilities, contain the breach, and implement measures to prevent similar incidents from occurring in the future.",1,validation_failed,18/06/2026 8:09
-59,1,,"In regard to enhancing Customer Support, we are requesting an upgrade to our data analytics capabilities by integrating Oracle Database with our current tools. This integration is aimed at improving investment optimization, enabling us to make more informed decisions that can increase our returns. Our current tools have limited ability to analyze large datasets, and we believe that integrating Oracle Database would be a valuable addition to our toolkit. We would appreciate it if you could provide us with the necessary information to proceed with the integration.","**Software Troubleshooting Steps:**
+59,"In regard to enhancing Customer Support, we are requesting an upgrade to our data analytics capabilities by integrating Oracle Database with our current tools. This integration is aimed at improving investment optimization, enabling us to make more informed decisions that can increase our returns. Our current tools have limited ability to analyze large datasets, and we believe that integrating Oracle Database would be a valuable addition to our toolkit. We would appreciate it if you could provide us with the necessary information to proceed with the integration.","**Software Troubleshooting Steps:**
 
 1. **Close and reopen** the application
 2. **Restart your computer** - this fixes many issues
@@ -2930,7 +2368,7 @@ In each of these issues, it's essential to:
 * Implement additional security measures to prevent similar breaches in the future
 * Review and update systems and software to ensure they are up-to-date and properly configured
 * Consider hiring a professional consultant or agency for assistance",1,validation_failed,18/06/2026 8:09
-60,1,,Facing issues with the software causing data analysis sessions to crash. System rebooted and updates checked.,"**Software Troubleshooting Steps:**
+60,Facing issues with the software causing data analysis sessions to crash. System rebooted and updates checked.,"**Software Troubleshooting Steps:**
 
 1. **Close and reopen** the application
 2. **Restart your computer** - this fixes many issues
@@ -2970,7 +2408,7 @@ Refer to the software's user manual, online support resources, or forums for sol
 
 10. Contact IT support:
 If none of the above steps resolve the issue, contact IT support for further assistance and guidance on resolving the problem.",1,validation_failed,18/06/2026 8:09
-61,1,,Das Investment-Optimierungstool zeigte ungenaue Analyseergebnisse aufgrund von Datenintegritätsproblemen an. Durch Wiederprüfung der Datenquellen und die Beseitigung der Diskrepanzen wurden die Probleme gelöst.,"**Network Troubleshooting:**
+61,Das Investment-Optimierungstool zeigte ungenaue Analyseergebnisse aufgrund von Datenintegritätsproblemen an. Durch Wiederprüfung der Datenquellen und die Beseitigung der Diskrepanzen wurden die Probleme gelöst.,"**Network Troubleshooting:**
 1. Restart your router/modem
 2. Check if WiFi is enabled
 3. Forget and reconnect to network
@@ -3017,7 +2455,7 @@ Type ""create ticket"" for support.","**Troubleshooting Steps for Critical Platf
 4. **Test Reboot Procedures**: Test reboot procedures to determine if there are any issues with system booting or initialization that may be contributing to the crash.
 
 By following these specific troubleshooting steps, you should be able to identify and resolve the root cause of the issue and prevent future occurrences.",1,validation_failed,18/06/2026 8:09
-62,1,,Ich bitte um Empfehlungen zur Sicherung medizinischer Daten mit DocuSign SAP.,"**Network Troubleshooting:**
+62,Ich bitte um Empfehlungen zur Sicherung medizinischer Daten mit DocuSign SAP.,"**Network Troubleshooting:**
 1. Restart your router/modem
 2. Check if WiFi is enabled
 3. Forget and reconnect to network
@@ -3046,7 +2484,7 @@ Type ""create ticket"" for support.","Based on the provided user issues, I'll pr
 * Regularly review and update security policies to ensure they align with industry standards
 
 By following these steps and recommendations, you can help secure medical data with DocuSign SAP and prevent potential breaches.",1,validation_failed,18/06/2026 8:09
-63,1,,"Customer support, kindly request an update on the digital strategy templates utilized in client campaigns. The current templates are outdated and do not effectively promote brand growth. I believe an update would enhance the overall effectiveness of our campaigns. The new templates should include the latest trends and practices in digital marketing. This would enable us to better serve our clients and improve our services. I would appreciate it if you could look into this matter and provide an update at your earliest convenience. Thank you for your time.","**Software Troubleshooting Steps:**
+63,"Customer support, kindly request an update on the digital strategy templates utilized in client campaigns. The current templates are outdated and do not effectively promote brand growth. I believe an update would enhance the overall effectiveness of our campaigns. The new templates should include the latest trends and practices in digital marketing. This would enable us to better serve our clients and improve our services. I would appreciate it if you could look into this matter and provide an update at your earliest convenience. Thank you for your time.","**Software Troubleshooting Steps:**
 
 1. **Close and reopen** the application
 2. **Restart your computer** - this fixes many issues
@@ -3096,7 +2534,7 @@ Type 'create ticket' if you need technical support.","Based on the provided info
 * Ensure all data is properly backed up and stored in a secure location.
 
 By following these steps, the IT team should be able to identify the cause of the breach and implement measures to prevent similar incidents in the future.",1,validation_failed,18/06/2026 8:10
-64,1,,"Customer Support, seeking advice on securing medical data within SAP Notion systems. Need to ensure that handling sensitive patient information complies with relevant regulations. Could provide some practices and recommendations for implementing robust security measures, such as data encryption, access controls, and regular audits? Appreciate your assistance as this matter is important, and I look forward to hearing from you soon. Thank you for your support.","**Software Troubleshooting Steps:**
+64,"Customer Support, seeking advice on securing medical data within SAP Notion systems. Need to ensure that handling sensitive patient information complies with relevant regulations. Could provide some practices and recommendations for implementing robust security measures, such as data encryption, access controls, and regular audits? Appreciate your assistance as this matter is important, and I look forward to hearing from you soon. Thank you for your support.","**Software Troubleshooting Steps:**
 
 1. **Close and reopen** the application
 2. **Restart your computer** - this fixes many issues
@@ -3146,7 +2584,7 @@ Type 'create ticket' if you need technical support.","Based on the provided cust
 2. Conduct a review of current content creation strategies and adjust as necessary to ensure alignment with updated guidelines and best practices.
 
 By following these step-by-step troubleshooting steps, you can help resolve the various customer issues and implement robust security measures to protect sensitive patient information within SAP Notion systems.",1,validation_failed,18/06/2026 8:10
-65,1,,"The hospital's electronic medical records system encountered an outage, probably due to a failure in network hardware, despite initial troubleshooting attempts. This disruption caused considerable inconvenience and posed a potential risk to patient care. The team has been notified and is actively working to resolve the issue as quickly as possible. In the meantime, medical personnel are advised to utilize alternative methods for recording and accessing patient information. Please be assured that all efforts are being made to minimize the impact of this disruption and to ensure patient safety.","**Network Troubleshooting Steps:**
+65,"The hospital's electronic medical records system encountered an outage, probably due to a failure in network hardware, despite initial troubleshooting attempts. This disruption caused considerable inconvenience and posed a potential risk to patient care. The team has been notified and is actively working to resolve the issue as quickly as possible. In the meantime, medical personnel are advised to utilize alternative methods for recording and accessing patient information. Please be assured that all efforts are being made to minimize the impact of this disruption and to ensure patient safety.","**Network Troubleshooting Steps:**
 
 1. **Restart your router/modem** - Unplug for 30 seconds, then plug back in
 2. **Check WiFi is enabled** on your device (look for airplane mode)
@@ -3201,7 +2639,7 @@ Type 'create ticket' if you need further network support.","Based on the provide
 3. **Regularly audit and review**: Regularly audit and review access logs to ensure compliance with regulations.
 
 Please note that these are general troubleshooting steps, and specific actions may vary depending on the system, software, or hardware involved in each issue.",1,validation_failed,18/06/2026 8:10
-66,1,,"Beim Betrachten unserer Analyse-Plattform begegnen wir unkonistenten Datenvisualisierungen, die möglicherweise auf eine recente Software-Aktualisierung und die Verbindung von Elasticsearch zurückzuführen sind. Trotz des Neustarts des Software-Service und dem Überprüfen der Netzwerkverbindungen haben sich die Zustände geändert. Wir würden die Unterstützung in der Lösung dieses Problems sehr schätzen.","**Software Troubleshooting Steps:**
+66,"Beim Betrachten unserer Analyse-Plattform begegnen wir unkonistenten Datenvisualisierungen, die möglicherweise auf eine recente Software-Aktualisierung und die Verbindung von Elasticsearch zurückzuführen sind. Trotz des Neustarts des Software-Service und dem Überprüfen der Netzwerkverbindungen haben sich die Zustände geändert. Wir würden die Unterstützung in der Lösung dieses Problems sehr schätzen.","**Software Troubleshooting Steps:**
 
 1. **Close and reopen** the application
 2. **Restart your computer** - this fixes many issues
@@ -3235,7 +2673,7 @@ Type 'create ticket' if you need technical support.","Based on the provided user
 9. Document the issue: Finally, document the steps taken to troubleshoot and resolve the issue for future reference.
 
 By following these troubleshooting steps, you should be able to identify and resolve the inconsistent data visualizations on the Analyse-Plattform.",1,validation_failed,18/06/2026 8:10
-67,1,,"Die digitale Markenentwicklungskampagne hat unerwartet an Tempo verloren. Es werden mögliche Serverprobleme oder falsch konfigurierte Strategien vermutet. Bisherige Versuche beinhalteten das Neustarten der Kampagne sowie die Überprüfung der Analyse-Einstellungen, doch das Problem besteht weiterhin. Weitere Unterstützung ist notwendig, um die Kampagnenleistung wiederherzustellen.","**Network Troubleshooting:**
+67,"Die digitale Markenentwicklungskampagne hat unerwartet an Tempo verloren. Es werden mögliche Serverprobleme oder falsch konfigurierte Strategien vermutet. Bisherige Versuche beinhalteten das Neustarten der Kampagne sowie die Überprüfung der Analyse-Einstellungen, doch das Problem besteht weiterhin. Weitere Unterstützung ist notwendig, um die Kampagnenleistung wiederherzustellen.","**Network Troubleshooting:**
 1. Restart your router/modem
 2. Check if WiFi is enabled
 3. Forget and reconnect to network
@@ -3318,7 +2756,7 @@ Type ""create ticket"" for support.","To address the IT issues mentioned in your
 	* Run diagnostic tests on the system to identify any issues with hardware, firmware, or software.
 
 Please let me know if you would like me to elaborate on any of these steps or provide further guidance on a specific issue.",1,validation_failed,18/06/2026 8:10
-68,1,,Integration errors have resulted in technical difficulties. Troubleshooting steps included partial resets and diagnostic procedures.,"**Software Troubleshooting Steps:**
+68,Integration errors have resulted in technical difficulties. Troubleshooting steps included partial resets and diagnostic procedures.,"**Software Troubleshooting Steps:**
 
 1. **Close and reopen** the application
 2. **Restart your computer** - this fixes many issues
@@ -3416,7 +2854,7 @@ Step 3: Test campaign adjustments
 Step 4: Run diagnostics on analytics tools
 - Run diagnostics on the analytics tools used for the campaigns to identify any software or technical issues that may be contributing to poor performance.
 - Update analytics tools as necessary to maintain optimal functionality.",1,validation_failed,18/06/2026 8:10
-69,1,,"Wir haben Dateninconsistencies in unseren Investitionsportfolios festgestellt. Das Problem deutet auf veraltete Software und Integrationsprobleme hin. Wir haben versucht, die Software zu aktualisieren und die Datensourcemarke zu überprüfen, was erfolgreich war. Bitte helfen Sie uns, das Problem zu lösen.","**Software Troubleshooting Steps:**
+69,"Wir haben Dateninconsistencies in unseren Investitionsportfolios festgestellt. Das Problem deutet auf veraltete Software und Integrationsprobleme hin. Wir haben versucht, die Software zu aktualisieren und die Datensourcemarke zu überprüfen, was erfolgreich war. Bitte helfen Sie uns, das Problem zu lösen.","**Software Troubleshooting Steps:**
 
 1. **Close and reopen** the application
 2. **Restart your computer** - this fixes many issues
@@ -3480,7 +2918,7 @@ Step 3: Run diagnostic tests using tools like partial resets or third-party plug
 Step 4: Check for any recent software updates related to integration compatibility issues.
 Step 5: Implement additional logging and monitoring to track integration issues more effectively.
 Step 6: Collaborate with the development team to identify root causes and implement fixes.",1,validation_failed,18/06/2026 8:11
-70,1,,"Requesting improvements to security protocols, particularly in medical data management and hospital infrastructure. The current system has several vulnerabilities that need to be addressed to ensure the confidentiality and integrity of patient data. A review and update of the security protocols, including the incorporation of advanced threat detection and prevention measures, is requested. Additionally, request for the affected products to be updated to include the new security protocols to help protect patient data and prevent breaches.","**Software Troubleshooting Steps:**
+70,"Requesting improvements to security protocols, particularly in medical data management and hospital infrastructure. The current system has several vulnerabilities that need to be addressed to ensure the confidentiality and integrity of patient data. A review and update of the security protocols, including the incorporation of advanced threat detection and prevention measures, is requested. Additionally, request for the affected products to be updated to include the new security protocols to help protect patient data and prevent breaches.","**Software Troubleshooting Steps:**
 
 1. **Close and reopen** the application
 2. **Restart your computer** - this fixes many issues
@@ -3543,7 +2981,7 @@ Type 'create ticket' if you need technical support.","Based on the provided issu
 * Step 3: Update affected products to include new security protocols and ensure that all personnel have received training on the updated protocols.
 
 By following these step-by-step troubleshooting guides, you should be able to identify the root cause of each issue and implement corrective measures to resolve them.",1,validation_failed,18/06/2026 8:11
-71,1,,"Marketingkampagnen wurden aufgrund von Softwarekompatibilitätsproblemen eingestellt. Diese Probleme könnten Hinweise auf out-of-date Anwendungen oder Integrationsfehler geben. Bitte aktualisieren Sie das Python-System und überprüfen Sie die SAP-Anforderungen. Das Problem behält sich bestanden, nachdem versucht wurde, das Gerät neu zu starten. Bitte helfen Sie uns, das Problem schnell zu lösen.","**Software Troubleshooting Steps:**
+71,"Marketingkampagnen wurden aufgrund von Softwarekompatibilitätsproblemen eingestellt. Diese Probleme könnten Hinweise auf out-of-date Anwendungen oder Integrationsfehler geben. Bitte aktualisieren Sie das Python-System und überprüfen Sie die SAP-Anforderungen. Das Problem behält sich bestanden, nachdem versucht wurde, das Gerät neu zu starten. Bitte helfen Sie uns, das Problem schnell zu lösen.","**Software Troubleshooting Steps:**
 
 1. **Close and reopen** the application
 2. **Restart your computer** - this fixes many issues
@@ -3643,7 +3081,7 @@ Steps to take:
 3. Investigate potential issues with software compatibility or configuration errors.
 4. Collaborate with the support team to resolve technical issues related to automation.
 5. Develop measures to prevent similar issues from occurring in the future (e.g., testing scripts, data validation).",1,validation_failed,18/06/2026 8:11
-72,1,,"Looking to integrate project management SaaS with Microsoft SQL Server 2019. Could you provide detailed information on how to accomplish this? I would greatly appreciate any relevant documentation, API guides, and setup tutorials to help me get started. Additionally, could you inform me about the specific system requirements and limitations when integrating Microsoft SQL Server 2019? I look forward to your response as we explore this solution for our SaaS project management needs.","**Software Troubleshooting Steps:**
+72,"Looking to integrate project management SaaS with Microsoft SQL Server 2019. Could you provide detailed information on how to accomplish this? I would greatly appreciate any relevant documentation, API guides, and setup tutorials to help me get started. Additionally, could you inform me about the specific system requirements and limitations when integrating Microsoft SQL Server 2019? I look forward to your response as we explore this solution for our SaaS project management needs.","**Software Troubleshooting Steps:**
 
 1. **Close and reopen** the application
 2. **Restart your computer** - this fixes many issues
@@ -3727,7 +3165,7 @@ Type 'create ticket' if you need technical support.","Based on the provided issu
 5. Provide detailed information on system requirements, limitations, and potential optimizations for integrating project management SaaS with SQL Server 2019.
 
 By following these step-by-step troubleshooting guides, you should be able to identify and address the underlying causes of each issue, ensuring a smooth resolution for the client's needs.",1,validation_failed,18/06/2026 8:11
-73,1,,"Customer Support is reaching out regarding an issue with the client's investment optimization tool. The analytics outputs are inconsistent, possibly due to recent data integration problems. Attempts to resolve the issue included rebooting systems and clearing caches, but these efforts did not lead to a solution. The inconsistent results are making it difficult to make well-informed investment choices. Could you please help us identify the underlying cause of this issue and provide a solution to ensure the accuracy of the analytics?","**Hardware Troubleshooting Steps:**
+73,"Customer Support is reaching out regarding an issue with the client's investment optimization tool. The analytics outputs are inconsistent, possibly due to recent data integration problems. Attempts to resolve the issue included rebooting systems and clearing caches, but these efforts did not lead to a solution. The inconsistent results are making it difficult to make well-informed investment choices. Could you please help us identify the underlying cause of this issue and provide a solution to ensure the accuracy of the analytics?","**Hardware Troubleshooting Steps:**
 
 1. **Check all connections** - cables, ports, power
 2. **Restart the device** - power cycle completely
@@ -3811,7 +3249,7 @@ Steps:
 4. Consult documentation and support resources: Review relevant documentation, API guides, and setup tutorials for guidance on resolving the issue.
 
 By following these troubleshooting steps, you should be able to identify the underlying cause of each issue and implement solutions to resolve them.",1,validation_failed,18/06/2026 8:12
-74,1,,"Detected an attempt at a breach targeting the healthcare data security system, which is likely due to malware or phishing. Efforts to update security protocols have been unsuccessful so far. Urgent assistance is needed to resolve this issue and prevent potential data leaks.","**Software Troubleshooting Steps:**
+74,"Detected an attempt at a breach targeting the healthcare data security system, which is likely due to malware or phishing. Efforts to update security protocols have been unsuccessful so far. Urgent assistance is needed to resolve this issue and prevent potential data leaks.","**Software Troubleshooting Steps:**
 
 1. **Close and reopen** the application
 2. **Restart your computer** - this fixes many issues
@@ -4001,7 +3439,7 @@ Step 3: Collaborate with development team to resolve the issue:
 
 * Assign a dedicated support specialist to work on resolving the data inconsistencies.
 * Provide regular updates on progress and estimated resolution time.",1,validation_failed,18/06/2026 8:12
-75,1,,"Sehr geehrter Kundendienst, ich möchte Sie bezüglich eines Problems mit den Investitionsprognosen unseres Finanzunternehmens kontaktieren. Es wurde festgestellt, dass die Prognosen ungenau sind, was vermutlich auf fehlerhafte Datenintegration zurückzuführen ist. Unser Team arbeitet daran, die Algorithmen durch Neukalibrierung der Datenquellen zu verbessern, doch das Problem besteht weiterhin. Ich bin besorgt, dass dies die Investitionsentscheidungen beeinträchtigen könnte, und bitte um Unterstützung bei der Lösung des Problems. Könnten Sie bitte mögliche Lösungsansätze prüfen und Empfehlungen zur Verbesserung bereitstellen? Wir würden eine schnelle Bearbeitung schätzen und freuen uns auf eine zeitnahe Rückmeldung. Bitte lassen Sie uns wissen,","**Software Troubleshooting:**
+75,"Sehr geehrter Kundendienst, ich möchte Sie bezüglich eines Problems mit den Investitionsprognosen unseres Finanzunternehmens kontaktieren. Es wurde festgestellt, dass die Prognosen ungenau sind, was vermutlich auf fehlerhafte Datenintegration zurückzuführen ist. Unser Team arbeitet daran, die Algorithmen durch Neukalibrierung der Datenquellen zu verbessern, doch das Problem besteht weiterhin. Ich bin besorgt, dass dies die Investitionsentscheidungen beeinträchtigen könnte, und bitte um Unterstützung bei der Lösung des Problems. Könnten Sie bitte mögliche Lösungsansätze prüfen und Empfehlungen zur Verbesserung bereitstellen? Wir würden eine schnelle Bearbeitung schätzen und freuen uns auf eine zeitnahe Rückmeldung. Bitte lassen Sie uns wissen,","**Software Troubleshooting:**
 1. Close and reopen the application
 2. Restart your computer
 3. Check for software updates
@@ -4025,7 +3463,7 @@ To troubleshoot the issue with the investment prognoses, follow these steps:
 * Collaborate with subject matter experts to validate the accuracy of the investment prognoses and provide input on potential improvements.
 
 By following these steps, we aim to identify and resolve the root cause of the issue with the investment prognoses, ensuring accurate and reliable results for your financial institution.",1,validation_failed,18/06/2026 8:12
-76,1,,"Sehr geehrter Kundenservice, ich wende mich an Sie, um auf ein kritisches Problem aufmerksam zu machen, das unsere Finanzfirma derzeit betrifft. Es wurden Abrechnungsdifferenzen bei mehreren Produkten festgestellt. Erste Einschätzungen deuten darauf hin, dass diese auf Systemintegrationsfehler zurückzuführen sein könnten. Unser Team hat versucht, das Problem zu beheben, indem das Abrechnungssystem zurückgesetzt und die Rechnungen neu verarbeitet wurden, jedoch konnte das Problem dadurch nicht gelöst werden. Wir befürchten, dass diese Differenzen zu finanziellen Verlusten und Reputationsschäden führen könnten, weshalb eine umgehende Behebung notwendig ist. Für Ihre Unterstützung wären wir sehr dankbar.","**Software Troubleshooting:**
+76,"Sehr geehrter Kundenservice, ich wende mich an Sie, um auf ein kritisches Problem aufmerksam zu machen, das unsere Finanzfirma derzeit betrifft. Es wurden Abrechnungsdifferenzen bei mehreren Produkten festgestellt. Erste Einschätzungen deuten darauf hin, dass diese auf Systemintegrationsfehler zurückzuführen sein könnten. Unser Team hat versucht, das Problem zu beheben, indem das Abrechnungssystem zurückgesetzt und die Rechnungen neu verarbeitet wurden, jedoch konnte das Problem dadurch nicht gelöst werden. Wir befürchten, dass diese Differenzen zu finanziellen Verlusten und Reputationsschäden führen könnten, weshalb eine umgehende Behebung notwendig ist. Für Ihre Unterstützung wären wir sehr dankbar.","**Software Troubleshooting:**
 1. Close and reopen the application
 2. Restart your computer
 3. Check for software updates
@@ -4083,7 +3521,7 @@ Type ""create ticket"" for support.","Based on the provided issues, I will provi
 4. Implementierung von Sicherheitsprotokollen: Ersetzen Sie veraltete Protokolle durch modernere Sicherheitsprotokolle, die eine verbesserte Datensicherheit bieten.
 
 Durch diese umfassenden Schritte können wir die Ursachen der Probleme identifizieren und gemeinsam Lösungen entwickeln.",1,validation_failed,18/06/2026 8:13
-77,1,,"We are facing connectivity problems with the BenQ TK850 Projector during presentations. The issue might be related to compatibility conflicts with the projector devices. We have attempted to reboot and reconfigure the network settings, but the problem continues to persist. We need assistance to resolve this issue to prevent any disruptions to our brand's growth efforts.","**Network Troubleshooting Steps:**
+77,"We are facing connectivity problems with the BenQ TK850 Projector during presentations. The issue might be related to compatibility conflicts with the projector devices. We have attempted to reboot and reconfigure the network settings, but the problem continues to persist. We need assistance to resolve this issue to prevent any disruptions to our brand's growth efforts.","**Network Troubleshooting Steps:**
 
 1. **Restart your router/modem** - Unplug for 30 seconds, then plug back in
 2. **Check WiFi is enabled** on your device (look for airplane mode)
@@ -4135,7 +3573,7 @@ To resolve the connectivity problems with the BenQ TK850 Projector, follow these
 * Regularly update your projectors' firmware and drivers to ensure optimal performance and minimize connectivity issues.
 
 By following these steps, you should be able to resolve the connectivity problems with your BenQ TK850 Projector.",1,validation_failed,18/06/2026 8:13
-78,1,,Apply security enhancements and updates to safeguard sensitive medical information.,"**Software Troubleshooting Steps:**
+78,Apply security enhancements and updates to safeguard sensitive medical information.,"**Software Troubleshooting Steps:**
 
 1. **Close and reopen** the application
 2. **Restart your computer** - this fixes many issues
@@ -4187,7 +3625,7 @@ As for the security enhancements, here are some general recommendations:
 5. Establish a comprehensive backup and disaster recovery plan.
 
 Please note that these recommendations are general in nature and may require specific configurations and implementation details based on your organization's security policies and requirements.",1,validation_failed,18/06/2026 8:13
-79,1,,"Customer Support, <br>I am working on the report and encountered an issue with the investment analysis tool. The tool is supposed to generate accurate predictions for portfolio optimization, but it might be malfunctioning due to recent software updates. So far, we have restarted the application and verified the data inputs, but the issue still persists. I would greatly appreciate it if you could look into this matter urgently and provide guidance to resolve the issue. Please let me know if you require any additional information. I look forward to your assistance.","**Software Troubleshooting Steps:**
+79,"Customer Support, <br>I am working on the report and encountered an issue with the investment analysis tool. The tool is supposed to generate accurate predictions for portfolio optimization, but it might be malfunctioning due to recent software updates. So far, we have restarted the application and verified the data inputs, but the issue still persists. I would greatly appreciate it if you could look into this matter urgently and provide guidance to resolve the issue. Please let me know if you require any additional information. I look forward to your assistance.","**Software Troubleshooting Steps:**
 
 1. **Close and reopen** the application
 2. **Restart your computer** - this fixes many issues
@@ -4257,7 +3695,7 @@ Type 'create ticket' if you need technical support.","Based on the provided user
 4. Test the investment optimization tool with a sample dataset to identify any specific issues.
 
 These steps should help resolve the various IT issues reported by the users.",1,validation_failed,18/06/2026 8:13
-80,1,,Concern about unauthorized access attempts to medical data systems continuing even after password updates and firewall checks have been implemented.,"**Network Troubleshooting Steps:**
+80,Concern about unauthorized access attempts to medical data systems continuing even after password updates and firewall checks have been implemented.,"**Network Troubleshooting Steps:**
 
 1. **Restart your router/modem** - Unplug for 30 seconds, then plug back in
 2. **Check WiFi is enabled** on your device (look for airplane mode)
@@ -4305,7 +3743,7 @@ Type 'create ticket' if you need further network support.","Based on the provide
 * Ensure that all security-related software is up-to-date and running correctly.
 
 By following these steps, it should be possible to identify and address the underlying cause of unauthorized access attempts to medical data systems.",1,validation_failed,18/06/2026 8:13
-81,1,,"Lieber Kundenservice, ich melde Ihnen ein technisches Problem mit Monday.com. Trotz der letzten Software-Updates haben Benutzer Schwierigkeiten. Sie haben versucht, Caches zu löschen und das Konto neu zu verbinden, aber das Problem behält sich bestehen. Ich schätze Ihre Unterstützung und hoffe, bald eine mögliche Lösung anzubieten. Bitte lassen Sie mich wissen, falls weitere Informationen benötigt werden, um das Problem zu lösen. Vielen Dank für Ihre Unterstützung. Ich freue mich auf Ihre Rückmeldung.","**Software Troubleshooting Steps:**
+81,"Lieber Kundenservice, ich melde Ihnen ein technisches Problem mit Monday.com. Trotz der letzten Software-Updates haben Benutzer Schwierigkeiten. Sie haben versucht, Caches zu löschen und das Konto neu zu verbinden, aber das Problem behält sich bestehen. Ich schätze Ihre Unterstützung und hoffe, bald eine mögliche Lösung anzubieten. Bitte lassen Sie mich wissen, falls weitere Informationen benötigt werden, um das Problem zu lösen. Vielen Dank für Ihre Unterstützung. Ich freue mich auf Ihre Rückmeldung.","**Software Troubleshooting Steps:**
 
 1. **Close and reopen** the application
 2. **Restart your computer** - this fixes many issues
@@ -4387,7 +3825,7 @@ To resolve the Monday.com connectivity issues:
 5. Contact support team: Reach out to the support team for guidance on resolving the issue.
 
 Please let me know if you would like me to elaborate on any of these steps or provide additional assistance.",1,validation_failed,18/06/2026 8:13
-82,1,,"Kontaktieren Sie uns, um mehr über die Integration von Adobe Illustrator CC 2021 in Ihre digitale Marketingstrategie zu erfahren. Könnten Sie uns mehr Informationen geben, die das Softwarepaket für die Verbesserung Ihrer Marketingaktivitäten nutzen können? Wir freuen uns, Rat zu geben und Ihnen die verfügbaren Werkzeuge und Funktionen vorzustellen, die Ihre Marketingziele unterstützen. Insbesondere sind Sie an der Erstellung ansprechenden visuellen Inhaltsmaterials interessiert, was die Kompatibilität mit Anwendungen aus dem Adobe Creative Cloud erfordert. Vielen Dank für Ihre Zeit.","**Software Troubleshooting Steps:**
+82,"Kontaktieren Sie uns, um mehr über die Integration von Adobe Illustrator CC 2021 in Ihre digitale Marketingstrategie zu erfahren. Könnten Sie uns mehr Informationen geben, die das Softwarepaket für die Verbesserung Ihrer Marketingaktivitäten nutzen können? Wir freuen uns, Rat zu geben und Ihnen die verfügbaren Werkzeuge und Funktionen vorzustellen, die Ihre Marketingziele unterstützen. Insbesondere sind Sie an der Erstellung ansprechenden visuellen Inhaltsmaterials interessiert, was die Kompatibilität mit Anwendungen aus dem Adobe Creative Cloud erfordert. Vielen Dank für Ihre Zeit.","**Software Troubleshooting Steps:**
 
 1. **Close and reopen** the application
 2. **Restart your computer** - this fixes many issues
@@ -4463,7 +3901,7 @@ Type 'create ticket' if you need technical support.","Based on the provided cust
 5. If issues persist, consider reaching out to Adobe technical support for assistance.
 
 By following these steps, we can identify and resolve each issue efficiently and effectively.",1,validation_failed,18/06/2026 8:14
-83,1,,Risk of unauthorized access jeopardizes the security of patient data,"**Network Troubleshooting:**
+83,Risk of unauthorized access jeopardizes the security of patient data,"**Network Troubleshooting:**
 1. Restart your router/modem
 2. Check if WiFi is enabled
 3. Forget and reconnect to network
@@ -4512,7 +3950,7 @@ Type ""create ticket"" for support.","Based on the provided user issue, here are
 * Provide user education and awareness training to all employees handling patient data.
 * Educate users on the importance of maintaining confidentiality, integrity, and availability of patient data.
 * Ensure that users understand their roles and responsibilities in maintaining the security of patient data.",1,validation_failed,18/06/2026 8:14
-84,1,,"The Marketing-Analyse-Software is currently affecting campaign reporting due to a server outage. I have tried restarting the application and clearing the cache, but the issue persists. Please assist us in resolving this problem as soon as possible.","**Software Troubleshooting Steps:**
+84,"The Marketing-Analyse-Software is currently affecting campaign reporting due to a server outage. I have tried restarting the application and clearing the cache, but the issue persists. Please assist us in resolving this problem as soon as possible.","**Software Troubleshooting Steps:**
 
 1. **Close and reopen** the application
 2. **Restart your computer** - this fixes many issues
@@ -4658,7 +4096,7 @@ Step 3: Data Input Verification
 
 Step 4: Consult Experts (if necessary)
 - If the issue persists, consult with a developer or system administrator who specializes in marketing analysis tools to identify the root cause of the problem and implement a solution.",1,validation_failed,18/06/2026 8:14
-85,1,,"A possible data loss in the Medication Database has been identified. Investigations are ongoing to determine whether the cause is due to unauthorized access or system vulnerabilities. Access logs have been reviewed and temporary security measures have been implemented, but the issue persists. We kindly request assistance in resolving the problem to ensure the security of sensitive patient data.","**Network Troubleshooting:**
+85,"A possible data loss in the Medication Database has been identified. Investigations are ongoing to determine whether the cause is due to unauthorized access or system vulnerabilities. Access logs have been reviewed and temporary security measures have been implemented, but the issue persists. We kindly request assistance in resolving the problem to ensure the security of sensitive patient data.","**Network Troubleshooting:**
 1. Restart your router/modem
 2. Check if WiFi is enabled
 3. Forget and reconnect to network
@@ -4724,7 +4162,7 @@ Based on the provided user issues, I've identified the following step-by-step tr
 5. Consider upgrading system infrastructure: If connectivity issues persist, consider upgrading system infrastructure, such as network equipment or operating systems.
 
 By following these step-by-step troubleshooting procedures, IT support specialists can identify and resolve the root cause of the issues affecting various digital tools and security concerns.",1,validation_failed,18/06/2026 8:14
-86,1,,"Probleme bei der Datenintegration aufgetreten, Fehlerbehebung versucht, Schwierigkeiten bestehen weiterhin","**Network Troubleshooting:**
+86,"Probleme bei der Datenintegration aufgetreten, Fehlerbehebung versucht, Schwierigkeiten bestehen weiterhin","**Network Troubleshooting:**
 1. Restart your router/modem
 2. Check if WiFi is enabled
 3. Forget and reconnect to network
@@ -4757,7 +4195,7 @@ Type ""create ticket"" for support.","Based on the provided information, I will 
 5. Collaborate with experts: Consult with cybersecurity experts or data recovery specialists to assist in resolving the issue.
 
 By following these steps, we can identify the root cause of the problem and develop an effective solution to resolve it.",1,validation_failed,18/06/2026 8:15
-87,1,,"There is a critical failure in software integration leading to inconsistencies in project data across various platforms. Recent API updates might be the cause of these conflicts. Although efforts have been made to resolve the issue by clearing caches and restarting services, the problem continues to persist and requires urgent attention.","**Software Troubleshooting Steps:**
+87,"There is a critical failure in software integration leading to inconsistencies in project data across various platforms. Recent API updates might be the cause of these conflicts. Although efforts have been made to resolve the issue by clearing caches and restarting services, the problem continues to persist and requires urgent attention.","**Software Troubleshooting Steps:**
 
 1. **Close and reopen** the application
 2. **Restart your computer** - this fixes many issues
@@ -4826,7 +4264,7 @@ Type 'create ticket' if you need technical support.","Based on the provided user
 5. Reach out to the vendors of the digital tools and software used in the project for additional assistance.
 
 In each scenario, I will provide specific troubleshooting steps to help resolve the issue. If further assistance is needed, I may require additional information from the customer.",1,validation_failed,18/06/2026 8:15
-88,1,,"Die Marketingagentur hat unerwartete Verzögerungen bei den Leistungsmaßen der Kampagne festgestellt. Die neuesten Softwareupdates haben Konfigurationsfehler verursacht. Die Einstellungen wurden bereits aktualisiert, und die Datenberichte wurden erneut analysiert.","**Software Troubleshooting Steps:**
+88,"Die Marketingagentur hat unerwartete Verzögerungen bei den Leistungsmaßen der Kampagne festgestellt. Die neuesten Softwareupdates haben Konfigurationsfehler verursacht. Die Einstellungen wurden bereits aktualisiert, und die Datenberichte wurden erneut analysiert.","**Software Troubleshooting Steps:**
 
 1. **Close and reopen** the application
 2. **Restart your computer** - this fixes many issues
@@ -4878,7 +4316,7 @@ Type 'create ticket' if you need technical support.","To troubleshoot the issue 
     - Collaborate with these experts to implement recommended measures and ensure compliance with regulatory standards.
 
 By following these steps, you can enhance the security posture of your medical data systems, identify and address potential vulnerabilities, and reduce the risk of unauthorized access attempts.",1,validation_failed,18/06/2026 8:15
-89,1,,Is there any information available on integrating Microsoft Teams project management SaaS? I am interested in learning about the features to enhance our team's productivity.,"**Microsoft Teams Not Working - Fix:**
+89,Is there any information available on integrating Microsoft Teams project management SaaS? I am interested in learning about the features to enhance our team's productivity.,"**Microsoft Teams Not Working - Fix:**
 
 1. **Clear Teams cache** - Close Teams, press Windows+R, type ""%appdata%\Microsoft\Teams"", delete all files in that folder, restart Teams
 2. **Check internet connection** - Teams needs a stable connection, try speedtest.net
